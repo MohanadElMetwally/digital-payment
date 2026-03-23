@@ -7,5 +7,5 @@ import com.example.digital_payment.identity.domain.enums.UserRole;
 import com.example.digital_payment.identity.domain.enums.UserStatus;
 
 public record UserResult(UUID id, String username, String email, String phone, UserRole role,
-    UserStatus status, LocalDateTime createdAt) {
+        UserStatus status, LocalDateTime createdAt, ProfileResult profile) {
 }
