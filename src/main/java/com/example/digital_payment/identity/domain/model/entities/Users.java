@@ -1,4 +1,4 @@
-package com.example.digital_payment.identity.domain.model;
+package com.example.digital_payment.identity.domain.model.entities;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -11,6 +11,9 @@ import com.example.digital_payment.identity.domain.enums.UserStatus;
 import com.example.digital_payment.identity.domain.events.DomainEvent;
 import com.example.digital_payment.identity.domain.events.UserRegisteredEvent;
 import com.example.digital_payment.identity.domain.exceptions.InvalidUserDataException;
+import com.example.digital_payment.identity.domain.model.snapshots.UserSnapshot;
+import com.example.digital_payment.identity.domain.model.valueobjects.UserProfileRegistrationData;
+import com.example.digital_payment.identity.domain.model.valueobjects.UserRegistrationData;
 
 public class Users {
     private UUID id;
@@ -23,45 +26,55 @@ public class Users {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
+    private UserProfiles profile;
+
     private List<DomainEvent> domainEvents = new ArrayList<>();
 
     public Users() {
     }
 
-    public static Users register(String username, String email, String phone, String password) {
-        validateUsername(username);
-        validateEmail(email);
-        validatePhone(phone);
+    public static Users register(UserRegistrationData registrationData) {
+        validateUsername(registrationData.username());
+        validateEmail(registrationData.email());
+        validatePhone(registrationData.phone());
 
         Users user = new Users();
         user.id = UUID.randomUUID();
-        user.username = username.toLowerCase().trim();
-        user.email = email.toLowerCase().trim();
-        user.phone = phone.trim();
-        user.password = password;
-        user.role = UserRole.USER;
+        user.username = registrationData.username().toLowerCase().trim();
+        user.email = registrationData.email().toLowerCase().trim();
+        user.phone = registrationData.phone().trim();
+        user.password = registrationData.password();
+        user.role = registrationData.role();
         user.status = UserStatus.ACTIVE;
         user.createdAt = LocalDateTime.now();
         user.updatedAt = null;
+
+        UserProfileRegistrationData profileData = new UserProfileRegistrationData(user.id,
+            registrationData.firstName(), registrationData.lastName(), registrationData.country(),
+            registrationData.dateOfBirth());
+        user.profile = UserProfiles.register(profileData);
 
         user.domainEvents.add(new UserRegisteredEvent(user.id, user.email));
 
         return user;
     }
 
-    public static Users reconstitute(UUID id, String username, String email, String phone,
-        String password, UserRole role, UserStatus status, LocalDateTime createdAt,
-        LocalDateTime updatedAt) {
+    public static Users reconstitute(UserSnapshot snapshot) {
         Users user = new Users();
-        user.id = id;
-        user.username = username;
-        user.email = email;
-        user.phone = phone;
-        user.password = password;
-        user.role = role;
-        user.status = status;
-        user.createdAt = createdAt;
-        user.updatedAt = updatedAt;
+        user.id = snapshot.id();
+        user.username = snapshot.username();
+        user.email = snapshot.email();
+        user.phone = snapshot.phone();
+        user.password = snapshot.password();
+        user.role = snapshot.role();
+        user.status = snapshot.status();
+        user.createdAt = snapshot.createdAt();
+        user.updatedAt = snapshot.updatedAt();
+
+        if (snapshot.profile() != null) {
+            user.profile = UserProfiles.reconstitute(snapshot.profile());
+        }
+
         return user;
     }
 
@@ -120,6 +133,10 @@ public class Users {
 
     public LocalDateTime getUpdatedAt() {
         return updatedAt;
+    }
+
+    public UserProfiles getProfile() {
+        return profile;
     }
 
 }
