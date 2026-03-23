@@ -1,6 +1,5 @@
 package com.example.digital_payment.shared.security.config;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -24,30 +23,32 @@ import com.example.digital_payment.shared.security.filters.JWTFilter;
 @EnableMethodSecurity
 public class SecurityConfig {
 
-    @Autowired
-    private UserDetailsService userDetailsService;
+    private final UserDetailsService userDetailsService;
+    private final JWTFilter jwtFilter;
+    private final PasswordEncoder encoder;
 
-    @Autowired
-    private JWTFilter jwtFilter;
-
-    @Autowired
-    private PasswordEncoder encoder;
+    public SecurityConfig(UserDetailsService userDetailsService, JWTFilter jwtFilter,
+        PasswordEncoder encoder) {
+        this.userDetailsService = userDetailsService;
+        this.jwtFilter = jwtFilter;
+        this.encoder = encoder;
+    }
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         return httpSecurity.csrf(AbstractHttpConfigurer::disable)
             .sessionManagement(
-                session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+            session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests(req -> req
-                .requestMatchers("/users/register", "/auth/login", "/swagger-ui.html",
-                    "/swagger-ui/**", "/v3/api-docs/**", "/docs", "/docs/**",
-                    "/swagger-resources/**", "/webjars/**")
-                .permitAll()
-                .anyRequest()
-                .authenticated())
+            .requestMatchers("/api/v1/users/register", "/api/v1/auth/login", "/swagger-ui.html",
+                "/swagger-ui/**", "/v3/api-docs/**", "/docs", "/docs/**",
+                "/swagger-resources/**", "/webjars/**")
+            .permitAll()
+            .anyRequest()
+            .authenticated())
             .formLogin(form -> form.disable())
             .exceptionHandling(ex -> ex.authenticationEntryPoint((req, res, e) -> {
-                res.sendError(401, "Could not validate credentials");
+            res.sendError(401, "Could not validate credentials");
             }))
             .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
             .build();

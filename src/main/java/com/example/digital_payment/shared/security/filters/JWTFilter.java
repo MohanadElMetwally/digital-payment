@@ -1,6 +1,5 @@
 package com.example.digital_payment.shared.security.filters;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -18,11 +17,14 @@ import jakarta.servlet.http.HttpServletResponse;
 
 @Component
 public class JWTFilter extends OncePerRequestFilter {
-    @Autowired
-    private JWTService jwtService;
 
-    @Autowired
-    private ApplicationContext context;
+    private final JWTService jwtService;
+    private final ApplicationContext context;
+
+    public JWTFilter(JWTService jwtService, ApplicationContext context) {
+        this.jwtService = jwtService;
+        this.context = context;
+    }
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
