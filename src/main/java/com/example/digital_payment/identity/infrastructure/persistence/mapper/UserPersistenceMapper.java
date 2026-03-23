@@ -2,8 +2,12 @@ package com.example.digital_payment.identity.infrastructure.persistence.mapper;
 
 import org.springframework.stereotype.Component;
 
-import com.example.digital_payment.identity.domain.model.Users;
+import com.example.digital_payment.identity.domain.model.entities.Users;
+import com.example.digital_payment.identity.domain.model.snapshots.UserProfileSnapshot;
+import com.example.digital_payment.identity.domain.model.snapshots.UserSnapshot;
+import com.example.digital_payment.identity.infrastructure.dto.CurrentUser;
 import com.example.digital_payment.identity.infrastructure.persistence.entity.UserEntity;
+import com.example.digital_payment.identity.infrastructure.persistence.entity.UserProfileEntity;
 
 @Component
 public class UserPersistenceMapper {
@@ -18,11 +22,62 @@ public class UserPersistenceMapper {
         e.setStatus(user.getStatus());
         e.setCreatedAt(user.getCreatedAt());
         e.setUpdatedAt(user.getUpdatedAt());
+
+        if (user.getProfile() != null) {
+            UserProfileEntity profileEntity = new UserProfileEntity();
+            profileEntity.setFirstName(user.getProfile().getFirstName());
+            profileEntity.setLastName(user.getProfile().getLastName());
+            profileEntity.setCountry(user.getProfile().getCountry());
+            profileEntity.setDateOfBirth(user.getProfile().getDateOfBirth());
+            profileEntity.setCreatedAt(user.getProfile().getCreatedAt());
+            profileEntity.setUser(e);
+            e.setUserProfile(profileEntity);
+        }
+
         return e;
     }
 
     public Users toDomain(UserEntity e) {
-        return Users.reconstitute(e.getId(), e.getUsername(), e.getEmail(), e.getPhone(),
-            e.getPasswordHash(), e.getRole(), e.getStatus(), e.getCreatedAt(), e.getUpdatedAt());
+        // build profile snapshot if profile exists
+        UserProfileSnapshot profileSnapshot = null;
+        if (e.getUserProfile() != null) {
+            profileSnapshot = new UserProfileSnapshot(
+                e.getId(),
+                e.getUserProfile().getFirstName(),
+                e.getUserProfile().getLastName(),
+                e.getUserProfile().getCountry(),
+                e.getUserProfile().getDateOfBirth(),
+                e.getUserProfile().getCreatedAt(),
+                e.getUserProfile().getUpdatedAt()
+            );
+        }
+
+        UserSnapshot snapshot = new UserSnapshot(
+            e.getId(),
+            e.getUsername(),
+            e.getEmail(),
+            e.getPhone(),
+            e.getPasswordHash(),
+            e.getRole(),
+            e.getStatus(),
+            e.getCreatedAt(),
+            e.getUpdatedAt(),
+            profileSnapshot  // pass profile snapshot in
+        );
+
+        return Users.reconstitute(snapshot);
+    }
+
+    public CurrentUser toCurrentUser(Users user) {
+        return new CurrentUser(
+            user.getId(),
+            user.getUsername(),
+            user.getEmail(),
+            user.getPhone(),
+            user.getRole(),
+            user.getStatus(),
+            user.getCreatedAt(),
+            user.getUpdatedAt()
+        );
     }
 }

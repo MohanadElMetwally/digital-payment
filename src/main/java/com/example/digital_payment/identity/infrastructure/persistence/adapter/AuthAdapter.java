@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 
 import com.example.digital_payment.identity.application.dto.TokenResult;
 import com.example.digital_payment.identity.application.port.out.AuthPort;
-import com.example.digital_payment.identity.domain.model.Users;
+import com.example.digital_payment.identity.domain.model.entities.Users;
 import com.example.digital_payment.identity.infrastructure.security.UserPrincipal;
 import com.example.digital_payment.shared.security.jwt.JWTService;
 

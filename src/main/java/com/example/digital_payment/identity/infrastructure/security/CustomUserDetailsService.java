@@ -6,7 +6,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import com.example.digital_payment.identity.application.port.out.LoadUserPort;
-import com.example.digital_payment.identity.domain.model.Users;
+import com.example.digital_payment.identity.domain.model.entities.Users;
 
 @Service
 public class CustomUserDetailsService implements UserDetailsService {

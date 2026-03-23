@@ -7,11 +7,12 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import com.example.digital_payment.identity.domain.model.Users;
+import com.example.digital_payment.identity.domain.model.entities.Users;
+import com.example.digital_payment.identity.infrastructure.dto.CurrentUser;
 
 public class UserPrincipal implements UserDetails {
 
-    private Users user;
+    private final Users user;
 
     public UserPrincipal(Users user) {
         this.user = user;
@@ -34,5 +35,11 @@ public class UserPrincipal implements UserDetails {
 
     public Users getUser() {
         return this.user;
+    }
+
+    public CurrentUser getCurrentUser() {
+        return new CurrentUser(this.user.getId(), this.user.getUsername(), this.user.getEmail(),
+            this.user.getPhone(), this.user.getRole(), this.user.getStatus(),
+            this.user.getCreatedAt(), this.user.getUpdatedAt());
     }
 }

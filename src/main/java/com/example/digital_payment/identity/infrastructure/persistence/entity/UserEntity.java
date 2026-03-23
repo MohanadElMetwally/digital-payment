@@ -6,11 +6,14 @@ import java.util.UUID;
 import com.example.digital_payment.identity.domain.enums.UserRole;
 import com.example.digital_payment.identity.domain.enums.UserStatus;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.Data;
 
@@ -33,4 +36,7 @@ public class UserEntity {
     private UserStatus status;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
+
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private UserProfileEntity userProfile;
 }
