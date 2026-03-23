@@ -1,4 +1,4 @@
-package com.example.digital_payment.identity.api;
+package com.example.digital_payment.identity.api.controller;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
