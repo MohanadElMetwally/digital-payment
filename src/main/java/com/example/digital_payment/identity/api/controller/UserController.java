@@ -2,7 +2,6 @@ package com.example.digital_payment.identity.api.controller;
 
 import java.util.UUID;
 
-import org.apache.commons.lang3.NotImplementedException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -15,8 +14,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.digital_payment.identity.api.dto.request.CreateUserRequest;
+import com.example.digital_payment.identity.api.dto.request.UpdatePasswordRequest;
+import com.example.digital_payment.identity.api.dto.request.UpdateUserRequest;
 import com.example.digital_payment.identity.api.dto.response.UserResponse;
 import com.example.digital_payment.identity.api.facade.UserFacade;
+import com.example.digital_payment.shared.dto.MessageResponse;
 
 @RestController
 @RequestMapping("/users")
@@ -51,7 +53,23 @@ public class UserController {
     }
 
     @PatchMapping("/me")
-    public ResponseEntity<UserResponse> updateUserMe() {
-        throw new NotImplementedException();
+    public ResponseEntity<UserResponse> updateUserMe(@RequestBody UpdateUserRequest request) {
+        return ResponseEntity.status(HttpStatus.OK)
+            .body(userFacade.updateUserMe(userFacade.getCurrentUser().id(), request));
+    }
+
+    @PatchMapping("/me/password")
+    public ResponseEntity<MessageResponse> updatePasswordMe(
+        @RequestBody UpdatePasswordRequest request) {
+        userFacade.updatePassword(userFacade.getCurrentUser().id(), request);
+        return ResponseEntity.status(HttpStatus.OK)
+            .body(new MessageResponse("Updated password successfully!"));
+    }
+
+    @PatchMapping("/{id}")
+    @PreAuthorize("hasAnyAuthority('SUPERUSER', 'ADMIN')")
+    public ResponseEntity<UserResponse> updateUserById(@PathVariable UUID id,
+        @RequestBody UpdateUserRequest request) {
+        return ResponseEntity.status(HttpStatus.OK).body(userFacade.updateUserById(id, request));
     }
 }
