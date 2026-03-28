@@ -1,15 +1,13 @@
 package com.example.digital_payment.identity.domain.model.entities;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 
 import com.example.digital_payment.identity.domain.enums.UserRole;
 import com.example.digital_payment.identity.domain.enums.UserStatus;
-import com.example.digital_payment.identity.domain.events.DomainEvent;
-import com.example.digital_payment.identity.domain.events.UserRegisteredEvent;
+import com.example.digital_payment.identity.domain.enums.UserUpdateFields;
 import com.example.digital_payment.identity.domain.exceptions.InvalidUserDataException;
 import com.example.digital_payment.identity.domain.model.snapshots.UserSnapshot;
 import com.example.digital_payment.identity.domain.model.valueobjects.UserProfileRegistrationData;
@@ -28,7 +26,7 @@ public class Users {
 
     private UserProfiles profile;
 
-    private List<DomainEvent> domainEvents = new ArrayList<>();
+    private final Set<UserUpdateFields> changedFields = new HashSet<>();
 
     public Users() {
     }
@@ -54,8 +52,6 @@ public class Users {
             registrationData.dateOfBirth());
         user.profile = UserProfiles.register(profileData);
 
-        user.domainEvents.add(new UserRegisteredEvent(user.id, user.email));
-
         return user;
     }
 
@@ -78,6 +74,30 @@ public class Users {
         return user;
     }
 
+    public Users update(String email, String phone) {
+        if (email != null) {
+            validateEmail(email);
+            this.email = email.toLowerCase().trim();
+            changedFields.add(UserUpdateFields.EMAIL);
+        }
+        if (phone != null) {
+            validatePhone(phone);
+            this.phone = phone.trim();
+            changedFields.add(UserUpdateFields.PHONE);
+        }
+        this.updatedAt = LocalDateTime.now();
+        return this;
+    }
+
+    public boolean pollChanged(UserUpdateFields field) {
+        return changedFields.remove(field);
+    }
+
+    public Users updatePassword(String password) {
+        this.password = password;
+        return this;
+    }
+
     private static void validateUsername(String username) {
         if (username == null || username.isBlank())
             throw new InvalidUserDataException("Username cannot be blank");
@@ -93,10 +113,6 @@ public class Users {
     private static void validatePhone(String phone) {
         if (phone == null || phone.isBlank())
             throw new InvalidUserDataException("Phone cannot be blank");
-    }
-
-    public List<DomainEvent> getDomainEvents() {
-        return Collections.unmodifiableList(domainEvents);
     }
 
     public UUID getId() {
