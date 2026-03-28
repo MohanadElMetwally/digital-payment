@@ -1,4 +1,4 @@
-package com.example.digital_payment.seeder;
+package com.example.digital_payment.identity.infrastructure.seeder;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 import com.example.digital_payment.identity.application.dto.RegisterUserCommand;
 import com.example.digital_payment.identity.application.port.in.CheckUsersExistUseCase;
 import com.example.digital_payment.identity.application.port.in.RegisterUserUseCase;
-import com.example.digital_payment.seeder.config.SeederProperties;
+import com.example.digital_payment.identity.infrastructure.seeder.config.SeederProperties;
 
 @Component
 @EnableConfigurationProperties(SeederProperties.class)

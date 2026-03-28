@@ -5,18 +5,20 @@ import java.util.UUID;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.example.digital_payment.identity.application.port.out.LoadUserPort;
 import com.example.digital_payment.identity.application.port.out.SaveUserPort;
+import com.example.digital_payment.identity.application.port.out.UpdatePasswordPort;
+import com.example.digital_payment.identity.application.port.out.UpdateUserPort;
 import com.example.digital_payment.identity.domain.model.entities.Users;
 import com.example.digital_payment.identity.infrastructure.persistence.entity.UserEntity;
 import com.example.digital_payment.identity.infrastructure.persistence.mapper.UserPersistenceMapper;
 import com.example.digital_payment.identity.infrastructure.persistence.repository.UserJpaRepository;
 
-import jakarta.transaction.Transactional;
-
 @Component
-public class UserPersistenceAdapter implements LoadUserPort, SaveUserPort {
+public class UserPersistenceAdapter
+    implements LoadUserPort, SaveUserPort, UpdateUserPort, UpdatePasswordPort {
     private final UserJpaRepository userJpaRepository;
     private final UserPersistenceMapper persistenceMapper;
     private final PasswordEncoder encoder;
@@ -38,6 +40,7 @@ public class UserPersistenceAdapter implements LoadUserPort, SaveUserPort {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Optional<Users> findById(UUID id) {
         return userJpaRepository.findById(id).map(persistenceMapper::toDomain);
     }
@@ -59,5 +62,20 @@ public class UserPersistenceAdapter implements LoadUserPort, SaveUserPort {
     @Override
     public boolean existsAny() {
         return userJpaRepository.findFirstBy().isPresent();
+    }
+
+    @Override
+    @Transactional
+    public Users update(Users user) {
+        UserEntity entity = userJpaRepository.getReferenceById(user.getId());
+        persistenceMapper.updateEntity(user, entity);
+        return persistenceMapper.toDomain(entity);
+    }
+
+    @Override
+    @Transactional
+    public void updatePassword(Users user) {
+        UserEntity entity = userJpaRepository.getReferenceById(user.getId());
+        entity.setPasswordHash(encoder.encode(user.getPassword()));
     }
 }

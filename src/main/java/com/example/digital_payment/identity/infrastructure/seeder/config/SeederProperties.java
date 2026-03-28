@@ -1,4 +1,4 @@
-package com.example.digital_payment.seeder.config;
+package com.example.digital_payment.identity.infrastructure.seeder.config;
 
 import java.time.LocalDate;
 
