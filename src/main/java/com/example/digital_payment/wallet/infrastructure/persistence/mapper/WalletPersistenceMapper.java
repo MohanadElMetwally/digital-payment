@@ -2,7 +2,8 @@ package com.example.digital_payment.wallet.infrastructure.persistence.mapper;
 
 import org.springframework.stereotype.Component;
 
-import com.example.digital_payment.wallet.domain.model.Wallets;
+import com.example.digital_payment.wallet.domain.model.entities.Wallets;
+import com.example.digital_payment.wallet.domain.model.snapshots.WalletSnapshot;
 import com.example.digital_payment.wallet.infrastructure.persistence.entity.WalletEntity;
 
 @Component
@@ -11,9 +12,16 @@ public class WalletPersistenceMapper {
         WalletEntity entity = new WalletEntity();
         entity.setId(wallet.getId());
         entity.setUserId(wallet.getUserId());
+        entity.setStatus(wallet.getStatus());
         entity.setCurrency(wallet.getCurrency());
         entity.setBalance(wallet.getBalance());
         entity.setCreatedAt(wallet.getCreatedAt());
         return entity;
+    }
+
+    public Wallets toDomain(WalletEntity entity) {
+        WalletSnapshot snapshot = new WalletSnapshot(entity.getId(), entity.getUserId(),
+            entity.getStatus(), entity.getBalance(), entity.getCurrency(), entity.getCreatedAt());
+        return Wallets.reconstitute(snapshot);
     }
 }
