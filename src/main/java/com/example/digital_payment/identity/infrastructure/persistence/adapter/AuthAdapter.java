@@ -29,7 +29,7 @@ public class AuthAdapter implements AuthPort {
 
         Users user = ((UserPrincipal) authentication.getPrincipal()).getUser();
 
-        return new TokenResult(jwtService.generateToken(user.getUsername()));
+        return new TokenResult(jwtService.generateToken(user.getId(), user.getUsername()));
     }
 
 }
