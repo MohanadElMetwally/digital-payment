@@ -1,7 +1,9 @@
 package com.example.digital_payment.identity.domain.exceptions;
 
-public class PhoneAlreadyExistsException extends RuntimeException {
-    public PhoneAlreadyExistsException(String phone){
+import com.example.digital_payment.shared.exception.ConflictException;
+
+public class PhoneAlreadyExistsException extends ConflictException {
+    public PhoneAlreadyExistsException(String phone) {
         super(phone + " Already exists.");
     }
 }
