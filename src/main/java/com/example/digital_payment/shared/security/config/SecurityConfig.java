@@ -38,18 +38,18 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         return httpSecurity.csrf(AbstractHttpConfigurer::disable)
             .sessionManagement(
-            session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests(req -> req
-            .requestMatchers("/api/v1/users/register", "/api/v1/auth/login", "/swagger-ui.html",
-                "/swagger-ui/**", "/v3/api-docs/**", "/docs", "/docs/**",
-                "/swagger-resources/**", "/webjars/**")
-            .permitAll()
-            .anyRequest()
-            .authenticated())
+                .requestMatchers("/api/v1/users/register", "/api/v1/auth/login", "/swagger-ui.html",
+                    "/swagger-ui/**", "/v3/api-docs/**", "/docs", "/docs/**",
+                    "/swagger-resources/**", "/webjars/**")
+                .permitAll()
+                .anyRequest()
+                .authenticated())
             .formLogin(form -> form.disable())
             .exceptionHandling(ex -> ex.authenticationEntryPoint((req, res, e) -> {
-            res.sendError(401, "Could not validate credentials");
-            }))
+                res.sendError(401, "Could not validate credentials");
+            }).accessDeniedHandler((req, res, e) -> res.sendError(403, "Access denied")))
             .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
             .build();
     }

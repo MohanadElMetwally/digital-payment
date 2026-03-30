@@ -4,6 +4,7 @@ import java.util.Base64;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 import javax.crypto.SecretKey;
 
@@ -22,8 +23,9 @@ public class JWTService {
     @Value("${jwt.secret.key}")
     private String secretKey;
 
-    public String generateToken(String username) {
+    public String generateToken(UUID id, String username) {
         Map<String, Object> claims = new HashMap<>();
+        claims.put("userId", id);
         return Jwts.builder()
             .claims()
             .add(claims)
@@ -52,7 +54,7 @@ public class JWTService {
         return extractAllClaims(token).getExpiration().before(new Date());
     }
 
-    private Claims extractAllClaims(String token) {
+    public Claims extractAllClaims(String token) {
         return Jwts.parser().verifyWith(getKey()).build().parseSignedClaims(token).getPayload();
     }
 }

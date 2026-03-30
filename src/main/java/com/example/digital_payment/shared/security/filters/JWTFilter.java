@@ -10,6 +10,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import com.example.digital_payment.shared.security.jwt.JWTService;
 
+import io.jsonwebtoken.Claims;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -32,9 +33,11 @@ public class JWTFilter extends OncePerRequestFilter {
         String authHeader = request.getHeader("Authorization");
         String username = null;
         String token = null;
+        Claims claims = null;
 
         if (authHeader != null && authHeader.startsWith("Bearer ")) {
             token = authHeader.substring(7);
+            claims = jwtService.extractAllClaims(token);
             username = jwtService.extractUsername(token);
         }
 
@@ -43,7 +46,7 @@ public class JWTFilter extends OncePerRequestFilter {
                 .loadUserByUsername(username);
             if (jwtService.validateToken(token, userDetails)) {
                 UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
-                    userDetails, null, userDetails.getAuthorities());
+                    userDetails, claims, userDetails.getAuthorities());
                 SecurityContextHolder.getContext().setAuthentication(authToken);
             }
         }
