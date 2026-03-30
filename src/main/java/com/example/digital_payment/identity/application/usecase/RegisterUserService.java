@@ -6,6 +6,7 @@ import com.example.digital_payment.identity.application.mapper.UserMapper;
 import com.example.digital_payment.identity.application.port.in.RegisterUserUseCase;
 import com.example.digital_payment.identity.application.port.out.EventPublisherPort;
 import com.example.digital_payment.identity.application.port.out.LoadUserPort;
+import com.example.digital_payment.identity.application.port.out.PhoneValidatorPort;
 import com.example.digital_payment.identity.application.port.out.ResolveCountryPort;
 import com.example.digital_payment.identity.application.port.out.ResolveCurrencyPort;
 import com.example.digital_payment.identity.application.port.out.SaveUserPort;
@@ -26,11 +27,12 @@ public class RegisterUserService implements RegisterUserUseCase {
     private final ResolveCurrencyPort resolveCurrencyPort;
     private final EventPublisherPort eventPublisherPort;
     private final TransactionPort transactionPort;
+    private final PhoneValidatorPort phoneValidatorPort;
 
     public RegisterUserService(LoadUserPort loadUserPort, SaveUserPort saveUserPort,
         ResolveCountryPort resolveCountryPort, ResolveCurrencyPort resolveCurrencyPort,
         EventPublisherPort eventPublisherPort, TransactionPort transactionPort,
-        UserMapper userMapper) {
+        PhoneValidatorPort phoneValidatorPort, UserMapper userMapper) {
         this.loadUserPort = loadUserPort;
         this.saveUserPort = saveUserPort;
         this.userMapper = userMapper;
@@ -38,11 +40,15 @@ public class RegisterUserService implements RegisterUserUseCase {
         this.resolveCurrencyPort = resolveCurrencyPort;
         this.eventPublisherPort = eventPublisherPort;
         this.transactionPort = transactionPort;
+        this.phoneValidatorPort = phoneValidatorPort;
     }
 
     @Override
     public UserResult register(RegisterUserCommand command) {
         return transactionPort.execute(() -> {
+
+            phoneValidatorPort.validate(command.phone());
+
             loadUserPort
                 .findByEmailOrUsernameOrPhone(command.email(), command.username(), command.phone())
                 .ifPresent(exists -> {
@@ -72,5 +78,4 @@ public class RegisterUserService implements RegisterUserUseCase {
             return userMapper.toResult(save);
         });
     }
-
 }

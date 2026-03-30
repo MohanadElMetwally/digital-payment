@@ -17,6 +17,7 @@ import com.example.digital_payment.identity.application.port.out.CurrentUserPort
 import com.example.digital_payment.identity.application.port.out.EventPublisherPort;
 import com.example.digital_payment.identity.application.port.out.LoadUserPort;
 import com.example.digital_payment.identity.application.port.out.PasswordMatchPort;
+import com.example.digital_payment.identity.application.port.out.PhoneValidatorPort;
 import com.example.digital_payment.identity.application.port.out.ResolveCountryPort;
 import com.example.digital_payment.identity.application.port.out.ResolveCurrencyPort;
 import com.example.digital_payment.identity.application.port.out.SaveUserPort;
@@ -38,9 +39,11 @@ public class IdentityConfig {
     public RegisterUserUseCase registerUserUseCase(LoadUserPort loadUserPort,
         SaveUserPort saveUserPort, ResolveCountryPort resolveCountryPort,
         ResolveCurrencyPort resolveCurrencyPort, EventPublisherPort eventPublisherPort,
-        TransactionPort transactionPort, UserMapper userMapper) {
+        TransactionPort transactionPort, PhoneValidatorPort phoneValidatorPort,
+        UserMapper userMapper) {
         return new RegisterUserService(loadUserPort, saveUserPort, resolveCountryPort,
-            resolveCurrencyPort, eventPublisherPort, transactionPort, userMapper);
+            resolveCurrencyPort, eventPublisherPort, transactionPort, phoneValidatorPort,
+            userMapper);
     }
 
     @Bean
