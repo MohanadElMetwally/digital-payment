@@ -20,6 +20,8 @@ import com.example.digital_payment.identity.api.dto.response.UserResponse;
 import com.example.digital_payment.identity.api.facade.UserFacade;
 import com.example.digital_payment.shared.dto.MessageResponse;
 
+import jakarta.validation.Valid;
+
 @RestController
 @RequestMapping("/users")
 public class UserController {
@@ -42,25 +44,28 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<UserResponse> registerUser(@RequestBody CreateUserRequest request) {
+    public ResponseEntity<UserResponse> registerUser(
+        @Valid @RequestBody CreateUserRequest request) {
         return ResponseEntity.status(HttpStatus.CREATED).body(userFacade.registerUser(request));
     }
 
     @PostMapping("/admins/register")
     @PreAuthorize("hasAuthority('SUPERUSER')")
-    public ResponseEntity<UserResponse> registerAdmin(@RequestBody CreateUserRequest request) {
+    public ResponseEntity<UserResponse> registerAdmin(
+        @Valid @RequestBody CreateUserRequest request) {
         return ResponseEntity.status(HttpStatus.CREATED).body(userFacade.registerAdmin(request));
     }
 
     @PatchMapping("/me")
-    public ResponseEntity<UserResponse> updateUserMe(@RequestBody UpdateUserRequest request) {
+    public ResponseEntity<UserResponse> updateUserMe(
+        @Valid @RequestBody UpdateUserRequest request) {
         return ResponseEntity.status(HttpStatus.OK)
             .body(userFacade.updateUserMe(userFacade.getCurrentUser().id(), request));
     }
 
     @PatchMapping("/me/password")
     public ResponseEntity<MessageResponse> updatePasswordMe(
-        @RequestBody UpdatePasswordRequest request) {
+        @Valid @RequestBody UpdatePasswordRequest request) {
         userFacade.updatePassword(userFacade.getCurrentUser().id(), request);
         return ResponseEntity.status(HttpStatus.OK)
             .body(new MessageResponse("Updated password successfully!"));
@@ -69,7 +74,7 @@ public class UserController {
     @PatchMapping("/{id}")
     @PreAuthorize("hasAnyAuthority('SUPERUSER', 'ADMIN')")
     public ResponseEntity<UserResponse> updateUserById(@PathVariable UUID id,
-        @RequestBody UpdateUserRequest request) {
+        @Valid @RequestBody UpdateUserRequest request) {
         return ResponseEntity.status(HttpStatus.OK).body(userFacade.updateUserById(id, request));
     }
 }
