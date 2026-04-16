@@ -23,6 +23,9 @@ public class JWTService {
     @Value("${jwt.secret.key}")
     private String secretKey;
 
+    @Value("${jwt.expiration.ms}")
+    private int expirationMs;
+
     public String generateToken(UUID id, String username) {
         Map<String, Object> claims = new HashMap<>();
         claims.put("userId", id);
@@ -31,7 +34,7 @@ public class JWTService {
             .add(claims)
             .subject(username)
             .issuedAt(new Date(System.currentTimeMillis()))
-            .expiration(new Date(System.currentTimeMillis() + (1000 * 60 * 60 * 24 * 3))) // 3 days
+            .expiration(new Date(System.currentTimeMillis() + (expirationMs)))
             .and()
             .signWith(getKey())
             .compact();

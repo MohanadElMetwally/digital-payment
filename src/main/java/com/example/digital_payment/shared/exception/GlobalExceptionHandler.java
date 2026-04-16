@@ -49,6 +49,11 @@ public class GlobalExceptionHandler {
             "An unexpected error occurred: " + ex.getMessage());
     }
 
+    @ExceptionHandler(ServiceUnavailableException.class)
+    public ResponseEntity<ErrorResponse> handleServiceUnavailable(ServiceUnavailableException ex) {
+        return build(HttpStatus.SERVICE_UNAVAILABLE, ex.getMessage());
+    }
+
     private ResponseEntity<ErrorResponse> build(HttpStatus status, String message) {
         return ResponseEntity.status(status)
             .body(new ErrorResponse(status.value(), status.getReasonPhrase(), message,
