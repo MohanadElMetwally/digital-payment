@@ -7,10 +7,10 @@ import com.example.digital_payment.identity.application.dto.UserResult;
 import com.example.digital_payment.identity.application.mapper.UserMapper;
 import com.example.digital_payment.identity.application.port.in.UpdateUserUseCase;
 import com.example.digital_payment.identity.application.port.out.LoadUserPort;
-import com.example.digital_payment.identity.application.port.out.TransactionPort;
 import com.example.digital_payment.identity.application.port.out.UpdateUserPort;
 import com.example.digital_payment.identity.domain.exceptions.UserNotFoundException;
 import com.example.digital_payment.identity.domain.model.entities.Users;
+import com.example.digital_payment.shared.application.port.out.TransactionPort;
 
 public class UpdateUserService implements UpdateUserUseCase {
     private final LoadUserPort loadUserPort;

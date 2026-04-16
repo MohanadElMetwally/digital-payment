@@ -1,4 +1,4 @@
-package com.example.digital_payment.identity.config;
+package com.example.digital_payment.identity.application.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -6,6 +6,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import com.example.digital_payment.identity.application.mapper.UserMapper;
+import com.example.digital_payment.identity.application.port.in.CheckUserExistsUseCase;
 import com.example.digital_payment.identity.application.port.in.CheckUsersExistUseCase;
 import com.example.digital_payment.identity.application.port.in.GetUserUseCase;
 import com.example.digital_payment.identity.application.port.in.LoginUseCase;
@@ -21,9 +22,9 @@ import com.example.digital_payment.identity.application.port.out.PhoneValidatorP
 import com.example.digital_payment.identity.application.port.out.ResolveCountryPort;
 import com.example.digital_payment.identity.application.port.out.ResolveCurrencyPort;
 import com.example.digital_payment.identity.application.port.out.SaveUserPort;
-import com.example.digital_payment.identity.application.port.out.TransactionPort;
 import com.example.digital_payment.identity.application.port.out.UpdatePasswordPort;
 import com.example.digital_payment.identity.application.port.out.UpdateUserPort;
+import com.example.digital_payment.identity.application.usecase.CheckUserExistsService;
 import com.example.digital_payment.identity.application.usecase.CheckUsersExistService;
 import com.example.digital_payment.identity.application.usecase.GetCurrentUserService;
 import com.example.digital_payment.identity.application.usecase.GetUserService;
@@ -31,19 +32,17 @@ import com.example.digital_payment.identity.application.usecase.LoginService;
 import com.example.digital_payment.identity.application.usecase.RegisterUserService;
 import com.example.digital_payment.identity.application.usecase.UpdatePasswordService;
 import com.example.digital_payment.identity.application.usecase.UpdateUserService;
+import com.example.digital_payment.shared.application.port.out.TransactionPort;
 
 @Configuration
 public class IdentityConfig {
-
     @Bean
-    public RegisterUserUseCase registerUserUseCase(LoadUserPort loadUserPort,
-        SaveUserPort saveUserPort, ResolveCountryPort resolveCountryPort,
-        ResolveCurrencyPort resolveCurrencyPort, EventPublisherPort eventPublisherPort,
-        TransactionPort transactionPort, PhoneValidatorPort phoneValidatorPort,
-        UserMapper userMapper) {
-        return new RegisterUserService(loadUserPort, saveUserPort, resolveCountryPort,
-            resolveCurrencyPort, eventPublisherPort, transactionPort, phoneValidatorPort,
-            userMapper);
+    public RegisterUserUseCase registerUserUseCase(SaveUserPort saveUserPort,
+        ResolveCountryPort resolveCountryPort, ResolveCurrencyPort resolveCurrencyPort,
+        EventPublisherPort eventPublisherPort, TransactionPort transactionPort,
+        PhoneValidatorPort phoneValidatorPort, UserMapper userMapper) {
+        return new RegisterUserService(saveUserPort, resolveCountryPort, resolveCurrencyPort,
+            eventPublisherPort, transactionPort, phoneValidatorPort, userMapper);
     }
 
     @Bean
@@ -89,5 +88,10 @@ public class IdentityConfig {
         UpdatePasswordPort updateUserPort, TransactionPort transactionPort) {
         return new UpdatePasswordService(loadUserPort, saveUserPort, passwordMatchPort,
             updateUserPort, transactionPort);
+    }
+
+    @Bean
+    public CheckUserExistsUseCase checkUserExistsUseCase(LoadUserPort loadUserPort) {
+        return new CheckUserExistsService(loadUserPort);
     }
 }

@@ -7,11 +7,11 @@ import com.example.digital_payment.identity.application.port.in.UpdatePasswordUs
 import com.example.digital_payment.identity.application.port.out.LoadUserPort;
 import com.example.digital_payment.identity.application.port.out.PasswordMatchPort;
 import com.example.digital_payment.identity.application.port.out.SaveUserPort;
-import com.example.digital_payment.identity.application.port.out.TransactionPort;
 import com.example.digital_payment.identity.application.port.out.UpdatePasswordPort;
 import com.example.digital_payment.identity.domain.exceptions.InvalidPasswordException;
 import com.example.digital_payment.identity.domain.exceptions.UserNotFoundException;
 import com.example.digital_payment.identity.domain.model.entities.Users;
+import com.example.digital_payment.shared.application.port.out.TransactionPort;
 
 public class UpdatePasswordService implements UpdatePasswordUseCase {
     private final LoadUserPort loadUserPort;

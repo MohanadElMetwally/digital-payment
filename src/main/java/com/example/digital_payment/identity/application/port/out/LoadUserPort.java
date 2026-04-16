@@ -6,7 +6,7 @@ import java.util.UUID;
 import com.example.digital_payment.identity.domain.model.entities.Users;
 
 public interface LoadUserPort {
-    Users findByUsername(String username);
+    Optional<Users> findByUsername(String username);
 
     Optional<Users> findById(UUID id);
 
