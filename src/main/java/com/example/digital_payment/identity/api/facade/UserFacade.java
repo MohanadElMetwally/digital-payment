@@ -13,6 +13,7 @@ import com.example.digital_payment.identity.application.dto.RegisterUserCommand;
 import com.example.digital_payment.identity.application.dto.UpdatePasswordCommand;
 import com.example.digital_payment.identity.application.dto.UpdateUserCommand;
 import com.example.digital_payment.identity.application.dto.UserResult;
+import com.example.digital_payment.identity.application.port.in.CheckUserExistsUseCase;
 import com.example.digital_payment.identity.application.port.in.GetCurrentUserUseCase;
 import com.example.digital_payment.identity.application.port.in.GetUserUseCase;
 import com.example.digital_payment.identity.application.port.in.RegisterUserUseCase;
@@ -27,16 +28,19 @@ public class UserFacade {
     private final GetCurrentUserUseCase getCurrentUserUseCase;
     private final UpdateUserUseCase updateUserUseCase;
     private final UpdatePasswordUseCase updatePasswordUseCase;
+    private final CheckUserExistsUseCase checkUserExistsUseCase;
 
     public UserFacade(RegisterUserUseCase registerUserUseCase, GetUserUseCase getUserUseCase,
         GetCurrentUserUseCase getCurrentUserUseCase, UserApiMapper userApiMapper,
-        UpdateUserUseCase updateUserUseCase, UpdatePasswordUseCase updatePasswordUseCase) {
+        UpdateUserUseCase updateUserUseCase, UpdatePasswordUseCase updatePasswordUseCase,
+        CheckUserExistsUseCase checkUserExistsUseCase) {
         this.registerUserUseCase = registerUserUseCase;
         this.getUserUseCase = getUserUseCase;
         this.userApiMapper = userApiMapper;
         this.getCurrentUserUseCase = getCurrentUserUseCase;
         this.updateUserUseCase = updateUserUseCase;
         this.updatePasswordUseCase = updatePasswordUseCase;
+        this.checkUserExistsUseCase = checkUserExistsUseCase;
     }
 
     public UserResponse getCurrentUser() {
@@ -51,12 +55,14 @@ public class UserFacade {
 
     public UserResponse registerUser(CreateUserRequest request) {
         RegisterUserCommand command = userApiMapper.toRegisterUserCommand(request);
+        checkUserExistsUseCase.checkNotExists(command);
         UserResult result = registerUserUseCase.register(command);
         return userApiMapper.toResponse(result);
     }
 
     public UserResponse registerAdmin(CreateUserRequest request) {
         RegisterUserCommand command = userApiMapper.toRegisterAdminCommand(request);
+        checkUserExistsUseCase.checkNotExists(command);
         UserResult result = registerUserUseCase.register(command);
         return userApiMapper.toResponse(result);
     }
