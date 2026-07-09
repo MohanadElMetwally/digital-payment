@@ -6,6 +6,7 @@ import java.util.UUID;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.example.digital_payment.billing.application.port.out.FindPayableBillPort;
 import com.example.digital_payment.billing.application.port.out.LoadBillByExternalRefPort;
 import com.example.digital_payment.billing.application.port.out.LoadBillPort;
 import com.example.digital_payment.billing.application.port.out.SaveBillPort;
@@ -14,10 +15,11 @@ import com.example.digital_payment.billing.domain.model.entities.Bills;
 import com.example.digital_payment.billing.infrastructure.persistence.entity.BillEntity;
 import com.example.digital_payment.billing.infrastructure.persistence.mappers.BillPersistenceMapper;
 import com.example.digital_payment.billing.infrastructure.persistence.repository.BillJpaRepository;
+import com.example.digital_payment.shared.dto.BillInfo;
 
 @Component
-public class BillPersistenceAdapter
-    implements SaveBillPort, LoadBillPort, LoadBillByExternalRefPort, SyncBillPort {
+public class BillPersistenceAdapter implements SaveBillPort, LoadBillPort,
+    LoadBillByExternalRefPort, SyncBillPort, FindPayableBillPort {
     private final BillJpaRepository billJpaRepository;
     private final BillPersistenceMapper billPersistenceMapper;
 
@@ -58,5 +60,10 @@ public class BillPersistenceAdapter
         BillEntity entity = billJpaRepository.getReferenceById(bill.getId());
         billPersistenceMapper.syncBill(bill, entity);
         return billPersistenceMapper.toDomain(entity);
+    }
+
+    @Override
+    public Optional<BillInfo> findPayableById(UUID id) {
+        return billJpaRepository.findById(id).map(billPersistenceMapper::toInfo);
     }
 }

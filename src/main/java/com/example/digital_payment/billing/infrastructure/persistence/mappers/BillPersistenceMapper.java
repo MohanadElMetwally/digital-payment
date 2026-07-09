@@ -5,6 +5,7 @@ import org.springframework.stereotype.Component;
 import com.example.digital_payment.billing.domain.model.entities.Bills;
 import com.example.digital_payment.billing.domain.model.snapshots.BillSnapshot;
 import com.example.digital_payment.billing.infrastructure.persistence.entity.BillEntity;
+import com.example.digital_payment.shared.dto.BillInfo;
 
 @Component
 public class BillPersistenceMapper {
@@ -43,5 +44,9 @@ public class BillPersistenceMapper {
             entity.setLastSyncedAt(bill.getLastSyncedAt());
         }
         return entity;
+    }
+
+    public BillInfo toInfo(BillEntity entity) {
+        return new BillInfo(entity.getCurrency(), entity.getAmount());
     }
 }
