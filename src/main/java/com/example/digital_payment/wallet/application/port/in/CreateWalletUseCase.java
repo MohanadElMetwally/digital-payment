@@ -1,7 +1,7 @@
 package com.example.digital_payment.wallet.application.port.in;
 
-import com.example.digital_payment.shared.events.UserRegisteredEvent;
+import com.example.digital_payment.wallet.application.dto.CreateWalletCommand;
 
 public interface CreateWalletUseCase {
-    void handle(UserRegisteredEvent event);
+    void handle(CreateWalletCommand command);
 }

@@ -1,6 +1,6 @@
 package com.example.digital_payment.wallet.application.usecase;
 
-import com.example.digital_payment.shared.events.UserRegisteredEvent;
+import com.example.digital_payment.wallet.application.dto.CreateWalletCommand;
 import com.example.digital_payment.wallet.application.port.in.CreateWalletUseCase;
 import com.example.digital_payment.wallet.application.port.out.SaveWalletPort;
 import com.example.digital_payment.wallet.domain.model.entities.Wallets;
@@ -14,9 +14,10 @@ public class CreateWalletService implements CreateWalletUseCase {
         this.saveWalletPort = saveWalletPort;
     }
 
-    public void handle(UserRegisteredEvent event) {
+    @Override
+    public void handle(CreateWalletCommand command) {
         Wallets wallet = Wallets
-            .createForUser(new WalletCreationData(event.userId(), event.currency()));
+            .createForUser(new WalletCreationData(command.userId(), command.currency()));
         saveWalletPort.save(wallet);
     }
 }
