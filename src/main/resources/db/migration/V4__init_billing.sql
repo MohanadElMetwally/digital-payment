@@ -40,19 +40,3 @@ CREATE UNIQUE INDEX uq_bills_external_bill_id_biller_id
 
 CREATE INDEX idx_bills_user_id_biller_id_status
     ON bills (user_id, biller_id, status);
-
--- -----------------------------------------------------
--- Table: bill_payments
--- -----------------------------------------------------
-
-CREATE TABLE bill_payments (
-    id             UUID PRIMARY KEY    NOT NULL,
-    transaction_id UUID                NOT NULL,
-    bill_id        UUID                NOT NULL,
-    amount         DECIMAL(12, 2)      NOT NULL,
-    status         VARCHAR(255)        NOT NULL DEFAULT 'PENDING',
-    paid_at        TIMESTAMP,
-
-    CONSTRAINT fk_bill_payments_bill_id 
-        FOREIGN KEY (bill_id) REFERENCES bills(id)
-);
