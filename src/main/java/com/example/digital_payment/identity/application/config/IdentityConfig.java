@@ -15,7 +15,6 @@ import com.example.digital_payment.identity.application.port.in.UpdatePasswordUs
 import com.example.digital_payment.identity.application.port.in.UpdateUserUseCase;
 import com.example.digital_payment.identity.application.port.out.AuthPort;
 import com.example.digital_payment.identity.application.port.out.CurrentUserPort;
-import com.example.digital_payment.identity.application.port.out.EventPublisherPort;
 import com.example.digital_payment.identity.application.port.out.LoadUserPort;
 import com.example.digital_payment.identity.application.port.out.PasswordMatchPort;
 import com.example.digital_payment.identity.application.port.out.PhoneValidatorPort;
@@ -32,6 +31,7 @@ import com.example.digital_payment.identity.application.usecase.LoginService;
 import com.example.digital_payment.identity.application.usecase.RegisterUserService;
 import com.example.digital_payment.identity.application.usecase.UpdatePasswordService;
 import com.example.digital_payment.identity.application.usecase.UpdateUserService;
+import com.example.digital_payment.shared.application.port.out.EventPublisherPort;
 import com.example.digital_payment.shared.application.port.out.TransactionPort;
 
 @Configuration

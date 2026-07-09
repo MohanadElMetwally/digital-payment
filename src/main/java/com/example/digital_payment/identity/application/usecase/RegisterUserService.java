@@ -4,13 +4,13 @@ import com.example.digital_payment.identity.application.dto.RegisterUserCommand;
 import com.example.digital_payment.identity.application.dto.UserResult;
 import com.example.digital_payment.identity.application.mapper.UserMapper;
 import com.example.digital_payment.identity.application.port.in.RegisterUserUseCase;
-import com.example.digital_payment.identity.application.port.out.EventPublisherPort;
 import com.example.digital_payment.identity.application.port.out.PhoneValidatorPort;
 import com.example.digital_payment.identity.application.port.out.ResolveCountryPort;
 import com.example.digital_payment.identity.application.port.out.ResolveCurrencyPort;
 import com.example.digital_payment.identity.application.port.out.SaveUserPort;
 import com.example.digital_payment.identity.domain.model.entities.Users;
 import com.example.digital_payment.identity.domain.model.valueobjects.UserRegistrationData;
+import com.example.digital_payment.shared.application.port.out.EventPublisherPort;
 import com.example.digital_payment.shared.application.port.out.TransactionPort;
 import com.example.digital_payment.shared.events.UserRegisteredEvent;
 
@@ -24,10 +24,10 @@ public class RegisterUserService implements RegisterUserUseCase {
     private final TransactionPort transactionPort;
     private final PhoneValidatorPort phoneValidatorPort;
 
-    public RegisterUserService(SaveUserPort saveUserPort,
-        ResolveCountryPort resolveCountryPort, ResolveCurrencyPort resolveCurrencyPort,
-        EventPublisherPort eventPublisherPort, TransactionPort transactionPort,
-        PhoneValidatorPort phoneValidatorPort, UserMapper userMapper) {
+    public RegisterUserService(SaveUserPort saveUserPort, ResolveCountryPort resolveCountryPort,
+        ResolveCurrencyPort resolveCurrencyPort, EventPublisherPort eventPublisherPort,
+        TransactionPort transactionPort, PhoneValidatorPort phoneValidatorPort,
+        UserMapper userMapper) {
         this.saveUserPort = saveUserPort;
         this.userMapper = userMapper;
         this.resolveCountryPort = resolveCountryPort;
@@ -52,7 +52,9 @@ public class RegisterUserService implements RegisterUserUseCase {
 
             Users save = saveUserPort.save(user);
 
-            eventPublisherPort.publish(new UserRegisteredEvent(save.getId(), currency));
+            eventPublisherPort
+                .publish(new UserRegisteredEvent(save.getId(), currency, save.getEmail(),
+                    save.getProfile().getFirstName(), save.getProfile().getLastName()));
 
             return userMapper.toResult(save);
         });
