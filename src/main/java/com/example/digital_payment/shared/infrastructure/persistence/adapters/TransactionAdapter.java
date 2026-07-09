@@ -15,4 +15,10 @@ public class TransactionAdapter implements TransactionPort {
     public <T> T execute(Supplier<T> operation) {
         return operation.get();
     }
+
+    @Override
+    @Transactional
+    public void executeVoid(Runnable operation) {
+        operation.run();
+    }
 }

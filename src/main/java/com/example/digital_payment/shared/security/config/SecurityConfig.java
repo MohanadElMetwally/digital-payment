@@ -9,7 +9,6 @@ import org.springframework.security.config.annotation.authentication.configurati
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -17,6 +16,8 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import com.example.digital_payment.shared.security.filters.JWTFilter;
+
+import jakarta.servlet.DispatcherType;
 
 @Configuration
 @EnableWebSecurity
@@ -36,13 +37,14 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
-        return httpSecurity.csrf(AbstractHttpConfigurer::disable)
+        return httpSecurity.csrf(csrf -> csrf.disable())
             .sessionManagement(
                 session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-            .authorizeHttpRequests(req -> req
-                .requestMatchers("/api/v1/users/register", "/api/v1/auth/login", "/swagger-ui.html", "/api/v1/fake-providers/**",
-                    "/swagger-ui/**", "/v3/api-docs/**", "/docs", "/docs/**",
-                    "/swagger-resources/**", "/webjars/**")
+            .authorizeHttpRequests(req -> req.dispatcherTypeMatchers(DispatcherType.ASYNC)
+                .permitAll()
+                .requestMatchers("/api/v1/users/register", "/api/v1/auth/login", "/swagger-ui.html",
+                    "/api/v1/fake-providers/**", "/swagger-ui/**", "/v3/api-docs/**", "/docs",
+                    "/docs/**", "/swagger-resources/**", "/webjars/**", "/webhooks/**")
                 .permitAll()
                 .anyRequest()
                 .authenticated())

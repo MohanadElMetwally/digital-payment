@@ -3,6 +3,7 @@ package com.example.digital_payment.shared.exception;
 import java.time.LocalDateTime;
 import java.util.stream.Collectors;
 
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -11,7 +12,10 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import com.example.digital_payment.shared.dto.ErrorResponse;
 
+import lombok.extern.slf4j.Slf4j;
+
 @RestControllerAdvice
+@Slf4j
 public class GlobalExceptionHandler {
     @ExceptionHandler(ResourceNotFoundException.class)
     public ResponseEntity<ErrorResponse> handleNotFound(ResourceNotFoundException ex) {
@@ -45,8 +49,14 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponse> handleGeneric(Exception ex) {
-        return build(HttpStatus.INTERNAL_SERVER_ERROR,
-            "An unexpected error occurred: " + ex.getMessage());
+        log.error("An unexpected error occurred: ", ex);
+        return build(HttpStatus.INTERNAL_SERVER_ERROR, "An unexpected internal error occurred");
+    }
+
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    public ResponseEntity<ErrorResponse> handleDataIntegrity(DataIntegrityViolationException ex) {
+        log.warn("Resource conflict happened: {}", ex);
+        return build(HttpStatus.CONFLICT, "Resource conflict");
     }
 
     @ExceptionHandler(ServiceUnavailableException.class)
