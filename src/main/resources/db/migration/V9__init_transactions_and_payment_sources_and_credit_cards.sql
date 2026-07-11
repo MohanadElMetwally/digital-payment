@@ -92,4 +92,3 @@ CREATE TABLE payment_customers (
     customer_id VARCHAR           NOT NULL UNIQUE,
     created_at TIMESTAMP          NOT NULL
 );
-CREATE INDEX idx_payment_customers_user_id ON payment_customers (user_id);
