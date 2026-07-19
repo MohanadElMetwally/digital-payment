@@ -64,26 +64,6 @@ CREATE INDEX idx_credit_cards_user_id ON credit_cards (user_id);
 CREATE INDEX idx_credit_cards_status  ON credit_cards (status);
 
 -- -----------------------------------------------------
--- Table: bill_payments
--- -----------------------------------------------------
-
-CREATE TABLE bill_payments (
-    id             UUID PRIMARY KEY    NOT NULL,
-    transaction_id UUID                NOT NULL,
-    bill_id        UUID                NOT NULL,
-    amount         DECIMAL(12, 2)      NOT NULL,
-    status         VARCHAR(255)        NOT NULL DEFAULT 'PENDING',
-    paid_at        TIMESTAMP,
-
-    CONSTRAINT fk_bill_payments_bill_id 
-        FOREIGN KEY (bill_id) REFERENCES bills(id),
-    CONSTRAINT fk_bill_payments_transaction_id 
-        FOREIGN KEY (transaction_id)
-        REFERENCES transactions (id)
-        ON DELETE CASCADE
-);
-
--- -----------------------------------------------------
 -- Table: payment_customers
 -- -----------------------------------------------------
 
