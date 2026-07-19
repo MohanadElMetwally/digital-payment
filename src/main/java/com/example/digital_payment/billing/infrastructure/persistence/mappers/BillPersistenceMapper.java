@@ -49,4 +49,8 @@ public class BillPersistenceMapper {
     public BillInfo toInfo(BillEntity entity) {
         return new BillInfo(entity.getCurrency(), entity.getAmount());
     }
+
+    public void update(Bills bill, BillEntity entity) {
+        entity.setStatus(bill.getStatus());
+    }
 }

@@ -11,6 +11,7 @@ import com.example.digital_payment.billing.application.port.out.LoadBillByExtern
 import com.example.digital_payment.billing.application.port.out.LoadBillPort;
 import com.example.digital_payment.billing.application.port.out.SaveBillPort;
 import com.example.digital_payment.billing.application.port.out.SyncBillPort;
+import com.example.digital_payment.billing.application.port.out.UpdateBillPort;
 import com.example.digital_payment.billing.domain.model.entities.Bills;
 import com.example.digital_payment.billing.infrastructure.persistence.entity.BillEntity;
 import com.example.digital_payment.billing.infrastructure.persistence.mappers.BillPersistenceMapper;
@@ -19,7 +20,7 @@ import com.example.digital_payment.shared.dto.BillInfo;
 
 @Component
 public class BillPersistenceAdapter implements SaveBillPort, LoadBillPort,
-    LoadBillByExternalRefPort, SyncBillPort, FindPayableBillPort {
+    LoadBillByExternalRefPort, SyncBillPort, FindPayableBillPort, UpdateBillPort {
     private final BillJpaRepository billJpaRepository;
     private final BillPersistenceMapper billPersistenceMapper;
 
@@ -65,5 +66,11 @@ public class BillPersistenceAdapter implements SaveBillPort, LoadBillPort,
     @Override
     public Optional<BillInfo> findPayableById(UUID id) {
         return billJpaRepository.findById(id).map(billPersistenceMapper::toInfo);
+    }
+
+    @Override
+    public void update(Bills bill) {
+        BillEntity entity = billJpaRepository.getReferenceById(bill.getId());
+        billPersistenceMapper.update(bill, entity);
     }
 }

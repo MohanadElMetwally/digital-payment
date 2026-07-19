@@ -69,7 +69,7 @@ public class Bills {
     public boolean syncFromProvider(BigDecimal latestAmount) {
         if (this.status == BillStatus.PENDING || this.status == BillStatus.PAID) {
             throw new IllegalStateException(
-                "Cannot sync bill %s — it is already in status %s".formatted(id, status));
+                "Cannot sync bill, it is already in status %s".formatted(status));
         }
         boolean amountChanged = this.amount.compareTo(latestAmount) != 0;
         this.amount = latestAmount;
@@ -77,20 +77,25 @@ public class Bills {
         return amountChanged;
     }
 
-    public void startPayment() {
+    public void markPending() {
         if (this.status != BillStatus.UNPAID) {
-            throw new IllegalStateException(
-                "Cannot start payment for bill %s — status is %s".formatted(id, status));
+            return;
         }
         this.status = BillStatus.PENDING;
     }
 
-    public void endPayment() {
+    public void markPaid() {
         if (this.status != BillStatus.PENDING) {
-            throw new IllegalStateException(
-                "Cannot end payment for bill %s — status is %s".formatted(id, status));
+            return;
         }
         this.status = BillStatus.PAID;
+    }
+
+    public void markUnpaid() {
+        if (this.status != BillStatus.PENDING) {
+            return;
+        }
+        this.status = BillStatus.UNPAID;
     }
 
     public boolean isResyncable() {
