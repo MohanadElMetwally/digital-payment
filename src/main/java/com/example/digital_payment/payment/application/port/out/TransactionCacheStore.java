@@ -5,7 +5,7 @@ import java.util.UUID;
 
 import com.example.digital_payment.payment.domain.model.entities.Transactions;
 
-public interface IdempotencyStore {
+public interface TransactionCacheStore {
     Optional<Transactions> get(UUID userId, UUID idempotencyKey);
 
     void save(UUID userId, UUID idempotencyKey, Transactions transaction);

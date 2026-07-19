@@ -32,6 +32,7 @@ public class StripePaymentAdapter implements PaymentGatewayPort {
                 .setPaymentMethod(command.paymentMethodToken())
                 .setConfirm(true)
                 .putMetadata("transactionId", command.transactionId().toString())
+                .putMetadata("referenceId", command.referenceId().toString())
                 .setAutomaticPaymentMethods(
                     PaymentIntentCreateParams.AutomaticPaymentMethods.builder()
                         .setEnabled(true)

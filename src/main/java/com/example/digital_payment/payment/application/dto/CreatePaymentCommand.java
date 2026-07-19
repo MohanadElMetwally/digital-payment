@@ -4,6 +4,6 @@ import java.math.BigDecimal;
 import java.util.UUID;
 
 public record CreatePaymentCommand(UUID transactionId, String customerId, BigDecimal amount,
-    String currency, String paymentMethodToken, UUID idempotencyKey) {
+    String currency, String paymentMethodToken, UUID idempotencyKey, UUID referenceId) {
 
 }

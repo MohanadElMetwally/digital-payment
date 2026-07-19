@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.digital_payment.payment.api.dto.request.PaymentRequest;
+import com.example.digital_payment.payment.api.dto.request.WalletTopUpRequest;
 import com.example.digital_payment.payment.api.dto.response.PaymentResponse;
 import com.example.digital_payment.payment.api.facade.PaymentFacade;
 
@@ -30,6 +31,14 @@ public class PaymentController {
         @RequestHeader("Idempotency-Key") UUID idempotencyKey,
         @Valid @RequestBody PaymentRequest paymentRequest) {
         return ResponseEntity.status(HttpStatus.ACCEPTED)
-            .body(paymentFacade.initiatePayment(paymentRequest, idempotencyKey));
+            .body(paymentFacade.initiateBillPayment(paymentRequest, idempotencyKey));
+    }
+
+    @PostMapping("top-up")
+    public ResponseEntity<PaymentResponse> initiateWalletTopUp(
+        @RequestHeader("Idempotency-Key") UUID idempotencyKey,
+        @Valid @RequestBody WalletTopUpRequest request) {
+        return ResponseEntity.status(HttpStatus.ACCEPTED)
+            .body(paymentFacade.initiateWalletTopUp(request, idempotencyKey));
     }
 }

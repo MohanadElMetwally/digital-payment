@@ -63,7 +63,7 @@ public class Transactions {
         return tx;
     }
 
-    public void markCreated(String externalReference){
+    public void markCreated(String externalReference) {
         if (status != TransactionStatus.PENDING) {
             return;
         }
@@ -87,6 +87,7 @@ public class Transactions {
 
         this.status = TransactionStatus.FAILED;
         this.failureReason = reason;
+        this.completedAt = LocalDateTime.now();
     }
 
     private static String generateReferenceNumber() {

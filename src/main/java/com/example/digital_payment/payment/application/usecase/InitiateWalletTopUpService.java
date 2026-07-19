@@ -9,41 +9,37 @@ import com.example.digital_payment.payment.application.dto.PaymentInitiationCrea
 import com.example.digital_payment.payment.application.dto.PaymentInitiationFailedEvent;
 import com.example.digital_payment.payment.application.dto.PaymentInitiationResult;
 import com.example.digital_payment.payment.application.exception.PaymentProviderException;
-import com.example.digital_payment.payment.application.port.in.InitiatePaymentUseCase;
+import com.example.digital_payment.payment.application.port.in.InitiateWalletTopUpUseCase;
 import com.example.digital_payment.payment.application.port.out.LoadCreditCardPort;
 import com.example.digital_payment.payment.application.port.out.LoadPaymentCustomerPort;
 import com.example.digital_payment.payment.application.port.out.PaymentGatewayPort;
-import com.example.digital_payment.payment.application.port.out.SaveBillPaymentPort;
 import com.example.digital_payment.payment.application.port.out.SaveTransactionPort;
-import com.example.digital_payment.payment.domain.enums.TransactionType;
 import com.example.digital_payment.payment.domain.exceptions.CardAccessDeniedException;
 import com.example.digital_payment.payment.domain.exceptions.CardNotFoundException;
 import com.example.digital_payment.payment.domain.exceptions.PaymentCustomerNotFoundException;
-import com.example.digital_payment.payment.domain.model.entities.BillPayments;
 import com.example.digital_payment.payment.domain.model.entities.CreditCards;
 import com.example.digital_payment.payment.domain.model.entities.PaymentCustomers;
 import com.example.digital_payment.payment.domain.model.entities.Transactions;
-import com.example.digital_payment.payment.domain.model.valueobjects.BillPaymentCreationData;
 import com.example.digital_payment.payment.domain.model.valueobjects.TransactionCreationData;
 import com.example.digital_payment.shared.application.port.out.EventPublisherPort;
 import com.example.digital_payment.shared.application.port.out.TransactionPort;
+import com.example.digital_payment.shared.events.InitiateWalletCreditTransactionEvent;
+import com.example.digital_payment.shared.events.WalletTransactionFailedEvent;
 
-public class InitiatePaymentService implements InitiatePaymentUseCase {
+public class InitiateWalletTopUpService implements InitiateWalletTopUpUseCase {
     private final TransactionPort transactionPort;
     private final SaveTransactionPort saveTransactionPort;
-    private final SaveBillPaymentPort saveBillPaymentPort;
     private final LoadCreditCardPort loadCreditCardPort;
     private final PaymentGatewayPort paymentGatewayPort;
     private final EventPublisherPort eventPublisher;
     private final LoadPaymentCustomerPort loadPaymentCustomerPort;
 
-    public InitiatePaymentService(TransactionPort transactionPort,
-        SaveTransactionPort saveTransactionPort, SaveBillPaymentPort saveBillPaymentPort,
-        LoadCreditCardPort loadCreditCardPort, LoadPaymentCustomerPort loadPaymentCustomerPort,
-        PaymentGatewayPort paymentGatewayPort, EventPublisherPort eventPublisher) {
+    public InitiateWalletTopUpService(TransactionPort transactionPort,
+        SaveTransactionPort saveTransactionPort, LoadCreditCardPort loadCreditCardPort,
+        LoadPaymentCustomerPort loadPaymentCustomerPort, PaymentGatewayPort paymentGatewayPort,
+        EventPublisherPort eventPublisher) {
         this.transactionPort = transactionPort;
         this.saveTransactionPort = saveTransactionPort;
-        this.saveBillPaymentPort = saveBillPaymentPort;
         this.loadCreditCardPort = loadCreditCardPort;
         this.loadPaymentCustomerPort = loadPaymentCustomerPort;
         this.paymentGatewayPort = paymentGatewayPort;
@@ -51,19 +47,38 @@ public class InitiatePaymentService implements InitiatePaymentUseCase {
     }
 
     @Override
-    public Transactions initiatePayment(InitiatePaymentCommand command) {
-        Transactions tx = createAndPersistTransaction(command);
+    public Transactions initiateWalletTopUp(InitiatePaymentCommand command) {
+        Transactions tx = createTransaction(command);
+        return chargeCard(command, tx);
+    }
+
+    private Transactions createTransaction(InitiatePaymentCommand command) {
+        TransactionCreationData data = new TransactionCreationData(command.userId(),
+            command.idempotencyKey(), command.type(), command.amount(), command.currency(), null);
+        Transactions tx = Transactions.create(data);
+
+        transactionPort.executeVoid(() -> {
+            saveTransactionPort.save(tx);
+            eventPublisher.publish(new InitiateWalletCreditTransactionEvent(command.referenceId(),
+                tx.getId(), command.amount()));
+        });
+        return tx;
+    }
+
+    private Transactions chargeCard(InitiatePaymentCommand command, Transactions tx) {
         CreditCards card = getAuthorizedCard(command.userId(), command.creditCardId());
         String customerId = getPaymentCustomerId(command.userId());
 
         CreatePaymentCommand paymentCommand = new CreatePaymentCommand(tx.getId(), customerId,
             command.amount(), command.currency(), card.getPaymentMethodId(),
-            command.idempotencyKey());
+            command.idempotencyKey(), command.referenceId());
+
         PaymentInitiationResult result;
         try {
             result = paymentGatewayPort.createPayment(paymentCommand);
         } catch (PaymentProviderException ex) {
             transactionPort.executeVoid(() -> {
+                eventPublisher.publish(new WalletTransactionFailedEvent(tx.getId()));
                 eventPublisher
                     .publish(new PaymentInitiationFailedEvent(tx.getId(), ex.getMessage()));
             });
@@ -73,24 +88,6 @@ public class InitiatePaymentService implements InitiatePaymentUseCase {
         transactionPort.executeVoid(() -> {
             eventPublisher
                 .publish(new PaymentInitiationCreatedEvent(tx.getId(), result.externalReference()));
-        });
-
-        return tx;
-    }
-
-    private Transactions createAndPersistTransaction(InitiatePaymentCommand command) {
-        TransactionCreationData transactionCreationData = new TransactionCreationData(
-            command.userId(), command.idempotencyKey(), TransactionType.BILL_PAYMENT,
-            command.amount(), command.currency(), null);
-        Transactions tx = Transactions.create(transactionCreationData);
-
-        BillPaymentCreationData billPaymentCreationData = new BillPaymentCreationData(tx.getId(),
-            command.billId(), command.amount());
-        BillPayments billPayment = BillPayments.create(billPaymentCreationData);
-
-        transactionPort.executeVoid(() -> {
-            saveTransactionPort.save(tx);
-            saveBillPaymentPort.save(billPayment);
         });
         return tx;
     }
