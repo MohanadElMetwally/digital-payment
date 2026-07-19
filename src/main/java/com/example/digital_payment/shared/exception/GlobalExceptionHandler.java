@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.context.request.async.AsyncRequestNotUsableException;
 
 import com.example.digital_payment.shared.dto.ErrorResponse;
 
@@ -62,6 +63,11 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(ServiceUnavailableException.class)
     public ResponseEntity<ErrorResponse> handleServiceUnavailable(ServiceUnavailableException ex) {
         return build(HttpStatus.SERVICE_UNAVAILABLE, ex.getMessage());
+    }
+
+    @ExceptionHandler(AsyncRequestNotUsableException.class)
+    public void handleAsyncRequestNotUsable(AsyncRequestNotUsableException ex) {
+        log.debug("Async request no longer usable (client disconnected): {}", ex.getMessage());
     }
 
     private ResponseEntity<ErrorResponse> build(HttpStatus status, String message) {

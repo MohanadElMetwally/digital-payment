@@ -12,14 +12,28 @@ import org.springframework.data.redis.serializer.RedisSerializationContext;
 import org.springframework.data.redis.serializer.RedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 
+import tools.jackson.databind.DefaultTyping;
 import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.jsontype.BasicPolymorphicTypeValidator;
+import tools.jackson.databind.jsontype.PolymorphicTypeValidator;
 
 @Configuration(proxyBeanMethods = false)
 @EnableCaching
 public class RedisConfig {
     @Bean
     public RedisSerializer<Object> redisValueSerializer(ObjectMapper objectMapper) {
-        return new GenericJacksonJsonRedisSerializer(objectMapper);
+        PolymorphicTypeValidator typeValidator = BasicPolymorphicTypeValidator.builder()
+            .allowIfSubType("com.example.digital_payment")
+            .allowIfSubType("java.math")
+            .allowIfSubType("java.time")
+            .allowIfSubType("java.util")
+            .build();
+
+        ObjectMapper redisMapper = objectMapper.rebuild()
+            .activateDefaultTyping(typeValidator, DefaultTyping.NON_FINAL)
+            .build();
+
+        return new GenericJacksonJsonRedisSerializer(redisMapper);
     }
 
     @Bean

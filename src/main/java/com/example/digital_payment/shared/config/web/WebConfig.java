@@ -11,6 +11,6 @@ public class WebConfig implements WebMvcConfigurer {
     public void configurePathMatch(PathMatchConfigurer configurer) {
         configurer.addPathPrefix("/api/v1", c -> c.isAnnotationPresent(RestController.class)
             && !c.getPackageName().startsWith("org.springdoc")
-            && !c.getPackageName().startsWith("com.example.digital_payment.payment.api.webhook"));
+            && !c.getPackageName().startsWith("com.example.digital_payment.payment.infrastructure.stripe"));
     }
 }

@@ -1,5 +1,6 @@
 package com.example.digital_payment.shared.config.openapi;
 
+import org.springdoc.core.customizers.OpenApiCustomizer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -20,5 +21,12 @@ public class OpenApiConfig {
                     .scheme("bearer")
                     .bearerFormat("JWT")))
             .addSecurityItem(new SecurityRequirement().addList(BEARER_SCHEME));
+    }
+
+    @Bean
+    public OpenApiCustomizer hideEndpoints() {
+        return openApi -> openApi.getPaths()
+            .entrySet()
+            .removeIf(entry -> entry.getKey().startsWith("/webhooks"));
     }
 }
