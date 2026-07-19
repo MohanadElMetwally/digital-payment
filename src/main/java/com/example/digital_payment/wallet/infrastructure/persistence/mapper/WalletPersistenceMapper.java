@@ -12,7 +12,6 @@ public class WalletPersistenceMapper {
         WalletEntity entity = new WalletEntity();
         entity.setId(wallet.getId());
         entity.setUserId(wallet.getUserId());
-        entity.setStatus(wallet.getStatus());
         entity.setCurrency(wallet.getCurrency());
         entity.setBalance(wallet.getBalance());
         entity.setCreatedAt(wallet.getCreatedAt());
@@ -21,7 +20,11 @@ public class WalletPersistenceMapper {
 
     public Wallets toDomain(WalletEntity entity) {
         WalletSnapshot snapshot = new WalletSnapshot(entity.getId(), entity.getUserId(),
-            entity.getStatus(), entity.getBalance(), entity.getCurrency(), entity.getCreatedAt());
+            entity.getBalance(), entity.getCurrency(), entity.getCreatedAt());
         return Wallets.reconstitute(snapshot);
+    }
+
+    public void update(Wallets wallet, WalletEntity entity) {
+        entity.setBalance(wallet.getBalance());
     }
 }

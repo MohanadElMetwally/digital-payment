@@ -8,7 +8,7 @@ import com.example.digital_payment.wallet.application.dto.WalletResult;
 @Component
 public class WalletApiMapper {
     public WalletResponse toResponse(WalletResult result) {
-        return new WalletResponse(result.id(), result.userId(), result.status(), result.balance(),
+        return new WalletResponse(result.id(), result.userId(),  result.balance(),
             result.currency(), result.createdAt().toString());
     }
 }
