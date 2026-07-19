@@ -20,7 +20,6 @@ public class SseHeartbeatScheduler {
                 emitter.send(SseEmitter.event().comment("ping"));
             } catch (Exception e) {
                 registry.remove(userId);
-                emitter.completeWithError(e);
             }
         });
     }

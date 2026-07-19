@@ -1,6 +1,7 @@
 package com.example.digital_payment.notification.infrastructure.event;
 
 import org.springframework.context.event.EventListener;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
 import com.example.digital_payment.notification.application.port.in.SendSseNotificationUseCase;
@@ -14,6 +15,7 @@ public class SseNotificationEventListener {
         this.sendSseNotificationUseCase = sendSseNotificationUseCase;
     }
 
+    @Async("sseTaskExecutor")
     @EventListener
     public void on(SseNotificationEvent<?> event) {
         sendSseNotificationUseCase.handle(event.userId(), event.message());
