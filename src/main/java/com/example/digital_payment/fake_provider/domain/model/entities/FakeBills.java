@@ -50,6 +50,10 @@ public class FakeBills {
         return fakeBill;
     }
 
+    public void markPaid() {
+        this.status = ProviderBillStatus.PAID;
+    }
+
     public UUID getId() {
         return id;
     }

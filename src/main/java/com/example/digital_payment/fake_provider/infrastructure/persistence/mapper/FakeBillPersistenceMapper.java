@@ -15,4 +15,8 @@ public class FakeBillPersistenceMapper {
             entity.getBillingPeriodEnd(), entity.getDueDate(), entity.getCreatedAt());
         return FakeBills.reconstitute(snapshot);
     }
+
+    public void update(FakeBills fakeBill, FakeBillEntity entity){
+        entity.setStatus(fakeBill.getStatus());
+    }
 }
