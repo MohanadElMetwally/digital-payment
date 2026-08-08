@@ -1,0 +1,5 @@
+package com.example.digital_payment.identity.application.dto;
+
+public record UpdateUserCommand(String email, String phone) {
+
+}
