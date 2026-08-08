@@ -6,11 +6,11 @@ import org.springframework.stereotype.Component;
 import com.example.digital_payment.shared.application.port.in.FindWalletInfoUseCase;
 import com.example.digital_payment.shared.application.port.out.TransactionPort;
 import com.example.digital_payment.wallet.application.mapper.WalletMapper;
-import com.example.digital_payment.wallet.application.port.in.CreateWalletTransactionUseCase;
 import com.example.digital_payment.wallet.application.port.in.CreateWalletUseCase;
 import com.example.digital_payment.wallet.application.port.in.CreditWalletUseCase;
 import com.example.digital_payment.wallet.application.port.in.DebitWalletUseCase;
 import com.example.digital_payment.wallet.application.port.in.GetWalletUseCase;
+import com.example.digital_payment.wallet.application.port.in.InitiateWalletTransactionUseCase;
 import com.example.digital_payment.wallet.application.port.in.MarkWalletTransactionFailedUseCase;
 import com.example.digital_payment.wallet.application.port.out.LoadWalletPort;
 import com.example.digital_payment.wallet.application.port.out.LoadWalletTransactionByTransactionId;
@@ -19,11 +19,11 @@ import com.example.digital_payment.wallet.application.port.out.SaveWalletTransac
 import com.example.digital_payment.wallet.application.port.out.UpdateWalletPort;
 import com.example.digital_payment.wallet.application.port.out.UpdateWalletTransactionPort;
 import com.example.digital_payment.wallet.application.usecase.CreateWalletService;
-import com.example.digital_payment.wallet.application.usecase.CreateWalletTransactionService;
 import com.example.digital_payment.wallet.application.usecase.CreditWalletService;
 import com.example.digital_payment.wallet.application.usecase.DebitWalletService;
 import com.example.digital_payment.wallet.application.usecase.FindWalletInfoService;
 import com.example.digital_payment.wallet.application.usecase.GetWalletService;
+import com.example.digital_payment.wallet.application.usecase.InitiateWalletTransactionService;
 import com.example.digital_payment.wallet.application.usecase.MarkWalletTransactionFailedService;
 
 @Component
@@ -68,10 +68,10 @@ public class WalletConfig {
     }
 
     @Bean
-    public CreateWalletTransactionUseCase createWalletTransactionUseCase(
+    public InitiateWalletTransactionUseCase initiateWalletTransactionUseCase(
         TransactionPort transactionPort, LoadWalletPort loadWalletPort,
         SaveWalletTransactionPort saveWalletTransactionPort) {
-        return new CreateWalletTransactionService(transactionPort, loadWalletPort,
+        return new InitiateWalletTransactionService(transactionPort, loadWalletPort,
             saveWalletTransactionPort);
     }
 

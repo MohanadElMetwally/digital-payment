@@ -7,6 +7,7 @@ import com.example.digital_payment.wallet.application.port.out.LoadWalletPort;
 import com.example.digital_payment.wallet.application.port.out.LoadWalletTransactionByTransactionId;
 import com.example.digital_payment.wallet.application.port.out.UpdateWalletPort;
 import com.example.digital_payment.wallet.application.port.out.UpdateWalletTransactionPort;
+import com.example.digital_payment.wallet.domain.enums.WalletTransactionStatus;
 import com.example.digital_payment.wallet.domain.exceptions.WalletAccessDenied;
 import com.example.digital_payment.wallet.domain.exceptions.WalletNotFoundException;
 import com.example.digital_payment.wallet.domain.exceptions.WalletTransactionNotFoundException;
@@ -42,6 +43,10 @@ public class CreditWalletService implements CreditWalletUseCase {
             WalletTransactions wtx = loadWalletTransactionPort
                 .findByTransactionId(command.transactionId())
                 .orElseThrow(() -> new WalletTransactionNotFoundException());
+
+            if (wtx.getStatus() != WalletTransactionStatus.PENDING)
+                return;
+
             wallet.credit(command.amount());
             wtx.markSucceeded();
             updateWalletPort.update(wallet);
