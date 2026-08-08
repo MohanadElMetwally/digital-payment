@@ -1,4 +1,4 @@
-package com.example.digital_payment.shared.dto;
+package com.example.digital_payment.shared.events;
 
 import java.util.UUID;
 

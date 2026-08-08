@@ -2,6 +2,6 @@ package com.example.digital_payment.shared.dto;
 
 import java.math.BigDecimal;
 
-public record BillInfo(String currency, BigDecimal amount) {
+public record BillInfo(String currency, BigDecimal amount, String customerNumber) {
 
 }
