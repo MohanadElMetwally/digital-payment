@@ -9,12 +9,11 @@ import org.springframework.web.client.RestTemplate;
 import com.example.digital_payment.billing.application.mapper.BillMapper;
 import com.example.digital_payment.billing.application.mapper.BillerMapper;
 import com.example.digital_payment.billing.application.port.in.BillFetchUseCase;
-import com.example.digital_payment.billing.application.port.in.CreateBillPaymentUseCase;
 import com.example.digital_payment.billing.application.port.in.GetAllBillersUseCase;
 import com.example.digital_payment.billing.application.port.in.GetBillerUseCase;
+import com.example.digital_payment.billing.application.port.in.InitiateBillPaymentUseCase;
 import com.example.digital_payment.billing.application.port.in.MarkBillPaymentFailedUseCase;
 import com.example.digital_payment.billing.application.port.in.MarkBillPaymentSucceededUseCase;
-import com.example.digital_payment.billing.application.port.out.FindPayableBillPort;
 import com.example.digital_payment.billing.application.port.out.LoadAllBillersPort;
 import com.example.digital_payment.billing.application.port.out.LoadBillByExternalRefPort;
 import com.example.digital_payment.billing.application.port.out.LoadBillPaymentByTransactionIdPort;
@@ -27,14 +26,14 @@ import com.example.digital_payment.billing.application.port.out.SyncBillPort;
 import com.example.digital_payment.billing.application.port.out.UpdateBillPaymentPort;
 import com.example.digital_payment.billing.application.port.out.UpdateBillPort;
 import com.example.digital_payment.billing.application.usecase.BillFetchService;
-import com.example.digital_payment.billing.application.usecase.CreateBillPaymentService;
-import com.example.digital_payment.billing.application.usecase.FindPayableBillService;
+import com.example.digital_payment.billing.application.usecase.FindBillInfoService;
 import com.example.digital_payment.billing.application.usecase.GetAllBillersService;
 import com.example.digital_payment.billing.application.usecase.GetBillerService;
+import com.example.digital_payment.billing.application.usecase.InitiateBillPaymentService;
 import com.example.digital_payment.billing.application.usecase.MarkBillPaymentFailedService;
 import com.example.digital_payment.billing.application.usecase.MarkBillPaymentSucceededService;
 import com.example.digital_payment.billing.infrastructure.persistence.mappers.ProviderBillMapper;
-import com.example.digital_payment.shared.application.port.in.FindPayableBillUseCase;
+import com.example.digital_payment.shared.application.port.in.FindBillInfoUseCase;
 import com.example.digital_payment.shared.application.port.out.TransactionPort;
 
 @Configuration
@@ -81,15 +80,15 @@ public class BillingConfig {
     }
 
     @Bean
-    public FindPayableBillUseCase checkBillExistUseCase(FindPayableBillPort findPayableBillPort) {
-        return new FindPayableBillService(findPayableBillPort);
+    public FindBillInfoUseCase checkBillExistUseCase(LoadBillPort loadBillPort) {
+        return new FindBillInfoService(loadBillPort);
     }
 
     @Bean
-    public CreateBillPaymentUseCase createBillPaymentUseCase(TransactionPort transactionPort,
+    public InitiateBillPaymentUseCase initiateBillPaymentUseCase(TransactionPort transactionPort,
         LoadBillPort loadBillPort, UpdateBillPort updateBillPort,
         SaveBillPaymentPort saveBillPaymentPort) {
-        return new CreateBillPaymentService(transactionPort, loadBillPort, updateBillPort,
+        return new InitiateBillPaymentService(transactionPort, loadBillPort, updateBillPort,
             saveBillPaymentPort);
     }
 

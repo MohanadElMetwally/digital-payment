@@ -6,7 +6,6 @@ import java.util.UUID;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.example.digital_payment.billing.application.port.out.FindPayableBillPort;
 import com.example.digital_payment.billing.application.port.out.LoadBillByExternalRefPort;
 import com.example.digital_payment.billing.application.port.out.LoadBillPort;
 import com.example.digital_payment.billing.application.port.out.SaveBillPort;
@@ -16,11 +15,10 @@ import com.example.digital_payment.billing.domain.model.entities.Bills;
 import com.example.digital_payment.billing.infrastructure.persistence.entity.BillEntity;
 import com.example.digital_payment.billing.infrastructure.persistence.mappers.BillPersistenceMapper;
 import com.example.digital_payment.billing.infrastructure.persistence.repository.BillJpaRepository;
-import com.example.digital_payment.shared.dto.BillInfo;
 
 @Component
-public class BillPersistenceAdapter implements SaveBillPort, LoadBillPort,
-    LoadBillByExternalRefPort, SyncBillPort, FindPayableBillPort, UpdateBillPort {
+public class BillPersistenceAdapter
+    implements SaveBillPort, LoadBillPort, LoadBillByExternalRefPort, SyncBillPort, UpdateBillPort {
     private final BillJpaRepository billJpaRepository;
     private final BillPersistenceMapper billPersistenceMapper;
 
@@ -39,17 +37,20 @@ public class BillPersistenceAdapter implements SaveBillPort, LoadBillPort,
     }
 
     @Override
+    @Transactional
     public Optional<Bills> findById(UUID id) {
         return billJpaRepository.findById(id).map(billPersistenceMapper::toDomain);
     }
 
     @Override
+    @Transactional
     public Optional<Bills> findByExternalBillId(String externalBillId) {
         return billJpaRepository.findByExternalBillId(externalBillId)
             .map(billPersistenceMapper::toDomain);
     }
 
     @Override
+    @Transactional
     public Optional<Bills> findByExternalBillIdAndBillerId(String externalBillId, UUID billerId) {
         return billJpaRepository.findByExternalBillIdAndBillerId(externalBillId, billerId)
             .map(billPersistenceMapper::toDomain);
@@ -64,11 +65,7 @@ public class BillPersistenceAdapter implements SaveBillPort, LoadBillPort,
     }
 
     @Override
-    public Optional<BillInfo> findPayableById(UUID id) {
-        return billJpaRepository.findById(id).map(billPersistenceMapper::toInfo);
-    }
-
-    @Override
+    @Transactional
     public void update(Bills bill) {
         BillEntity entity = billJpaRepository.getReferenceById(bill.getId());
         billPersistenceMapper.update(bill, entity);

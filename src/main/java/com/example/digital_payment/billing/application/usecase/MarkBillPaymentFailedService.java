@@ -33,7 +33,7 @@ public class MarkBillPaymentFailedService implements MarkBillPaymentFailedUseCas
     public void mark(ProcessBillPaymentCommand command) {
         transactionPort.executeVoid(() -> {
             Bills bill = loadBillPort.findById(command.billId())
-                .orElseThrow(() -> new BillNotFoundException("Bill not found"));
+                .orElseThrow(() -> new BillNotFoundException());
             BillPayments billPayment = loadBillPaymentPort
                 .findByTransactionId(command.transactionId())
                 .orElseThrow(() -> new BillPaymentNotFoundException("BillPayment not found"));

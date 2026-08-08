@@ -31,10 +31,10 @@ public class MarkBillPaymentSucceededService implements MarkBillPaymentSucceeded
     }
 
     @Override
-    public void mark(ProcessBillPaymentCommand command) {
-        transactionPort.executeVoid(() -> {
+    public Bills mark(ProcessBillPaymentCommand command) {
+        return transactionPort.execute(() -> {
             Bills bill = loadBillPort.findById(command.billId())
-                .orElseThrow(() -> new BillNotFoundException("Bill not found"));
+                .orElseThrow(() -> new BillNotFoundException());
             BillPayments billPayment = loadBillPaymentPort
                 .findByTransactionId(command.transactionId())
                 .orElseThrow(() -> new BillPaymentNotFoundException("BillPayment not found"));
@@ -42,6 +42,7 @@ public class MarkBillPaymentSucceededService implements MarkBillPaymentSucceeded
             billPayment.markSucceeded();
             updateBillPort.update(bill);
             updateBillPaymentPort.update(billPayment);
+            return bill;
         });
     }
 
