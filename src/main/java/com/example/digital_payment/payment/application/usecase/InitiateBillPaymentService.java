@@ -28,8 +28,8 @@ import com.example.digital_payment.payment.domain.model.valueobjects.Transaction
 import com.example.digital_payment.shared.application.port.in.FindWalletInfoUseCase;
 import com.example.digital_payment.shared.application.port.out.EventPublisherPort;
 import com.example.digital_payment.shared.application.port.out.TransactionPort;
-import com.example.digital_payment.shared.dto.DebitWalletEvent;
 import com.example.digital_payment.shared.dto.WalletInfo;
+import com.example.digital_payment.shared.events.DebitWalletEvent;
 import com.example.digital_payment.shared.events.InitiateBillPaymentEvent;
 import com.example.digital_payment.shared.events.InitiateBillPaymentFailedEvent;
 import com.example.digital_payment.shared.events.InitiateWalletDebitTransactionEvent;
@@ -103,8 +103,7 @@ public class InitiateBillPaymentService implements InitiateBillPaymentUseCase {
                 eventPublisher.publish(new InitiateWalletDebitTransactionEvent(command.walletId(),
                     tx.getId(), command.amount()));
             }
-            eventPublisher.publish(
-                new InitiateBillPaymentEvent(command.referenceId(), tx.getId()));
+            eventPublisher.publish(new InitiateBillPaymentEvent(command.referenceId(), tx.getId()));
         });
         return tx;
     }

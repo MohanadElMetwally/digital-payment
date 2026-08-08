@@ -50,7 +50,7 @@ public class StripePaymentAdapter implements PaymentGatewayPort {
             return new PaymentInitiationResult(command.transactionId(), paymentIntent.getId());
         } catch (StripeException ex) {
             log.error("Payment Creation failed: {}", ex);
-            throw new PaymentProviderException("Failed to create payment", ex);
+            throw new PaymentProviderException(ex.getMessage(), ex);
         }
     }
 

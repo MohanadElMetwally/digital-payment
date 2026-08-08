@@ -2,6 +2,7 @@ package com.example.digital_payment.payment.infrastructure.stripe;
 
 import org.springframework.stereotype.Component;
 
+import com.example.digital_payment.payment.application.exception.PaymentProviderException;
 import com.example.digital_payment.payment.application.port.out.RegisterCardGateway;
 import com.stripe.exception.StripeException;
 import com.stripe.model.PaymentMethod;
@@ -21,9 +22,9 @@ public class StripeRegisterCard implements RegisterCardGateway {
                 .setCustomer(customerId)
                 .build();
             paymentMethod.attach(params);
-        } catch (StripeException e) {
-            log.error("Failed to register credit card: {}", e);
-            
+        } catch (StripeException ex) {
+            log.error("Failed to register credit card: {}", ex);
+            throw new PaymentProviderException(ex.getMessage(), ex);
         }
     }
 

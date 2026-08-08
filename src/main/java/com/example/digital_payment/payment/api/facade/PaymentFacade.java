@@ -17,7 +17,7 @@ import com.example.digital_payment.payment.application.port.out.TransactionCache
 import com.example.digital_payment.payment.domain.enums.TransactionType;
 import com.example.digital_payment.payment.domain.exceptions.InvalidPaymentRequestException;
 import com.example.digital_payment.payment.domain.model.entities.Transactions;
-import com.example.digital_payment.shared.application.port.in.FindPayableBillUseCase;
+import com.example.digital_payment.shared.application.port.in.FindBillInfoUseCase;
 import com.example.digital_payment.shared.application.port.in.FindWalletInfoUseCase;
 import com.example.digital_payment.shared.dto.BillInfo;
 import com.example.digital_payment.shared.dto.WalletInfo;
@@ -31,7 +31,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class PaymentFacade {
     private final CurrentUserContext currentUserContext;
-    private final FindPayableBillUseCase findPayableBillUseCase;
+    private final FindBillInfoUseCase findBillinfoUseCase;
     private final TransactionCacheStore transactionCacheStore;
     private final PaymentApiMapper paymentApiMapper;
     private final LoadTransactionByUserIdAndKeyUseCase loadTransactionByUserIdAndKeyUseCase;
@@ -40,14 +40,14 @@ public class PaymentFacade {
     private final InitiateWalletTopUpUseCase initiateWalletTopUpUseCase;
 
     public PaymentFacade(CurrentUserContext currentUserContext,
-        FindPayableBillUseCase findPayableBillUseCase, TransactionCacheStore transactionCacheStore,
+        FindBillInfoUseCase findPayableBillUseCase, TransactionCacheStore transactionCacheStore,
         PaymentApiMapper paymentApiMapper,
         LoadTransactionByUserIdAndKeyUseCase loadTransactionByUserIdAndKeyUseCase,
         InitiateBillPaymentUseCase initiatePaymentUseCase,
         FindWalletInfoUseCase findWalletInfoUseCase,
         InitiateWalletTopUpUseCase initiateWalletTopUpUseCase) {
         this.currentUserContext = currentUserContext;
-        this.findPayableBillUseCase = findPayableBillUseCase;
+        this.findBillinfoUseCase = findPayableBillUseCase;
         this.transactionCacheStore = transactionCacheStore;
         this.paymentApiMapper = paymentApiMapper;
         this.loadTransactionByUserIdAndKeyUseCase = loadTransactionByUserIdAndKeyUseCase;
@@ -57,13 +57,14 @@ public class PaymentFacade {
     }
 
     public PaymentResponse initiateBillPayment(PaymentRequest request, UUID idempotencyKey) {
-        BillInfo billInfo = findPayableBillUseCase.fetchBillInfo(request.billId())
-            .orElseThrow(() -> {
-                log.error("Payment initiation failed. bill with id {} was not found",
-                    request.billId());
-                return new InvalidPaymentRequestException(
-                    "Cannot initiate payment for non-existing bill");
-            });
+        BillInfo billInfo;
+        try {
+            billInfo = findBillinfoUseCase.fetchBillInfo(request.billId());
+        } catch (ResourceNotFoundException e) {
+            log.error("Payment initiation failed. bill with id {} was not found", request.billId());
+            throw new InvalidPaymentRequestException(
+                "Cannot initiate payment for non-existing bill");
+        }
 
         UUID userId = currentUserContext.getUserId();
 
@@ -147,37 +148,4 @@ public class PaymentFacade {
 
         return paymentApiMapper.toResponse(tx);
     }
-
-    // private PaymentResponse initiate(UUID idempotencyKey,
-    // PaymentInitiationContext context) {
-    // UUID userId = currentUserContext.getUserId();
-
-    // Optional<Transactions> cached = transactionCacheStore.get(userId,
-    // idempotencyKey);
-    // if (cached.isPresent()) {
-    // log.debug("Transaction found at cache level, returning the cached value to
-    // user.");
-    // return paymentApiMapper.toResponse(cached.get());
-    // }
-
-    // Optional<Transactions> existing = loadTransactionByUserIdAndKeyUseCase
-    // .loadTransactionByUserIdAndKey(userId, idempotencyKey);
-    // if (existing.isPresent()) {
-    // log.debug("Transaction found at DB level, returning the value to user.");
-    // transactionCacheStore.save(userId, idempotencyKey, existing.get());
-    // return paymentApiMapper.toResponse(existing.get());
-    // }
-
-    // InitiatePaymentCommand command = new InitiatePaymentCommand(userId,
-    // idempotencyKey,
-    // context.creditCardId(), context.type(), context.currency(), context.amount(),
-    // context.referenceId(), context.useWallet(), context.walletId());
-    // log.debug("Initiating payment data: {}", command);
-    // Transactions tx = initiatePaymentUseCase.initiatePayment(command);
-
-    // transactionCacheStore.save(userId, idempotencyKey, tx);
-
-    // return paymentApiMapper.toResponse(tx);
-    // }
-
 }

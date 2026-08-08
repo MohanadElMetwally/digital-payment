@@ -18,10 +18,10 @@ import com.example.digital_payment.payment.application.port.in.MarkPaymentSuccee
 import com.example.digital_payment.payment.application.port.out.TransactionCacheStore;
 import com.example.digital_payment.payment.domain.model.entities.Transactions;
 import com.example.digital_payment.shared.domain.enums.SseNotificationType;
-import com.example.digital_payment.shared.dto.BillPaymentFailedEvent;
-import com.example.digital_payment.shared.dto.BillPaymentSucceededEvent;
-import com.example.digital_payment.shared.dto.CreditWalletEvent;
 import com.example.digital_payment.shared.dto.NotificationMessage;
+import com.example.digital_payment.shared.events.BillPaymentFailedEvent;
+import com.example.digital_payment.shared.events.BillPaymentSucceededEvent;
+import com.example.digital_payment.shared.events.CreditWalletEvent;
 import com.example.digital_payment.shared.events.SseNotificationEvent;
 import com.example.digital_payment.shared.events.WalletTransactionFailedEvent;
 
