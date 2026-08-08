@@ -38,3 +38,5 @@ META-INF
 .env
 .env.*
 !.env.example
+
+src/main/resources/config
