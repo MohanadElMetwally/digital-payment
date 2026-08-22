@@ -1,7 +1,6 @@
 package com.example.digital_payment.settlement.application.usecase;
 
 import java.util.UUID;
-
 import com.example.digital_payment.settlement.application.port.in.GetSettlementUseCase;
 import com.example.digital_payment.settlement.application.port.out.LoadSettlementPort;
 import com.example.digital_payment.settlement.domain.exceptions.SettlementNotFoundException;

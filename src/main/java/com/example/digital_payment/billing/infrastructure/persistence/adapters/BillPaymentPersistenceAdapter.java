@@ -2,10 +2,8 @@ package com.example.digital_payment.billing.infrastructure.persistence.adapters;
 
 import java.util.Optional;
 import java.util.UUID;
-
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-
 import com.example.digital_payment.billing.application.port.out.LoadBillPaymentByTransactionIdPort;
 import com.example.digital_payment.billing.application.port.out.SaveBillPaymentPort;
 import com.example.digital_payment.billing.application.port.out.UpdateBillPaymentPort;
@@ -16,12 +14,12 @@ import com.example.digital_payment.billing.infrastructure.persistence.repository
 
 @Component
 public class BillPaymentPersistenceAdapter
-    implements SaveBillPaymentPort, UpdateBillPaymentPort, LoadBillPaymentByTransactionIdPort {
+        implements SaveBillPaymentPort, UpdateBillPaymentPort, LoadBillPaymentByTransactionIdPort {
     private final BillPaymentJpaRepository jpaRepository;
     private final BillPaymentMapper mapper;
 
     public BillPaymentPersistenceAdapter(BillPaymentJpaRepository jpaRepository,
-        BillPaymentMapper mapper) {
+            BillPaymentMapper mapper) {
         this.jpaRepository = jpaRepository;
         this.mapper = mapper;
     }

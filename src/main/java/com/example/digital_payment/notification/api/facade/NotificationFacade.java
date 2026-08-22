@@ -1,10 +1,8 @@
 package com.example.digital_payment.notification.api.facade;
 
 import java.util.UUID;
-
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
-
 import com.example.digital_payment.notification.api.dto.NotificationsResponse;
 import com.example.digital_payment.notification.api.mapper.NotificationApiMapper;
 import com.example.digital_payment.notification.application.dto.NotificationsResult;
@@ -22,8 +20,8 @@ public class NotificationFacade {
     private final CurrentUserContext currentUserContext;
 
     public NotificationFacade(LoadNotificationsUseCase loadNotificationsUseCase,
-        NotificationReadUseCase notificationReadUseCase, SseConnection sseConnection,
-        CurrentUserContext currentUserContext, NotificationApiMapper notificationApiMapper) {
+            NotificationReadUseCase notificationReadUseCase, SseConnection sseConnection,
+            CurrentUserContext currentUserContext, NotificationApiMapper notificationApiMapper) {
         this.loadNotificationsUseCase = loadNotificationsUseCase;
         this.notificationReadUseCase = notificationReadUseCase;
         this.notificationApiMapper = notificationApiMapper;

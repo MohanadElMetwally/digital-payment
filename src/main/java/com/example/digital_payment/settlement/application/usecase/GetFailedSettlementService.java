@@ -1,7 +1,6 @@
 package com.example.digital_payment.settlement.application.usecase;
 
 import java.util.UUID;
-
 import com.example.digital_payment.settlement.application.port.in.GetFailedSettlementUseCase;
 import com.example.digital_payment.settlement.application.port.out.LoadFailedSettlementPort;
 import com.example.digital_payment.settlement.domain.exceptions.FailedSettlementNotFoundException;
@@ -17,6 +16,6 @@ public class GetFailedSettlementService implements GetFailedSettlementUseCase {
     @Override
     public FailedSettlements getById(UUID id) {
         return loadFailedSettlementPort.findById(id)
-            .orElseThrow(() -> new FailedSettlementNotFoundException(id));
+                .orElseThrow(() -> new FailedSettlementNotFoundException(id));
     }
 }

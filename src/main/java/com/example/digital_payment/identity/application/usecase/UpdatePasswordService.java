@@ -1,7 +1,6 @@
 package com.example.digital_payment.identity.application.usecase;
 
 import java.util.UUID;
-
 import com.example.digital_payment.identity.application.dto.UpdatePasswordCommand;
 import com.example.digital_payment.identity.application.port.in.UpdatePasswordUseCase;
 import com.example.digital_payment.identity.application.port.out.LoadUserPort;
@@ -20,8 +19,8 @@ public class UpdatePasswordService implements UpdatePasswordUseCase {
     private final TransactionPort transactionPort;
 
     public UpdatePasswordService(LoadUserPort loadUserPort, SaveUserPort saveUserPort,
-        PasswordMatchPort passwordMatchPort, UpdatePasswordPort updatePasswordPort,
-        TransactionPort transactionPort) {
+            PasswordMatchPort passwordMatchPort, UpdatePasswordPort updatePasswordPort,
+            TransactionPort transactionPort) {
         this.loadUserPort = loadUserPort;
         this.passwordMatchPort = passwordMatchPort;
         this.updatePasswordPort = updatePasswordPort;
@@ -33,7 +32,7 @@ public class UpdatePasswordService implements UpdatePasswordUseCase {
         transactionPort.executeVoid(() -> {
             Users user = loadUserPort.findById(id).orElseThrow(() -> new UserNotFoundException(id));
             if (!passwordMatchPort.matches(command.currentPassword(), user.getPassword())
-                || !command.newPassword().equals(command.confirmNewPassword()))
+                    || !command.newPassword().equals(command.confirmNewPassword()))
                 throw new InvalidPasswordException();
             user.updatePassword(command.newPassword());
             updatePasswordPort.updatePassword(user);

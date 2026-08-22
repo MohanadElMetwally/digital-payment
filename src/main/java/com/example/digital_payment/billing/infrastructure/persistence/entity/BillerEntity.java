@@ -2,10 +2,8 @@ package com.example.digital_payment.billing.infrastructure.persistence.entity;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
-
 import com.example.digital_payment.billing.domain.enums.BillCategory;
 import com.example.digital_payment.billing.domain.enums.ServiceProvider;
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;

@@ -1,7 +1,6 @@
 package com.example.digital_payment.notification.api.controller;
 
 import java.util.UUID;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -11,7 +10,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
-
 import com.example.digital_payment.notification.api.dto.NotificationsResponse;
 import com.example.digital_payment.notification.api.facade.NotificationFacade;
 

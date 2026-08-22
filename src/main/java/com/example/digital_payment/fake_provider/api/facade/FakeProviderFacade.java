@@ -1,7 +1,6 @@
 package com.example.digital_payment.fake_provider.api.facade;
 
 import org.springframework.stereotype.Component;
-
 import com.example.digital_payment.fake_provider.api.dto.FakeBillResponse;
 import com.example.digital_payment.fake_provider.api.mapper.FakeProviderApiMapper;
 import com.example.digital_payment.fake_provider.application.dto.FakeBillResult;
@@ -15,8 +14,8 @@ public class FakeProviderFacade {
     private final MarkFakeBillPaidUseCase markFakeBillPaidUseCase;
 
     public FakeProviderFacade(GetFakeBillUseCase getFakeBillUseCase,
-        MarkFakeBillPaidUseCase markFakeBillPaidUseCase,
-        FakeProviderApiMapper fakeProviderApiMapper) {
+            MarkFakeBillPaidUseCase markFakeBillPaidUseCase,
+            FakeProviderApiMapper fakeProviderApiMapper) {
         this.getFakeBillUseCase = getFakeBillUseCase;
         this.markFakeBillPaidUseCase = markFakeBillPaidUseCase;
         this.fakeProviderApiMapper = fakeProviderApiMapper;

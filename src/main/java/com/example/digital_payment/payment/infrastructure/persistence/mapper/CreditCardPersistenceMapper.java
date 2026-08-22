@@ -1,7 +1,6 @@
 package com.example.digital_payment.payment.infrastructure.persistence.mapper;
 
 import org.springframework.stereotype.Component;
-
 import com.example.digital_payment.payment.domain.model.entities.CreditCards;
 import com.example.digital_payment.payment.domain.model.snapshots.CreditCardSnapshot;
 import com.example.digital_payment.payment.infrastructure.persistence.entity.CreditCardEntity;
@@ -29,9 +28,9 @@ public class CreditCardPersistenceMapper {
         if (entity == null)
             return null;
         CreditCardSnapshot snapshot = new CreditCardSnapshot(entity.getId(), entity.getUserId(),
-            entity.getBrand(), entity.getLastFour(), entity.getExpiryMonth(),
-            entity.getExpiryYear(), entity.getPaymentMethodId(), entity.getStatus(),
-            entity.getIsDefault(), entity.getCreatedAt());
+                entity.getBrand(), entity.getLastFour(), entity.getExpiryMonth(),
+                entity.getExpiryYear(), entity.getPaymentMethodId(), entity.getStatus(),
+                entity.getIsDefault(), entity.getCreatedAt());
         return CreditCards.reconstitute(snapshot);
     }
 }

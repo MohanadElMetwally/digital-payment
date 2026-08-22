@@ -20,8 +20,8 @@ public class MarkBillPaymentFailedService implements MarkBillPaymentFailedUseCas
     private final UpdateBillPaymentPort updateBillPaymentPort;
 
     public MarkBillPaymentFailedService(TransactionPort transactionPort, LoadBillPort loadBillPort,
-        UpdateBillPort updateBillPort, LoadBillPaymentByTransactionIdPort loadBillPaymentPort,
-        UpdateBillPaymentPort updateBillPaymentPort) {
+            UpdateBillPort updateBillPort, LoadBillPaymentByTransactionIdPort loadBillPaymentPort,
+            UpdateBillPaymentPort updateBillPaymentPort) {
         this.transactionPort = transactionPort;
         this.loadBillPort = loadBillPort;
         this.updateBillPort = updateBillPort;
@@ -33,10 +33,10 @@ public class MarkBillPaymentFailedService implements MarkBillPaymentFailedUseCas
     public void mark(ProcessBillPaymentCommand command) {
         transactionPort.executeVoid(() -> {
             Bills bill = loadBillPort.findById(command.billId())
-                .orElseThrow(() -> new BillNotFoundException());
-            BillPayments billPayment = loadBillPaymentPort
-                .findByTransactionId(command.transactionId())
-                .orElseThrow(() -> new BillPaymentNotFoundException("BillPayment not found"));
+                    .orElseThrow(() -> new BillNotFoundException());
+            BillPayments billPayment =
+                    loadBillPaymentPort.findByTransactionId(command.transactionId()).orElseThrow(
+                            () -> new BillPaymentNotFoundException("BillPayment not found"));
             bill.markUnpaid();
             billPayment.markFailed();
             updateBillPort.update(bill);

@@ -2,10 +2,8 @@ package com.example.digital_payment.notification.application.config;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
 import com.example.digital_payment.notification.application.mapper.NotificationMapper;
 import com.example.digital_payment.notification.application.port.in.GreetNotificationUserUseCase;
 import com.example.digital_payment.notification.application.port.in.LoadNotificationsUseCase;
@@ -31,21 +29,21 @@ public class NotificationConfig {
 
     @Bean
     public LoadNotificationsUseCase loadNotificationsUseCase(
-        LoadNotificationsPort loadNotificationsPort, NotificationMapper notificationMapper) {
+            LoadNotificationsPort loadNotificationsPort, NotificationMapper notificationMapper) {
         return new LoadNotificationsService(loadNotificationsPort, notificationMapper);
     }
 
     @Bean
     public NotificationReadUseCase notificationReadUseCase(
-        LoadNotificationPort loadNotificationPort, UpdateNotificationPort updateNotificationPort,
-        TransactionPort transactionPort) {
+            LoadNotificationPort loadNotificationPort,
+            UpdateNotificationPort updateNotificationPort, TransactionPort transactionPort) {
         return new NotificationReadService(loadNotificationPort, updateNotificationPort,
-            transactionPort);
+                transactionPort);
     }
 
     @Bean
     public GreetNotificationUserUseCase greetNotificationUserCase(
-        SaveNotificationPort saveNotificationPort) {
+            SaveNotificationPort saveNotificationPort) {
         return new GreetNotificationService(saveNotificationPort);
     }
 
@@ -56,7 +54,7 @@ public class NotificationConfig {
 
     @Bean
     SendSseNotificationUseCase sendSseNotificationUseCase(
-        NotificationPublisherPort notificationPublisherPort) {
+            NotificationPublisherPort notificationPublisherPort) {
         return new SendSseNotificationService(notificationPublisherPort);
     }
 }

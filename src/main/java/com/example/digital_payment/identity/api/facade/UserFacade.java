@@ -1,9 +1,7 @@
 package com.example.digital_payment.identity.api.facade;
 
 import java.util.UUID;
-
 import org.springframework.stereotype.Component;
-
 import com.example.digital_payment.identity.api.dto.request.CreateUserRequest;
 import com.example.digital_payment.identity.api.dto.request.UpdatePasswordRequest;
 import com.example.digital_payment.identity.api.dto.request.UpdateUserRequest;
@@ -31,9 +29,9 @@ public class UserFacade {
     private final CheckUserExistsUseCase checkUserExistsUseCase;
 
     public UserFacade(RegisterUserUseCase registerUserUseCase, GetUserUseCase getUserUseCase,
-        GetCurrentUserUseCase getCurrentUserUseCase, UserApiMapper userApiMapper,
-        UpdateUserUseCase updateUserUseCase, UpdatePasswordUseCase updatePasswordUseCase,
-        CheckUserExistsUseCase checkUserExistsUseCase) {
+            GetCurrentUserUseCase getCurrentUserUseCase, UserApiMapper userApiMapper,
+            UpdateUserUseCase updateUserUseCase, UpdatePasswordUseCase updatePasswordUseCase,
+            CheckUserExistsUseCase checkUserExistsUseCase) {
         this.registerUserUseCase = registerUserUseCase;
         this.getUserUseCase = getUserUseCase;
         this.userApiMapper = userApiMapper;

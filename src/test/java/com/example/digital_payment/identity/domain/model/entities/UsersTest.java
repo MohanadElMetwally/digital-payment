@@ -4,13 +4,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.UUID;
-
 import org.junit.jupiter.api.Test;
-
 import com.example.digital_payment.identity.domain.enums.UserRole;
 import com.example.digital_payment.identity.domain.enums.UserStatus;
 import com.example.digital_payment.identity.domain.exceptions.InvalidUserDataException;
@@ -24,7 +21,7 @@ public class UsersTest {
     @Test
     void testRegister() {
         UserRegistrationData data = new UserRegistrationData("JohnDoe", "john@example.com",
-            "1234567890", "password123", UserRole.USER, "John", "Doe", "USA", VALID_DOB);
+                "1234567890", "password123", UserRole.USER, "John", "Doe", "USA", VALID_DOB);
 
         Users user = Users.register(data);
 
@@ -41,7 +38,7 @@ public class UsersTest {
     @Test
     void testRegisterWithBlankUsername() {
         UserRegistrationData data = new UserRegistrationData("", "john@example.com", "1234567890",
-            "password123", UserRole.USER, "John", "Doe", "USA", VALID_DOB);
+                "password123", UserRole.USER, "John", "Doe", "USA", VALID_DOB);
 
         assertThrows(InvalidUserDataException.class, () -> Users.register(data));
     }
@@ -49,7 +46,7 @@ public class UsersTest {
     @Test
     void testRegisterWithShortUsername() {
         UserRegistrationData data = new UserRegistrationData("ab", "john@example.com", "1234567890",
-            "password123", UserRole.USER, "John", "Doe", "USA", VALID_DOB);
+                "password123", UserRole.USER, "John", "Doe", "USA", VALID_DOB);
 
         assertThrows(InvalidUserDataException.class, () -> Users.register(data));
     }
@@ -57,7 +54,7 @@ public class UsersTest {
     @Test
     void testRegisterWithLongUsername() {
         UserRegistrationData data = new UserRegistrationData("a".repeat(31), "john@example.com",
-            "1234567890", "password123", UserRole.USER, "John", "Doe", "USA", VALID_DOB);
+                "1234567890", "password123", UserRole.USER, "John", "Doe", "USA", VALID_DOB);
 
         assertThrows(InvalidUserDataException.class, () -> Users.register(data));
     }
@@ -65,7 +62,7 @@ public class UsersTest {
     @Test
     void testRegisterWithInvalidEmail() {
         UserRegistrationData data = new UserRegistrationData("JohnDoe", "johnexample.com",
-            "1234567890", "password123", UserRole.USER, "John", "Doe", "USA", VALID_DOB);
+                "1234567890", "password123", UserRole.USER, "John", "Doe", "USA", VALID_DOB);
 
         assertThrows(InvalidUserDataException.class, () -> Users.register(data));
     }
@@ -73,7 +70,7 @@ public class UsersTest {
     @Test
     void testRegisterWithBlankPhone() {
         UserRegistrationData data = new UserRegistrationData("JohnDoe", "john@example.com", "",
-            "password123", UserRole.USER, "John", "Doe", "USA", VALID_DOB);
+                "password123", UserRole.USER, "John", "Doe", "USA", VALID_DOB);
 
         assertThrows(InvalidUserDataException.class, () -> Users.register(data));
     }
@@ -83,7 +80,7 @@ public class UsersTest {
         UUID userId = UUID.randomUUID();
         LocalDateTime now = LocalDateTime.now();
         UserSnapshot snapshot = new UserSnapshot(userId, "johndoe", "john@example.com",
-            "1234567890", "hashedPassword", UserRole.USER, UserStatus.ACTIVE, now, now, null);
+                "1234567890", "hashedPassword", UserRole.USER, UserStatus.ACTIVE, now, now, null);
 
         Users user = Users.reconstitute(snapshot);
 
@@ -101,7 +98,7 @@ public class UsersTest {
     @Test
     void testRegisterTrimsAndLowercasesUsername() {
         UserRegistrationData data = new UserRegistrationData("  JohnDoe  ", "john@example.com",
-            "1234567890", "password123", UserRole.USER, "John", "Doe", "USA", VALID_DOB);
+                "1234567890", "password123", UserRole.USER, "John", "Doe", "USA", VALID_DOB);
 
         Users user = Users.register(data);
 
@@ -111,7 +108,7 @@ public class UsersTest {
     @Test
     void testRegisterWithNullDateOfBirth() {
         UserRegistrationData data = new UserRegistrationData("JohnDoe", "john@example.com",
-            "1234567890", "password123", UserRole.USER, "John", "Doe", "USA", null);
+                "1234567890", "password123", UserRole.USER, "John", "Doe", "USA", null);
 
         assertThrows(InvalidUserDataException.class, () -> Users.register(data));
     }

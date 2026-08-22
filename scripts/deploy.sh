@@ -93,7 +93,7 @@ deploy_to_aws() {
     build_with_docker_compose
     authenticate_with_aws
 
-    read -p "Do you want to update environment variables in ECS from $ENV_FILE? (y/n): " update_env
+    update_env="${UPDATE_ENV:-n}"
     if [[ $update_env == "y" || $update_env == "Y" ]]; then
         update_ecs_env_vars
     fi

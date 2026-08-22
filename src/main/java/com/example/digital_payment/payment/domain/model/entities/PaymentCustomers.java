@@ -2,7 +2,6 @@ package com.example.digital_payment.payment.domain.model.entities;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
-
 import com.example.digital_payment.payment.domain.model.snapshots.PaymentCustomerSnapShot;
 import com.example.digital_payment.payment.domain.model.valueobjects.PaymentCustomerCreationData;
 

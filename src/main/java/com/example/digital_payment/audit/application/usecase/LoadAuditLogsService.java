@@ -1,7 +1,6 @@
 package com.example.digital_payment.audit.application.usecase;
 
 import java.util.List;
-
 import com.example.digital_payment.audit.application.dto.AuditLogsResult;
 import com.example.digital_payment.audit.application.mapper.AuditLogMapper;
 import com.example.digital_payment.audit.application.port.in.LoadAuditLogsUseCase;
@@ -13,7 +12,7 @@ public class LoadAuditLogsService implements LoadAuditLogsUseCase {
     private final AuditLogMapper auditLogMapper;
 
     public LoadAuditLogsService(LoadAuditLogsPort loadAuditLogsPort,
-        AuditLogMapper auditLogMapper) {
+            AuditLogMapper auditLogMapper) {
         this.loadAuditLogsPort = loadAuditLogsPort;
         this.auditLogMapper = auditLogMapper;
     }

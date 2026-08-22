@@ -2,10 +2,8 @@ package com.example.digital_payment.payment.infrastructure.persistence.entity;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
-
 import com.example.digital_payment.payment.domain.enums.CardBrand;
 import com.example.digital_payment.payment.domain.enums.CardStatus;
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;

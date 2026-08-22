@@ -1,10 +1,8 @@
 package com.example.digital_payment.settlement.infrastructure.messaging;
 
 import java.util.UUID;
-
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.stereotype.Component;
-
 import com.example.digital_payment.settlement.application.port.out.SettlementPublisherPort;
 
 @Component

@@ -3,9 +3,7 @@ package com.example.digital_payment.billing.infrastructure.persistence.adapters;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-
 import org.springframework.stereotype.Component;
-
 import com.example.digital_payment.billing.application.port.out.LoadAllBillersPort;
 import com.example.digital_payment.billing.application.port.out.LoadBillerPort;
 import com.example.digital_payment.billing.domain.model.entities.Billers;
@@ -19,7 +17,7 @@ public class BillerPersistenceAdapter implements LoadBillerPort, LoadAllBillersP
     private final BillerPersistenceMapper billerPersistenceMapper;
 
     public BillerPersistenceAdapter(BillerJpaRepository billerJpaRepository,
-        BillerPersistenceMapper billerPersistenceMapper) {
+            BillerPersistenceMapper billerPersistenceMapper) {
         this.billerJpaRepository = billerJpaRepository;
         this.billerPersistenceMapper = billerPersistenceMapper;
     }

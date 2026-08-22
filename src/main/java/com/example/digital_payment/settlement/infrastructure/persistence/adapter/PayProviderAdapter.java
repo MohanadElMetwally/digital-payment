@@ -1,14 +1,12 @@
 package com.example.digital_payment.settlement.infrastructure.persistence.adapter;
 
 import java.util.UUID;
-
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
-
 import com.example.digital_payment.settlement.application.port.out.PayProviderGateway;
 
 @Component

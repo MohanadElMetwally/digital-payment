@@ -16,7 +16,7 @@ public class AuditUserRegisteredService implements AuditUserRegisteredUseCase {
     @Override
     public void handle(CreateAuditLogCommand command) {
         AuditLogs log = AuditLogs.record(new AuditLogCreateData(command.userId(), command.action(),
-            command.entityType(), command.userId(), command.oldValue(), command.newValue()));
+                command.entityType(), command.userId(), command.oldValue(), command.newValue()));
         saveAuditLogPort.save(log);
     }
 

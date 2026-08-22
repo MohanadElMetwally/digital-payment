@@ -2,7 +2,6 @@ package com.example.digital_payment.wallet.infrastructure.event;
 
 import org.springframework.modulith.events.ApplicationModuleListener;
 import org.springframework.stereotype.Component;
-
 import com.example.digital_payment.shared.events.UserRegisteredEvent;
 import com.example.digital_payment.wallet.application.dto.CreateWalletCommand;
 import com.example.digital_payment.wallet.application.port.in.CreateWalletUseCase;

@@ -2,12 +2,11 @@ package com.example.digital_payment.wallet.infrastructure.persistence.adapter;
 
 import java.util.Optional;
 import java.util.UUID;
-
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-
 import com.example.digital_payment.wallet.application.port.out.LoadWalletPort;
 import com.example.digital_payment.wallet.application.port.out.SaveWalletPort;
 import com.example.digital_payment.wallet.application.port.out.UpdateWalletPort;
@@ -22,7 +21,7 @@ public class WalletPersistenceAdapter implements SaveWalletPort, LoadWalletPort,
     private final WalletPersistenceMapper walletPersistenceMapper;
 
     public WalletPersistenceAdapter(WalletJpaRepository walletJpaRepository,
-        WalletPersistenceMapper walletPersistenceMapper) {
+            WalletPersistenceMapper walletPersistenceMapper) {
         this.walletJpaRepository = walletJpaRepository;
         this.walletPersistenceMapper = walletPersistenceMapper;
     }
@@ -35,12 +34,12 @@ public class WalletPersistenceAdapter implements SaveWalletPort, LoadWalletPort,
     }
 
     @Override
+    @Cacheable(value = "wallets", key = "#walletId")
     public Optional<Wallets> getById(UUID walletId) {
         return walletJpaRepository.findById(walletId).map(walletPersistenceMapper::toDomain);
     }
 
     @Override
-    @Transactional
     @Cacheable(value = "wallets", key = "#userId")
     public Optional<Wallets> getByUserId(UUID userId) {
         return walletJpaRepository.findByUserId(userId).map(walletPersistenceMapper::toDomain);
@@ -48,7 +47,14 @@ public class WalletPersistenceAdapter implements SaveWalletPort, LoadWalletPort,
 
     @Override
     @Transactional
-    @CachePut(value = "wallets", key = "#wallet.userId")
+    // @formatter:off
+    @Caching(
+        put = {
+            @CachePut(value = "wallets", key = "#wallet.id"),
+            @CachePut(value = "wallets", key = "#wallet.userId")
+        }
+    )
+    // @formatter:on
     public Wallets update(Wallets wallet) {
         WalletEntity entity = walletJpaRepository.getReferenceById(wallet.getId());
         walletPersistenceMapper.update(wallet, entity);

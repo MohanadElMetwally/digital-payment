@@ -3,7 +3,6 @@ package com.example.digital_payment.settlement.domain.models;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.UUID;
-
 import com.example.digital_payment.settlement.domain.enums.FailedSettlementResolutionStatus;
 import com.example.digital_payment.settlement.domain.snapshots.FailedSettlementSnapshot;
 import com.example.digital_payment.settlement.domain.valueobjects.FailedSettlementCreationData;

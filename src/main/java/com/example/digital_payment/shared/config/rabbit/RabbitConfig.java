@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import org.springframework.amqp.core.BindingBuilder;
 import org.springframework.amqp.core.Declarable;
 import org.springframework.amqp.core.Declarables;
@@ -18,6 +17,8 @@ import org.springframework.amqp.support.converter.MessageConverter;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
+// TODO: Make rabbit exchange type depending on the type provided from config
 
 @Configuration
 @EnableConfigurationProperties(RabbitMqProperties.class)
@@ -43,7 +44,7 @@ public class RabbitConfig {
             QueueBuilder builder = QueueBuilder.durable(qc.getName());
             if (qc.getDlx() != null) {
                 builder.withArgument("x-dead-letter-exchange", qc.getDlx())
-                    .withArgument("x-dead-letter-routing-key", qc.getDlqRoutingKey());
+                        .withArgument("x-dead-letter-routing-key", qc.getDlqRoutingKey());
             }
             if (qc.getTtl() != null) {
                 builder.withArgument("x-message-ttl", qc.getTtl());
@@ -52,8 +53,8 @@ public class RabbitConfig {
             declarables.add(queue);
 
             Exchange exchange = exchangeMap.get(qc.getExchange());
-            declarables.add(
-                BindingBuilder.bind(queue).to((TopicExchange) exchange).with(qc.getRoutingKey()));
+            declarables.add(BindingBuilder.bind(queue).to((TopicExchange) exchange)
+                    .with(qc.getRoutingKey()));
         }
 
         return new Declarables(declarables);
@@ -61,7 +62,7 @@ public class RabbitConfig {
 
     @Bean
     public RabbitTemplate rabbitTemplate(ConnectionFactory connectionFactory,
-        MessageConverter jsonMessageConverter) {
+            MessageConverter jsonMessageConverter) {
         RabbitTemplate template = new RabbitTemplate(connectionFactory);
         template.setMessageConverter(jsonMessageConverter);
         return template;

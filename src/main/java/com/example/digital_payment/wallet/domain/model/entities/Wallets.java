@@ -3,7 +3,6 @@ package com.example.digital_payment.wallet.domain.model.entities;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.UUID;
-
 import com.example.digital_payment.wallet.domain.exceptions.InvalidWalletDataException;
 import com.example.digital_payment.wallet.domain.model.snapshots.WalletSnapshot;
 import com.example.digital_payment.wallet.domain.model.valueobjects.WalletCreationData;

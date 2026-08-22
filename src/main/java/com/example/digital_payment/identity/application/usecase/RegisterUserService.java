@@ -25,9 +25,9 @@ public class RegisterUserService implements RegisterUserUseCase {
     private final PhoneValidatorPort phoneValidatorPort;
 
     public RegisterUserService(SaveUserPort saveUserPort, ResolveCountryPort resolveCountryPort,
-        ResolveCurrencyPort resolveCurrencyPort, EventPublisherPort eventPublisherPort,
-        TransactionPort transactionPort, PhoneValidatorPort phoneValidatorPort,
-        UserMapper userMapper) {
+            ResolveCurrencyPort resolveCurrencyPort, EventPublisherPort eventPublisherPort,
+            TransactionPort transactionPort, PhoneValidatorPort phoneValidatorPort,
+            UserMapper userMapper) {
         this.saveUserPort = saveUserPort;
         this.userMapper = userMapper;
         this.resolveCountryPort = resolveCountryPort;
@@ -46,15 +46,15 @@ public class RegisterUserService implements RegisterUserUseCase {
             String currency = resolveCurrencyPort.resolveCurrency(country);
 
             UserRegistrationData registrationData = new UserRegistrationData(command.username(),
-                command.email(), command.phone(), command.password(), command.role(),
-                command.firstName(), command.lastName(), country, command.dateOfBirth());
+                    command.email(), command.phone(), command.password(), command.role(),
+                    command.firstName(), command.lastName(), country, command.dateOfBirth());
             Users user = Users.register(registrationData);
 
             Users save = saveUserPort.save(user);
 
             eventPublisherPort
-                .publish(new UserRegisteredEvent(save.getId(), currency, save.getEmail(),
-                    save.getProfile().getFirstName(), save.getProfile().getLastName()));
+                    .publish(new UserRegisteredEvent(save.getId(), currency, save.getEmail(),
+                            save.getProfile().getFirstName(), save.getProfile().getLastName()));
 
             return userMapper.toResult(save);
         });

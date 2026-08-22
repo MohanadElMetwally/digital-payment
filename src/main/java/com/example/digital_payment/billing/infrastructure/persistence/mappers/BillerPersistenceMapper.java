@@ -1,9 +1,7 @@
 package com.example.digital_payment.billing.infrastructure.persistence.mappers;
 
 import java.util.List;
-
 import org.springframework.stereotype.Component;
-
 import com.example.digital_payment.billing.domain.model.entities.Billers;
 import com.example.digital_payment.billing.domain.model.snapshots.BillerSnapshot;
 import com.example.digital_payment.billing.infrastructure.persistence.entity.BillerEntity;
@@ -22,7 +20,7 @@ public class BillerPersistenceMapper {
 
     public Billers toDomain(BillerEntity entity) {
         BillerSnapshot snapshot = new BillerSnapshot(entity.getId(), entity.getName(),
-            entity.getCategory(), entity.getServiceProvider(), entity.getCreatedAt());
+                entity.getCategory(), entity.getServiceProvider(), entity.getCreatedAt());
         return Billers.reconstitute(snapshot);
     }
 

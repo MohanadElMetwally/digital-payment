@@ -1,7 +1,6 @@
 package com.example.digital_payment.wallet.infrastructure.persistence.mapper;
 
 import org.springframework.stereotype.Component;
-
 import com.example.digital_payment.wallet.domain.model.entities.WalletTransactions;
 import com.example.digital_payment.wallet.domain.model.snapshots.WalletTransactionSnapshot;
 import com.example.digital_payment.wallet.infrastructure.persistence.entity.WalletTransactionEntity;
@@ -30,9 +29,9 @@ public class WalletTransactionPersistenceMapper {
             return null;
 
         WalletTransactionSnapshot snapshot = new WalletTransactionSnapshot(entity.getId(),
-            entity.getWalletId(), entity.getTransactionId(), entity.getType(), entity.getStatus(),
-            entity.getBalanceAfter(), entity.getAmount(), entity.getCreatedAt(),
-            entity.getCompletedAt());
+                entity.getWalletId(), entity.getTransactionId(), entity.getType(),
+                entity.getStatus(), entity.getBalanceAfter(), entity.getAmount(),
+                entity.getCreatedAt(), entity.getCompletedAt());
         return WalletTransactions.reconstitute(snapshot);
     }
 

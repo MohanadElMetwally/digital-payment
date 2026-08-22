@@ -1,10 +1,10 @@
 package com.example.digital_payment.identity.infrastructure.security;
 
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-
 import com.example.digital_payment.identity.application.port.out.LoadUserPort;
 import com.example.digital_payment.identity.domain.model.entities.Users;
 
@@ -17,10 +17,11 @@ public class CustomUserDetailsService implements UserDetailsService {
     }
 
     @Override
+    @Cacheable(value = "user-details", key = "#username")
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Users user = loadUserPort.findByUsername(username)
-            .orElseThrow(() -> new UsernameNotFoundException(
-                "User with username: %s was not found".formatted(username)));
+                .orElseThrow(() -> new UsernameNotFoundException(
+                        "User with username: %s was not found".formatted(username)));
         return new UserPrincipal(user);
     }
 }

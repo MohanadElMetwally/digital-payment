@@ -1,7 +1,6 @@
 package com.example.digital_payment.settlement.application.usecase;
 
 import java.util.UUID;
-
 import com.example.digital_payment.settlement.application.port.in.SaveFailedSettlementUseCase;
 import com.example.digital_payment.settlement.application.port.out.LoadSettlementPort;
 import com.example.digital_payment.settlement.application.port.out.SaveFailedSettlementPort;
@@ -15,7 +14,7 @@ public class SaveFailedSettlementService implements SaveFailedSettlementUseCase 
     private final LoadSettlementPort loadSettlementPort;
 
     public SaveFailedSettlementService(SaveFailedSettlementPort saveFailedSettlementPort,
-        LoadSettlementPort loadSettlementPort) {
+            LoadSettlementPort loadSettlementPort) {
         this.saveFailedSettlementPort = saveFailedSettlementPort;
         this.loadSettlementPort = loadSettlementPort;
     }
@@ -23,11 +22,12 @@ public class SaveFailedSettlementService implements SaveFailedSettlementUseCase 
     @Override
     public void save(UUID settlementId) {
         Settlements settlement = loadSettlementPort.findById(settlementId)
-            .orElseThrow(() -> new SettlementNotFoundException());
+                .orElseThrow(() -> new SettlementNotFoundException());
         FailedSettlements failedSettlement = FailedSettlements
-            .create(new FailedSettlementCreationData(settlementId, settlement.getBillId(),
-                settlement.getUserId(), settlement.getCustomerNumber(), settlement.getAmount(),
-                settlement.getCurrency(), settlement.getLastError(), settlement.getAttemptCount()));
+                .create(new FailedSettlementCreationData(settlementId, settlement.getBillId(),
+                        settlement.getUserId(), settlement.getCustomerNumber(),
+                        settlement.getAmount(), settlement.getCurrency(), settlement.getLastError(),
+                        settlement.getAttemptCount()));
         saveFailedSettlementPort.save(failedSettlement);
     }
 }

@@ -3,9 +3,7 @@ package com.example.digital_payment.settlement.application.usecase;
 import java.util.List;
 import java.util.UUID;
 import java.util.function.Consumer;
-
 import org.springframework.beans.factory.annotation.Value;
-
 import com.example.digital_payment.settlement.application.port.in.RelaySettlementOutboxUseCase;
 import com.example.digital_payment.settlement.application.port.out.LoadSettlementsOutboxPort;
 import com.example.digital_payment.settlement.application.port.out.LockSettlementOutboxPort;
@@ -24,9 +22,9 @@ public class RelaySettlementOutboxService implements RelaySettlementOutboxUseCas
     private final TransactionPort transactionPort;
 
     public RelaySettlementOutboxService(LockSettlementOutboxPort lockSettlementOutboxPort,
-        SettlementPublisherPort publisher, TransactionPort transactionPort,
-        LoadSettlementsOutboxPort loadSettlementsOutboxPort,
-        UpdateSettlementsOutboxPort updateSettlementsOutboxPort) {
+            SettlementPublisherPort publisher, TransactionPort transactionPort,
+            LoadSettlementsOutboxPort loadSettlementsOutboxPort,
+            UpdateSettlementsOutboxPort updateSettlementsOutboxPort) {
         this.lockSettlementOutboxPort = lockSettlementOutboxPort;
         this.publisher = publisher;
         this.transactionPort = transactionPort;
@@ -54,15 +52,14 @@ public class RelaySettlementOutboxService implements RelaySettlementOutboxUseCas
             updateSettlementOutbox(entry.getSettlementId(), s -> s.markPublished());
         } catch (Exception ex) {
             updateSettlementOutbox(entry.getSettlementId(),
-                s -> s.markFailed(ex.getMessage(), MAX_ATTEMPTS));
+                    s -> s.markFailed(ex.getMessage(), MAX_ATTEMPTS));
         }
     }
 
     private void updateSettlementOutbox(UUID settlementId, Consumer<SettlementsOutbox> mutation) {
         transactionPort.executeVoid(() -> {
-            SettlementsOutbox outbox = loadSettlementsOutboxPort
-                .findBySettlementId(settlementId)
-                .orElseThrow(() -> new SettlementNotFoundException());
+            SettlementsOutbox outbox = loadSettlementsOutboxPort.findBySettlementId(settlementId)
+                    .orElseThrow(() -> new SettlementNotFoundException());
             mutation.accept(outbox);
             updateSettlementsOutboxPort.update(outbox);
         });

@@ -1,9 +1,7 @@
 package com.example.digital_payment.billing.api.facade;
 
 import java.util.UUID;
-
 import org.springframework.stereotype.Component;
-
 import com.example.digital_payment.billing.api.dto.response.BillResponse;
 import com.example.digital_payment.billing.api.mapper.BillApiMapper;
 import com.example.digital_payment.billing.application.dto.BillFetchCommand;
@@ -18,7 +16,7 @@ public class BillsFacade {
     private final CurrentUserContext currentUserContext;
 
     public BillsFacade(BillFetchUseCase billFetchUseCase, CurrentUserContext currentUserContext,
-        BillApiMapper billApiMapper) {
+            BillApiMapper billApiMapper) {
         this.billFetchUseCase = billFetchUseCase;
         this.currentUserContext = currentUserContext;
         this.billApiMapper = billApiMapper;

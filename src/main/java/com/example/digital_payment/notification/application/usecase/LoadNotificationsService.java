@@ -1,7 +1,6 @@
 package com.example.digital_payment.notification.application.usecase;
 
 import java.util.List;
-
 import com.example.digital_payment.notification.application.dto.NotificationsResult;
 import com.example.digital_payment.notification.application.mapper.NotificationMapper;
 import com.example.digital_payment.notification.application.port.in.LoadNotificationsUseCase;
@@ -13,7 +12,7 @@ public class LoadNotificationsService implements LoadNotificationsUseCase {
     private final NotificationMapper notificationMapper;
 
     public LoadNotificationsService(LoadNotificationsPort loadNotificationsPort,
-        NotificationMapper notificationMapper) {
+            NotificationMapper notificationMapper) {
         this.loadNotificationsPort = loadNotificationsPort;
         this.notificationMapper = notificationMapper;
     }
@@ -22,6 +21,6 @@ public class LoadNotificationsService implements LoadNotificationsUseCase {
     public NotificationsResult readAll() {
         List<Notifications> notifications = loadNotificationsPort.findAll();
         return new NotificationsResult(
-            notifications.stream().map(notificationMapper::toResult).toList());
+                notifications.stream().map(notificationMapper::toResult).toList());
     }
 }

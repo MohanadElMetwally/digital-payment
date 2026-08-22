@@ -3,7 +3,6 @@ package com.example.digital_payment.identity.domain.model.entities;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.UUID;
-
 import com.example.digital_payment.identity.domain.exceptions.InvalidUserDataException;
 import com.example.digital_payment.identity.domain.model.snapshots.UserProfileSnapshot;
 import com.example.digital_payment.identity.domain.model.valueobjects.UserProfileRegistrationData;
@@ -17,8 +16,7 @@ public class UserProfiles {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
-    public UserProfiles() {
-    }
+    public UserProfiles() {}
 
     public static UserProfiles register(UserProfileRegistrationData registrationData) {
         validateDateOfBirth(registrationData.dateOfBirth());

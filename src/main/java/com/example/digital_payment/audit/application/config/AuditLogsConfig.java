@@ -2,7 +2,6 @@ package com.example.digital_payment.audit.application.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
 import com.example.digital_payment.audit.application.mapper.AuditLogMapper;
 import com.example.digital_payment.audit.application.port.in.AuditUserRegisteredUseCase;
 import com.example.digital_payment.audit.application.port.in.LoadAuditLogsUseCase;
@@ -20,13 +19,13 @@ public class AuditLogsConfig {
 
     @Bean
     public LoadAuditLogsUseCase loadAuditLogsUseCase(LoadAuditLogsPort loadAuditLogsPort,
-        AuditLogMapper auditLogMapper) {
+            AuditLogMapper auditLogMapper) {
         return new LoadAuditLogsService(loadAuditLogsPort, auditLogMapper);
     }
 
     @Bean
     public AuditUserRegisteredUseCase auditUserRegisteredUseCase(
-        SaveAuditLogPort saveAuditLogPort) {
+            SaveAuditLogPort saveAuditLogPort) {
         return new AuditUserRegisteredService(saveAuditLogPort);
     }
 }

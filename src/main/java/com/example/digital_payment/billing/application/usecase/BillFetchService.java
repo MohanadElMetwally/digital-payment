@@ -2,7 +2,6 @@ package com.example.digital_payment.billing.application.usecase;
 
 import java.util.Map;
 import java.util.Optional;
-
 import com.example.digital_payment.billing.application.dto.BillFetchCommand;
 import com.example.digital_payment.billing.application.dto.BillResult;
 import com.example.digital_payment.billing.application.mapper.BillMapper;
@@ -31,9 +30,9 @@ public class BillFetchService implements BillFetchUseCase {
     private final BillMapper billMapper;
 
     public BillFetchService(LoadBillerPort loadBillerPort,
-        LoadBillByExternalRefPort loadBillByExternalRefPort, SaveBillPort saveBillPort,
-        SyncBillPort syncBillPort, TransactionPort transactionPort,
-        Map<String, ProviderGatewayPort> providers, BillMapper billMapper) {
+            LoadBillByExternalRefPort loadBillByExternalRefPort, SaveBillPort saveBillPort,
+            SyncBillPort syncBillPort, TransactionPort transactionPort,
+            Map<String, ProviderGatewayPort> providers, BillMapper billMapper) {
         this.loadBillerPort = loadBillerPort;
         this.loadBillByExternalRefPort = loadBillByExternalRefPort;
         this.saveBillPort = saveBillPort;
@@ -46,7 +45,7 @@ public class BillFetchService implements BillFetchUseCase {
     @Override
     public BillResult fetchBill(BillFetchCommand command) {
         Billers biller = loadBillerPort.findById(command.billerId())
-            .orElseThrow(() -> new BillerNotFoundException(command.billerId()));
+                .orElseThrow(() -> new BillerNotFoundException(command.billerId()));
 
         ProviderGatewayPort gateway = resolveGateway(biller);
         ProviderBills providerBill = gateway.fetchBill(command.externalCustomerNumber());
@@ -64,13 +63,13 @@ public class BillFetchService implements BillFetchUseCase {
 
     private ProviderGatewayPort resolveGateway(Billers biller) {
         return Optional.ofNullable(providers.get(biller.getServiceProvider().toString()))
-            .orElseThrow(() -> new ProviderNotSupportedException(
-                "No gateway registered for provider: " + biller.getServiceProvider()));
+                .orElseThrow(() -> new ProviderNotSupportedException(
+                        "No gateway registered for provider: " + biller.getServiceProvider()));
     }
 
     private Bills syncBillWithProvider(ProviderBills providerBill, BillFetchCommand command) {
         Optional<Bills> existing = loadBillByExternalRefPort
-            .findByExternalBillIdAndBillerId(providerBill.getId(), command.billerId());
+                .findByExternalBillIdAndBillerId(providerBill.getId(), command.billerId());
 
         if (existing.isPresent()) {
             Bills found = existing.get();
@@ -81,10 +80,10 @@ public class BillFetchService implements BillFetchUseCase {
         }
 
         BillCreateData createData = new BillCreateData(command.billerId(), command.userId(),
-            providerBill.getCustomerNumber(), providerBill.getCustomerName(), providerBill.getId(),
-            providerBill.getAmount(), providerBill.getCurrency(),
-            providerBill.getBillingPeriodStart(), providerBill.getBillingPeriodEnd(),
-            providerBill.getDueDate());
+                providerBill.getCustomerNumber(), providerBill.getCustomerName(),
+                providerBill.getId(), providerBill.getAmount(), providerBill.getCurrency(),
+                providerBill.getBillingPeriodStart(), providerBill.getBillingPeriodEnd(),
+                providerBill.getDueDate());
         return saveBillPort.save(Bills.create(createData));
     }
 }

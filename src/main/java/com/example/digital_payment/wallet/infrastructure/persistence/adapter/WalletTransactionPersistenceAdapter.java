@@ -3,10 +3,8 @@ package com.example.digital_payment.wallet.infrastructure.persistence.adapter;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-
 import com.example.digital_payment.wallet.application.port.out.LoadWalletTransactionByTransactionId;
 import com.example.digital_payment.wallet.application.port.out.LoadWalletTransactionPort;
 import com.example.digital_payment.wallet.application.port.out.LoadWalletTransactionsPort;
@@ -19,13 +17,13 @@ import com.example.digital_payment.wallet.infrastructure.persistence.repository.
 
 @Component
 public class WalletTransactionPersistenceAdapter
-    implements SaveWalletTransactionPort, LoadWalletTransactionPort, LoadWalletTransactionsPort,
-    LoadWalletTransactionByTransactionId, UpdateWalletTransactionPort {
+        implements SaveWalletTransactionPort, LoadWalletTransactionPort, LoadWalletTransactionsPort,
+        LoadWalletTransactionByTransactionId, UpdateWalletTransactionPort {
     private final WalletTransactionJpaRepository jpaRepository;
     private final WalletTransactionPersistenceMapper mapper;
 
     public WalletTransactionPersistenceAdapter(WalletTransactionJpaRepository jpaRepository,
-        WalletTransactionPersistenceMapper mapper) {
+            WalletTransactionPersistenceMapper mapper) {
         this.jpaRepository = jpaRepository;
         this.mapper = mapper;
     }

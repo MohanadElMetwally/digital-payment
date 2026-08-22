@@ -4,10 +4,8 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-
 import com.example.digital_payment.settlement.application.port.out.ClaimSettlementPort;
 import com.example.digital_payment.settlement.application.port.out.EnqueueSettlementPort;
 import com.example.digital_payment.settlement.application.port.out.LoadSettlementPort;
@@ -21,12 +19,12 @@ import com.example.digital_payment.settlement.infrastructure.persistence.reposit
 
 @Component
 public class SettlementPersistenceAdapter implements SaveSettlementPort, LoadSettlementPort,
-    LoadSettlementsPort, UpdateSettlementPort, ClaimSettlementPort, EnqueueSettlementPort {
+        LoadSettlementsPort, UpdateSettlementPort, ClaimSettlementPort, EnqueueSettlementPort {
     private final SettlementJpaRepository settlementJpaRepository;
     private final SettlementPersistenceMapper settlementPersistenceMapper;
 
     public SettlementPersistenceAdapter(SettlementJpaRepository settlementJpaRepository,
-        SettlementPersistenceMapper settlementPersistenceMapper) {
+            SettlementPersistenceMapper settlementPersistenceMapper) {
         this.settlementJpaRepository = settlementJpaRepository;
         this.settlementPersistenceMapper = settlementPersistenceMapper;
     }
@@ -47,10 +45,8 @@ public class SettlementPersistenceAdapter implements SaveSettlementPort, LoadSet
     @Override
     @Transactional
     public List<Settlements> findAll() {
-        return settlementJpaRepository.findAll()
-            .stream()
-            .map(settlementPersistenceMapper::toDomain)
-            .toList();
+        return settlementJpaRepository.findAll().stream().map(settlementPersistenceMapper::toDomain)
+                .toList();
     }
 
     @Override

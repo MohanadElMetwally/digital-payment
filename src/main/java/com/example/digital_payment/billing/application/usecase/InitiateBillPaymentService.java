@@ -18,7 +18,7 @@ public class InitiateBillPaymentService implements InitiateBillPaymentUseCase {
     private final SaveBillPaymentPort saveBillPaymentPort;
 
     public InitiateBillPaymentService(TransactionPort transactionPort, LoadBillPort loadBillPort,
-        UpdateBillPort updateBillPort, SaveBillPaymentPort saveBillPaymentPort) {
+            UpdateBillPort updateBillPort, SaveBillPaymentPort saveBillPaymentPort) {
         this.transactionPort = transactionPort;
         this.loadBillPort = loadBillPort;
         this.updateBillPort = updateBillPort;
@@ -29,9 +29,9 @@ public class InitiateBillPaymentService implements InitiateBillPaymentUseCase {
     public void initiate(ProcessBillPaymentCommand command) {
         transactionPort.executeVoid(() -> {
             Bills bill = loadBillPort.findById(command.billId())
-                .orElseThrow(() -> new BillNotFoundException());
+                    .orElseThrow(() -> new BillNotFoundException());
             BillPaymentCreationData creationData = new BillPaymentCreationData(
-                command.transactionId(), command.billId(), bill.getAmount());
+                    command.transactionId(), command.billId(), bill.getAmount());
             BillPayments billPayment = BillPayments.create(creationData);
             bill.markPending();
             saveBillPaymentPort.save(billPayment);

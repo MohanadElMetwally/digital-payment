@@ -4,7 +4,6 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.UUID;
-
 import com.example.digital_payment.fake_provider.domain.enums.Provider;
 import com.example.digital_payment.fake_provider.domain.enums.ProviderBillStatus;
 import com.example.digital_payment.fake_provider.domain.model.snapshot.FakeBillSnapshot;
@@ -29,9 +28,9 @@ public class FakeBills {
     @Override
     public String toString() {
         return "FakeBills [id=" + id + ", customerNumber=" + customerNumber + ", customerName="
-            + customerName + ", amount=" + amount + ", currency=" + currency + ", status=" + status
-            + ", billingPeriodStart=" + billingPeriodStart + ", billingPeriodEnd="
-            + billingPeriodEnd + ", dueDate=" + dueDate + ", createdAt=" + createdAt + "]";
+                + customerName + ", amount=" + amount + ", currency=" + currency + ", status="
+                + status + ", billingPeriodStart=" + billingPeriodStart + ", billingPeriodEnd="
+                + billingPeriodEnd + ", dueDate=" + dueDate + ", createdAt=" + createdAt + "]";
     }
 
     public static FakeBills reconstitute(FakeBillSnapshot snapshot) {

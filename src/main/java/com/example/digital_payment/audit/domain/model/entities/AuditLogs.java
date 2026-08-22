@@ -2,7 +2,6 @@ package com.example.digital_payment.audit.domain.model.entities;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
-
 import com.example.digital_payment.audit.domain.enums.AuditAction;
 import com.example.digital_payment.audit.domain.enums.EntityType;
 import com.example.digital_payment.audit.domain.model.snapshots.AuditLogsSnapshot;
@@ -18,8 +17,7 @@ public class AuditLogs {
     private String newValue;
     private LocalDateTime createdAt;
 
-    public AuditLogs() {
-    }
+    public AuditLogs() {}
 
     public static AuditLogs record(AuditLogCreateData createdData) {
         AuditLogs log = new AuditLogs();

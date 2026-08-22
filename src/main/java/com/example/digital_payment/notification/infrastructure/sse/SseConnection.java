@@ -1,10 +1,8 @@
 package com.example.digital_payment.notification.infrastructure.sse;
 
 import java.util.UUID;
-
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
-
 import com.example.digital_payment.shared.application.port.out.EventPublisherPort;
 import com.example.digital_payment.shared.domain.enums.SseNotificationType;
 import com.example.digital_payment.shared.dto.MessageResponse;
@@ -25,8 +23,8 @@ public class SseConnection {
     public SseEmitter connect(UUID userId) {
         SseEmitter emitter = registry.register(userId);
         publisher.publish(new SseNotificationEvent<MessageResponse>(userId,
-            new NotificationMessage<MessageResponse>(SseNotificationType.SYSTEM,
-                new MessageResponse("Connected successfully!"))));
+                new NotificationMessage<MessageResponse>(SseNotificationType.SYSTEM,
+                        new MessageResponse("Connected successfully!"))));
         return emitter;
     }
 }

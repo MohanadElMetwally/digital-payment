@@ -16,7 +16,7 @@ public class RegisterCreditCardService implements RegisterCreditCardUseCase {
     private final RegisterCardGateway gateway;
 
     public RegisterCreditCardService(SaveCreditCardPort saveCreditCardPort,
-        LoadPaymentCustomerPort loadPaymentCustomerPort, RegisterCardGateway gateway) {
+            LoadPaymentCustomerPort loadPaymentCustomerPort, RegisterCardGateway gateway) {
         this.saveCreditCardPort = saveCreditCardPort;
         this.loadPaymentCustomerPort = loadPaymentCustomerPort;
         this.gateway = gateway;
@@ -24,12 +24,14 @@ public class RegisterCreditCardService implements RegisterCreditCardUseCase {
 
     @Override
     public CreditCards registerCreditCard(RegisterCreditCardCommand command) {
-        PaymentCustomers customer = loadPaymentCustomerPort.findByUserId(command.userId())
-            .orElseThrow(() -> new PaymentCustomerNotFoundException("Payment Customer not found"));
+        PaymentCustomers customer =
+                loadPaymentCustomerPort.findByUserId(command.userId()).orElseThrow(
+                        () -> new PaymentCustomerNotFoundException("Payment Customer not found"));
         gateway.register(customer.getCustomerId(), command.paymentMethodId());
-        CardRegistrationCreationData creationData = new CardRegistrationCreationData(
-            command.userId(), command.brand(), command.lastFour(), command.expiryMonth(),
-            command.expiryYear(), command.paymentMethodId(), command.status(), command.isDefault());
+        CardRegistrationCreationData creationData =
+                new CardRegistrationCreationData(command.userId(), command.brand(),
+                        command.lastFour(), command.expiryMonth(), command.expiryYear(),
+                        command.paymentMethodId(), command.status(), command.isDefault());
         CreditCards card = CreditCards.create(creationData);
         return saveCreditCardPort.save(card);
     }

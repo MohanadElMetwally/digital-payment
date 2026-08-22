@@ -2,7 +2,6 @@ package com.example.digital_payment.settlement.infrastructure.scheduler;
 
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
-
 import com.example.digital_payment.settlement.application.port.in.EnqueueSettlementsUseCase;
 
 @Component

@@ -1,7 +1,6 @@
 package com.example.digital_payment.billing.application.usecase;
 
 import java.util.UUID;
-
 import com.example.digital_payment.billing.application.dto.BillerResult;
 import com.example.digital_payment.billing.application.mapper.BillerMapper;
 import com.example.digital_payment.billing.application.port.in.GetBillerUseCase;
@@ -20,8 +19,8 @@ public class GetBillerService implements GetBillerUseCase {
 
     @Override
     public BillerResult getById(UUID id) {
-        Billers biller = loadBillerPort.findById(id)
-            .orElseThrow(() -> new BillerNotFoundException(id));
+        Billers biller =
+                loadBillerPort.findById(id).orElseThrow(() -> new BillerNotFoundException(id));
         return billerMapper.toResult(biller);
     }
 }

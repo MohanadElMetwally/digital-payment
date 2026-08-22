@@ -3,7 +3,6 @@ package com.example.digital_payment.billing.domain.model.entities;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.UUID;
-
 import com.example.digital_payment.billing.domain.enums.BillPaymentStatus;
 import com.example.digital_payment.billing.domain.model.snapshots.BillPaymentSnapshot;
 import com.example.digital_payment.billing.domain.model.valueobjects.BillPaymentCreationData;

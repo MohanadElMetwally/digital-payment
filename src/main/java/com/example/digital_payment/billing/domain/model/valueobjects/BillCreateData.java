@@ -5,7 +5,7 @@ import java.time.LocalDate;
 import java.util.UUID;
 
 public record BillCreateData(UUID billerId, UUID userId, String externalCustomerNumber,
-    String externalCustomerName, String externalBillId, BigDecimal amount, String currency,
-    LocalDate billingPeriodStart, LocalDate billingPeriodEnd, LocalDate dueDate) {
+        String externalCustomerName, String externalBillId, BigDecimal amount, String currency,
+        LocalDate billingPeriodStart, LocalDate billingPeriodEnd, LocalDate dueDate) {
 
 }

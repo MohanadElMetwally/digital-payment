@@ -4,7 +4,6 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.UUID;
-
 import com.example.digital_payment.billing.domain.enums.BillStatus;
 import com.example.digital_payment.billing.domain.model.snapshots.BillSnapshot;
 import com.example.digital_payment.billing.domain.model.valueobjects.BillCreateData;
@@ -25,8 +24,7 @@ public class Bills {
     private LocalDateTime lastSyncedAt;
     private LocalDateTime createdAt;
 
-    public Bills() {
-    }
+    public Bills() {}
 
     public static Bills create(BillCreateData createData) {
         Bills bill = new Bills();
@@ -69,7 +67,7 @@ public class Bills {
     public boolean syncFromProvider(BigDecimal latestAmount) {
         if (this.status == BillStatus.PENDING || this.status == BillStatus.PAID) {
             throw new IllegalStateException(
-                "Cannot sync bill, it is already in status %s".formatted(status));
+                    "Cannot sync bill, it is already in status %s".formatted(status));
         }
         boolean amountChanged = this.amount.compareTo(latestAmount) != 0;
         this.amount = latestAmount;

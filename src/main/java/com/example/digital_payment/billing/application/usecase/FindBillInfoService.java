@@ -1,7 +1,6 @@
 package com.example.digital_payment.billing.application.usecase;
 
 import java.util.UUID;
-
 import com.example.digital_payment.billing.application.port.out.LoadBillPort;
 import com.example.digital_payment.billing.domain.model.entities.Bills;
 import com.example.digital_payment.shared.application.port.in.FindBillInfoUseCase;
@@ -18,7 +17,7 @@ public class FindBillInfoService implements FindBillInfoUseCase {
     @Override
     public BillInfo fetchBillInfo(UUID id) {
         Bills bill = loadBillPort.findById(id)
-            .orElseThrow(() -> new ResourceNotFoundException("Bill not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Bill not found"));
         return new BillInfo(bill.getCurrency(), bill.getAmount(), bill.getExternalCustomerNumber());
     }
 

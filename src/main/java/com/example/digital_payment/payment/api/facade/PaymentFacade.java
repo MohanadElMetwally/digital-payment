@@ -2,9 +2,7 @@ package com.example.digital_payment.payment.api.facade;
 
 import java.util.Optional;
 import java.util.UUID;
-
 import org.springframework.stereotype.Component;
-
 import com.example.digital_payment.payment.api.dto.request.PaymentRequest;
 import com.example.digital_payment.payment.api.dto.request.WalletTopUpRequest;
 import com.example.digital_payment.payment.api.dto.response.PaymentResponse;
@@ -24,7 +22,6 @@ import com.example.digital_payment.shared.dto.WalletInfo;
 import com.example.digital_payment.shared.exception.ForbiddenException;
 import com.example.digital_payment.shared.exception.ResourceNotFoundException;
 import com.example.digital_payment.shared.security.CurrentUserContext;
-
 import lombok.extern.slf4j.Slf4j;
 
 @Component
@@ -40,12 +37,12 @@ public class PaymentFacade {
     private final InitiateWalletTopUpUseCase initiateWalletTopUpUseCase;
 
     public PaymentFacade(CurrentUserContext currentUserContext,
-        FindBillInfoUseCase findPayableBillUseCase, TransactionCacheStore transactionCacheStore,
-        PaymentApiMapper paymentApiMapper,
-        LoadTransactionByUserIdAndKeyUseCase loadTransactionByUserIdAndKeyUseCase,
-        InitiateBillPaymentUseCase initiatePaymentUseCase,
-        FindWalletInfoUseCase findWalletInfoUseCase,
-        InitiateWalletTopUpUseCase initiateWalletTopUpUseCase) {
+            FindBillInfoUseCase findPayableBillUseCase, TransactionCacheStore transactionCacheStore,
+            PaymentApiMapper paymentApiMapper,
+            LoadTransactionByUserIdAndKeyUseCase loadTransactionByUserIdAndKeyUseCase,
+            InitiateBillPaymentUseCase initiatePaymentUseCase,
+            FindWalletInfoUseCase findWalletInfoUseCase,
+            InitiateWalletTopUpUseCase initiateWalletTopUpUseCase) {
         this.currentUserContext = currentUserContext;
         this.findBillinfoUseCase = findPayableBillUseCase;
         this.transactionCacheStore = transactionCacheStore;
@@ -63,7 +60,7 @@ public class PaymentFacade {
         } catch (ResourceNotFoundException e) {
             log.error("Payment initiation failed. bill with id {} was not found", request.billId());
             throw new InvalidPaymentRequestException(
-                "Cannot initiate payment for non-existing bill");
+                    "Cannot initiate payment for non-existing bill");
         }
 
         UUID userId = currentUserContext.getUserId();
@@ -73,12 +70,12 @@ public class PaymentFacade {
                 findWalletInfoUseCase.fetchWalletInfo(request.walletId(), userId);
             } catch (ResourceNotFoundException e) {
                 log.error("Wallet top-up initiation failed, wallet {} not found",
-                    request.walletId());
+                        request.walletId());
                 throw new InvalidPaymentRequestException(
-                    "Cannot initiate top-up for non-existing wallet");
+                        "Cannot initiate top-up for non-existing wallet");
             } catch (ForbiddenException e) {
                 log.warn("Wallet top-up denied: wallet {} does not belong to user {}",
-                    request.walletId(), userId);
+                        request.walletId(), userId);
                 throw new InvalidPaymentRequestException("Not authorized for this wallet");
             }
         }
@@ -90,7 +87,7 @@ public class PaymentFacade {
         }
 
         Optional<Transactions> existing = loadTransactionByUserIdAndKeyUseCase
-            .loadTransactionByUserIdAndKey(userId, idempotencyKey);
+                .loadTransactionByUserIdAndKey(userId, idempotencyKey);
         if (existing.isPresent()) {
             log.debug("Transaction found at DB level, returning the value to user.");
             transactionCacheStore.save(userId, idempotencyKey, existing.get());
@@ -98,8 +95,8 @@ public class PaymentFacade {
         }
 
         InitiatePaymentCommand command = new InitiatePaymentCommand(userId, idempotencyKey,
-            request.creditCardId(), TransactionType.PAYMENT, billInfo.currency(), billInfo.amount(),
-            request.billId(), request.useWallet(), request.walletId());
+                request.creditCardId(), TransactionType.PAYMENT, billInfo.currency(),
+                billInfo.amount(), request.billId(), request.useWallet(), request.walletId());
         log.debug("Initiating payment data: {}", command);
         Transactions tx = initiatePaymentUseCase.initiatePayment(command);
 
@@ -116,12 +113,12 @@ public class PaymentFacade {
         } catch (ResourceNotFoundException e) {
             log.error("Wallet top-up initiation failed, wallet {} not found", request.walletId());
             throw new InvalidPaymentRequestException(
-                "Cannot initiate top-up for non-existing wallet");
+                    "Cannot initiate top-up for non-existing wallet");
         } catch (ForbiddenException e) {
             log.warn("Wallet top-up denied: wallet {} does not belong to user {}",
-                request.walletId(), userId);
+                    request.walletId(), userId);
             throw new InvalidPaymentRequestException(
-                "Not authorized for this wallet: " + e.getMessage());
+                    "Not authorized for this wallet: " + e.getMessage());
         }
 
         Optional<Transactions> cached = transactionCacheStore.get(userId, idempotencyKey);
@@ -131,7 +128,7 @@ public class PaymentFacade {
         }
 
         Optional<Transactions> existing = loadTransactionByUserIdAndKeyUseCase
-            .loadTransactionByUserIdAndKey(userId, idempotencyKey);
+                .loadTransactionByUserIdAndKey(userId, idempotencyKey);
         if (existing.isPresent()) {
             log.debug("Transaction found at DB level, returning the value to user.");
             transactionCacheStore.save(userId, idempotencyKey, existing.get());
@@ -139,8 +136,8 @@ public class PaymentFacade {
         }
 
         InitiatePaymentCommand command = new InitiatePaymentCommand(userId, idempotencyKey,
-            request.creditCardId(), TransactionType.WALLET_TOP_UP, walletInfo.currency(),
-            request.amount(), request.walletId());
+                request.creditCardId(), TransactionType.WALLET_TOP_UP, walletInfo.currency(),
+                request.amount(), request.walletId());
         log.debug("Initiating payment data: {}", command);
         Transactions tx = initiateWalletTopUpUseCase.initiateWalletTopUp(command);
 

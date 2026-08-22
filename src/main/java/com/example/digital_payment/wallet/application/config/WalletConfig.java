@@ -2,7 +2,6 @@ package com.example.digital_payment.wallet.application.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
-
 import com.example.digital_payment.shared.application.port.in.FindWalletInfoUseCase;
 import com.example.digital_payment.shared.application.port.out.TransactionPort;
 import com.example.digital_payment.wallet.application.mapper.WalletMapper;
@@ -35,7 +34,7 @@ public class WalletConfig {
 
     @Bean
     public GetWalletUseCase getWalletUseCase(LoadWalletPort loadWalletPort,
-        WalletMapper walletMapper) {
+            WalletMapper walletMapper) {
         return new GetWalletService(loadWalletPort, walletMapper);
     }
 
@@ -51,36 +50,36 @@ public class WalletConfig {
 
     @Bean
     public CreditWalletUseCase creditWalletUseCase(TransactionPort transactionPort,
-        LoadWalletPort loadWalletPort, UpdateWalletPort updateWalletPort,
-        LoadWalletTransactionByTransactionId loadWalletTransactionPort,
-        UpdateWalletTransactionPort updateWalletTransactionPort) {
+            LoadWalletPort loadWalletPort, UpdateWalletPort updateWalletPort,
+            LoadWalletTransactionByTransactionId loadWalletTransactionPort,
+            UpdateWalletTransactionPort updateWalletTransactionPort) {
         return new CreditWalletService(transactionPort, loadWalletPort, updateWalletPort,
-            loadWalletTransactionPort, updateWalletTransactionPort);
+                loadWalletTransactionPort, updateWalletTransactionPort);
     }
 
     @Bean
     public DebitWalletUseCase debitWalletUseCase(TransactionPort transactionPort,
-        LoadWalletPort loadWalletPort, UpdateWalletPort updateWalletPort,
-        LoadWalletTransactionByTransactionId loadWalletTransactionPort,
-        UpdateWalletTransactionPort updateWalletTransactionPort) {
+            LoadWalletPort loadWalletPort, UpdateWalletPort updateWalletPort,
+            LoadWalletTransactionByTransactionId loadWalletTransactionPort,
+            UpdateWalletTransactionPort updateWalletTransactionPort) {
         return new DebitWalletService(transactionPort, loadWalletPort, updateWalletPort,
-            loadWalletTransactionPort, updateWalletTransactionPort);
+                loadWalletTransactionPort, updateWalletTransactionPort);
     }
 
     @Bean
     public InitiateWalletTransactionUseCase initiateWalletTransactionUseCase(
-        TransactionPort transactionPort, LoadWalletPort loadWalletPort,
-        SaveWalletTransactionPort saveWalletTransactionPort) {
+            TransactionPort transactionPort, LoadWalletPort loadWalletPort,
+            SaveWalletTransactionPort saveWalletTransactionPort) {
         return new InitiateWalletTransactionService(transactionPort, loadWalletPort,
-            saveWalletTransactionPort);
+                saveWalletTransactionPort);
     }
 
     @Bean
     public MarkWalletTransactionFailedUseCase markWalletTransactionFailedUseCase(
-        TransactionPort transactionPort,
-        LoadWalletTransactionByTransactionId loadWalletTransactionPort,
-        UpdateWalletTransactionPort updateWalletTransactionPort) {
+            TransactionPort transactionPort,
+            LoadWalletTransactionByTransactionId loadWalletTransactionPort,
+            UpdateWalletTransactionPort updateWalletTransactionPort) {
         return new MarkWalletTransactionFailedService(transactionPort, loadWalletTransactionPort,
-            updateWalletTransactionPort);
+                updateWalletTransactionPort);
     }
 }

@@ -5,7 +5,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
 import com.example.digital_payment.wallet.api.dto.WalletResponse;
 import com.example.digital_payment.wallet.api.facade.WalletFacade;
 

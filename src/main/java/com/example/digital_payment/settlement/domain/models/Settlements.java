@@ -3,7 +3,6 @@ package com.example.digital_payment.settlement.domain.models;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.UUID;
-
 import com.example.digital_payment.settlement.domain.enums.SettlementStatus;
 import com.example.digital_payment.settlement.domain.snapshots.SettlementSnapshot;
 import com.example.digital_payment.settlement.domain.valueobjects.SettlementCreationData;
@@ -68,7 +67,7 @@ public class Settlements {
 
     public void markProcessing() {
         if (this.status == SettlementStatus.SUCCEEDED
-            || this.status == SettlementStatus.PROCESSING) {
+                || this.status == SettlementStatus.PROCESSING) {
             return;
         }
 
@@ -94,7 +93,7 @@ public class Settlements {
         }
 
         this.status = this.attemptCount >= maxAttempts ? SettlementStatus.FAILED
-            : SettlementStatus.PROCESSING;
+                : SettlementStatus.PROCESSING;
         this.lastError = error;
         this.processedAt = LocalDateTime.now();
     }

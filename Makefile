@@ -1,3 +1,11 @@
+COMMAND_ARG := $(word 2,$(MAKECMDGOALS))
+
+ENV := $(if $(COMMAND_ARG),$(COMMAND_ARG),dev)
+
+ifneq ($(COMMAND_ARG),)
+  $(eval $(COMMAND_ARG):;@:)
+endif
+
 run:
 	chmod +x scripts/run.sh
 	./scripts/run.sh $(ENV)

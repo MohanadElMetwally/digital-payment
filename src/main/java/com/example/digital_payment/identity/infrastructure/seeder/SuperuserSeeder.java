@@ -6,7 +6,6 @@ import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.stereotype.Component;
-
 import com.example.digital_payment.identity.application.dto.RegisterUserCommand;
 import com.example.digital_payment.identity.application.port.in.CheckUsersExistUseCase;
 import com.example.digital_payment.identity.application.port.in.RegisterUserUseCase;
@@ -23,7 +22,7 @@ public class SuperuserSeeder implements ApplicationRunner {
     private final SeederProperties props;
 
     public SuperuserSeeder(RegisterUserUseCase registerUserUseCase,
-        CheckUsersExistUseCase checkUsersExistUseCase, SeederProperties props) {
+            CheckUsersExistUseCase checkUsersExistUseCase, SeederProperties props) {
         this.registerUserUseCase = registerUserUseCase;
         this.checkUsersExistUseCase = checkUsersExistUseCase;
         this.props = props;
@@ -36,9 +35,9 @@ public class SuperuserSeeder implements ApplicationRunner {
             return;
         }
 
-        registerUserUseCase.register(
-            RegisterUserCommand.asSuperuser(props.username(), props.email(), props.phone(),
-                props.password(), props.firstName(), props.lastName(), props.dateOfBirth()));
+        registerUserUseCase.register(RegisterUserCommand.asSuperuser(props.username(),
+                props.email(), props.phone(), props.password(), props.firstName(), props.lastName(),
+                props.dateOfBirth()));
 
         log.info("[Seeder] Superuser created: {} {}", props.firstName(), props.lastName());
     }

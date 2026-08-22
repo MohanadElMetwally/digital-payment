@@ -16,7 +16,7 @@ public class SaveSettlementService implements SaveSettlementUseCase {
     @Override
     public void handle(SaveSettlementCommand command) {
         Settlements settlement = Settlements.create(new SettlementCreationData(command.billId(),
-            command.userId(), command.customerNumber(), command.amount(), command.currency()));
+                command.userId(), command.customerNumber(), command.amount(), command.currency()));
         saveSettlementPort.save(settlement);
     }
 }

@@ -1,7 +1,6 @@
 package com.example.digital_payment.settlement.application.usecase;
 
 import java.util.List;
-
 import com.example.digital_payment.settlement.application.port.in.GetFailedSettlementsUseCase;
 import com.example.digital_payment.settlement.application.port.out.LoadFailedSettlementsPort;
 import com.example.digital_payment.settlement.domain.models.FailedSettlements;

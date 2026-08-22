@@ -4,10 +4,8 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.UUID;
-
 import com.example.digital_payment.fake_provider.domain.enums.Provider;
 import com.example.digital_payment.fake_provider.domain.enums.ProviderBillStatus;
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;

@@ -2,9 +2,7 @@ package com.example.digital_payment.shared.config.rabbit;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import org.springframework.boot.context.properties.ConfigurationProperties;
-
 import lombok.Data;
 
 @Data

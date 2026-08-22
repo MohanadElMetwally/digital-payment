@@ -14,7 +14,7 @@ public class PaymentCreationHandler implements PaymentCreatedUseCase {
     private final UpdateTransactionPort updateTransactionPort;
 
     public PaymentCreationHandler(TransactionPort transactionPort,
-        LoadTransactionPort loadTransactionPort, UpdateTransactionPort updateTransactionPort) {
+            LoadTransactionPort loadTransactionPort, UpdateTransactionPort updateTransactionPort) {
         this.transactionPort = transactionPort;
         this.loadTransactionPort = loadTransactionPort;
         this.updateTransactionPort = updateTransactionPort;
@@ -24,8 +24,8 @@ public class PaymentCreationHandler implements PaymentCreatedUseCase {
     public void handle(PaymentCreatedCommand command) {
         transactionPort.executeVoid(() -> {
             Transactions tx = loadTransactionPort.findById(command.transactionId())
-                .orElseThrow(() -> new TransactionNotFoundException("Transaction not found"));
-            tx.markCreated(command.externalReference());            
+                    .orElseThrow(() -> new TransactionNotFoundException("Transaction not found"));
+            tx.markCreated(command.externalReference());
             updateTransactionPort.update(tx);
         });
     }

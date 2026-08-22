@@ -4,6 +4,6 @@ import java.time.LocalDate;
 import java.util.UUID;
 
 public record UserProfileRegistrationData(UUID userId, String firstName, String lastName,
-    String country, LocalDate dateOfBirth) {
+        String country, LocalDate dateOfBirth) {
 
 }

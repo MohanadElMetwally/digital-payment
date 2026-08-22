@@ -20,9 +20,9 @@ public class MarkBillPaymentSucceededService implements MarkBillPaymentSucceeded
     private final UpdateBillPaymentPort updateBillPaymentPort;
 
     public MarkBillPaymentSucceededService(TransactionPort transactionPort,
-        LoadBillPort loadBillPort, UpdateBillPort updateBillPort,
-        LoadBillPaymentByTransactionIdPort loadBillPaymentPort,
-        UpdateBillPaymentPort updateBillPaymentPort) {
+            LoadBillPort loadBillPort, UpdateBillPort updateBillPort,
+            LoadBillPaymentByTransactionIdPort loadBillPaymentPort,
+            UpdateBillPaymentPort updateBillPaymentPort) {
         this.transactionPort = transactionPort;
         this.loadBillPort = loadBillPort;
         this.updateBillPort = updateBillPort;
@@ -34,10 +34,10 @@ public class MarkBillPaymentSucceededService implements MarkBillPaymentSucceeded
     public Bills mark(ProcessBillPaymentCommand command) {
         return transactionPort.execute(() -> {
             Bills bill = loadBillPort.findById(command.billId())
-                .orElseThrow(() -> new BillNotFoundException());
-            BillPayments billPayment = loadBillPaymentPort
-                .findByTransactionId(command.transactionId())
-                .orElseThrow(() -> new BillPaymentNotFoundException("BillPayment not found"));
+                    .orElseThrow(() -> new BillNotFoundException());
+            BillPayments billPayment =
+                    loadBillPaymentPort.findByTransactionId(command.transactionId()).orElseThrow(
+                            () -> new BillPaymentNotFoundException("BillPayment not found"));
             bill.markPaid();
             billPayment.markSucceeded();
             updateBillPort.update(bill);

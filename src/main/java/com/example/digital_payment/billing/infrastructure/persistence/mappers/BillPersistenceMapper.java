@@ -1,7 +1,6 @@
 package com.example.digital_payment.billing.infrastructure.persistence.mappers;
 
 import org.springframework.stereotype.Component;
-
 import com.example.digital_payment.billing.domain.model.entities.Bills;
 import com.example.digital_payment.billing.domain.model.snapshots.BillSnapshot;
 import com.example.digital_payment.billing.infrastructure.persistence.entity.BillEntity;
@@ -29,11 +28,11 @@ public class BillPersistenceMapper {
 
     public Bills toDomain(BillEntity entity) {
         BillSnapshot snapshot = new BillSnapshot(entity.getId(), entity.getBillerId(),
-            entity.getUserId(), entity.getExternalCustomerNumber(),
-            entity.getExternalCustomerName(), entity.getExternalBillId(), entity.getAmount(),
-            entity.getCurrency(), entity.getStatus(), entity.getBillingPeriodStart(),
-            entity.getBillingPeriodEnd(), entity.getDueDate(), entity.getLastSyncedAt(),
-            entity.getCreatedAt());
+                entity.getUserId(), entity.getExternalCustomerNumber(),
+                entity.getExternalCustomerName(), entity.getExternalBillId(), entity.getAmount(),
+                entity.getCurrency(), entity.getStatus(), entity.getBillingPeriodStart(),
+                entity.getBillingPeriodEnd(), entity.getDueDate(), entity.getLastSyncedAt(),
+                entity.getCreatedAt());
         return Bills.reconstitute(snapshot);
     }
 

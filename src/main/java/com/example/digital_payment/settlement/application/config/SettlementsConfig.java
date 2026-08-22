@@ -2,7 +2,6 @@ package com.example.digital_payment.settlement.application.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
 import com.example.digital_payment.settlement.application.port.in.EnqueueSettlementsUseCase;
 import com.example.digital_payment.settlement.application.port.in.GetFailedSettlementUseCase;
 import com.example.digital_payment.settlement.application.port.in.GetFailedSettlementsUseCase;
@@ -46,7 +45,8 @@ public class SettlementsConfig {
 
     @Bean
     public SaveFailedSettlementUseCase saveFailedSettlementUseCase(
-        SaveFailedSettlementPort saveFailedSettlementPort, LoadSettlementPort loadSettlementPort) {
+            SaveFailedSettlementPort saveFailedSettlementPort,
+            LoadSettlementPort loadSettlementPort) {
         return new SaveFailedSettlementService(saveFailedSettlementPort, loadSettlementPort);
     }
 
@@ -57,13 +57,13 @@ public class SettlementsConfig {
 
     @Bean
     public GetFailedSettlementUseCase getFailedSettlementUseCase(
-        LoadFailedSettlementPort loadFailedSettlementPort) {
+            LoadFailedSettlementPort loadFailedSettlementPort) {
         return new GetFailedSettlementService(loadFailedSettlementPort);
     }
 
     @Bean
     public GetFailedSettlementsUseCase getFailedSettlementsUseCase(
-        LoadFailedSettlementsPort loadFailedSettlementsPort) {
+            LoadFailedSettlementsPort loadFailedSettlementsPort) {
         return new GetFailedSettlementsService(loadFailedSettlementsPort);
     }
 
@@ -74,25 +74,25 @@ public class SettlementsConfig {
 
     @Bean
     public ProcessSettlementUseCase processSettlementUseCase(LoadSettlementPort loadSettlementPort,
-        PayProviderGateway payProviderGateway, UpdateSettlementPort updateSettlementPort,
-        TransactionPort transactionPort, ClaimSettlementPort claimSettlementPort) {
+            PayProviderGateway payProviderGateway, UpdateSettlementPort updateSettlementPort,
+            TransactionPort transactionPort, ClaimSettlementPort claimSettlementPort) {
         return new ProcessSettlementService(loadSettlementPort, payProviderGateway,
-            updateSettlementPort, transactionPort, claimSettlementPort);
+                updateSettlementPort, transactionPort, claimSettlementPort);
     }
 
     @Bean
     public EnqueueSettlementsUseCase enqueueSettlementsUseCase(
-        EnqueueSettlementPort enqueueSettlementPort) {
+            EnqueueSettlementPort enqueueSettlementPort) {
         return new EnqueueSettlementsService(enqueueSettlementPort);
     }
 
     @Bean
     public RelaySettlementOutboxUseCase relaySettlementOutboxUseCase(
-        LockSettlementOutboxPort lockSettlementOutboxPort, SettlementPublisherPort publisher,
-        TransactionPort transactionPort, LoadSettlementsOutboxPort loadSettlementsOutboxPort,
-        UpdateSettlementsOutboxPort updateSettlementsOutboxPort) {
+            LockSettlementOutboxPort lockSettlementOutboxPort, SettlementPublisherPort publisher,
+            TransactionPort transactionPort, LoadSettlementsOutboxPort loadSettlementsOutboxPort,
+            UpdateSettlementsOutboxPort updateSettlementsOutboxPort) {
         return new RelaySettlementOutboxService(lockSettlementOutboxPort, publisher,
-            transactionPort, loadSettlementsOutboxPort, updateSettlementsOutboxPort);
+                transactionPort, loadSettlementsOutboxPort, updateSettlementsOutboxPort);
     }
 
 }

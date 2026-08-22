@@ -3,7 +3,6 @@ package com.example.digital_payment.payment.application.usecase;
 import java.math.BigDecimal;
 import java.util.Optional;
 import java.util.UUID;
-
 import com.example.digital_payment.payment.application.dto.CreatePaymentCommand;
 import com.example.digital_payment.payment.application.dto.FundingPlan;
 import com.example.digital_payment.payment.application.dto.InitiatePaymentCommand;
@@ -47,9 +46,9 @@ public class InitiateBillPaymentService implements InitiateBillPaymentUseCase {
     private final FindWalletInfoUseCase findWalletInfoUseCase;
 
     public InitiateBillPaymentService(TransactionPort transactionPort,
-        SaveTransactionPort saveTransactionPort, LoadCreditCardPort loadCreditCardPort,
-        LoadPaymentCustomerPort loadPaymentCustomerPort, PaymentGatewayPort paymentGatewayPort,
-        EventPublisherPort eventPublisher, FindWalletInfoUseCase findWalletInfoUseCase) {
+            SaveTransactionPort saveTransactionPort, LoadCreditCardPort loadCreditCardPort,
+            LoadPaymentCustomerPort loadPaymentCustomerPort, PaymentGatewayPort paymentGatewayPort,
+            EventPublisherPort eventPublisher, FindWalletInfoUseCase findWalletInfoUseCase) {
         this.transactionPort = transactionPort;
         this.saveTransactionPort = saveTransactionPort;
         this.loadCreditCardPort = loadCreditCardPort;
@@ -80,10 +79,10 @@ public class InitiateBillPaymentService implements InitiateBillPaymentUseCase {
             wallet = findWalletInfoUseCase.fetchWalletInfo(command.walletId(), command.userId());
         } catch (ResourceNotFoundException e) {
             throw new InvalidPaymentRequestException(
-                "Cannot initiate payment with non-existing wallet");
+                    "Cannot initiate payment with non-existing wallet");
         } catch (ForbiddenException e) {
             throw new InvalidPaymentRequestException(
-                "Not authorized for this wallet: " + e.getMessage());
+                    "Not authorized for this wallet: " + e.getMessage());
         }
 
         BigDecimal walletAmount = wallet.balance().min(command.amount());
@@ -92,16 +91,17 @@ public class InitiateBillPaymentService implements InitiateBillPaymentUseCase {
     }
 
     private Transactions createAndFundTransaction(InitiatePaymentCommand command,
-        FundingPlan plan) {
-        TransactionCreationData data = new TransactionCreationData(command.userId(),
-            command.idempotencyKey(), command.type(), command.amount(), command.currency(), null);
+            FundingPlan plan) {
+        TransactionCreationData data =
+                new TransactionCreationData(command.userId(), command.idempotencyKey(),
+                        command.type(), command.amount(), command.currency(), null);
         Transactions tx = Transactions.create(data);
 
         transactionPort.executeVoid(() -> {
             saveTransactionPort.save(tx);
             if (plan.walletAmount().signum() > 0) {
                 eventPublisher.publish(new InitiateWalletDebitTransactionEvent(command.walletId(),
-                    tx.getId(), command.amount()));
+                        tx.getId(), command.amount()));
             }
             eventPublisher.publish(new InitiateBillPaymentEvent(command.referenceId(), tx.getId()));
         });
@@ -109,23 +109,23 @@ public class InitiateBillPaymentService implements InitiateBillPaymentUseCase {
     }
 
     private Transactions completeFromWallet(Transactions tx, UUID referenceId,
-        WalletInfo walletInfo) {
+            WalletInfo walletInfo) {
         transactionPort.executeVoid(() -> {
             eventPublisher.publish(new DebitWalletEvent(tx.getUserId(), walletInfo.walletId(),
-                tx.getId(), tx.getAmount()));
+                    tx.getId(), tx.getAmount()));
             eventPublisher.publish(new PaymentSucceededEvent(tx.getId(), "WALLET", referenceId));
         });
         return tx;
     }
 
     private Transactions chargeCardForRemainder(InitiatePaymentCommand command, Transactions tx,
-        FundingPlan plan) {
+            FundingPlan plan) {
         CreditCards card = getAuthorizedCard(command.userId(), command.creditCardId());
         String customerId = getPaymentCustomerId(command.userId());
 
         CreatePaymentCommand paymentCommand = new CreatePaymentCommand(tx.getId(), customerId,
-            plan.cardAmount(), command.currency(), card.getPaymentMethodId(),
-            command.idempotencyKey(), command.referenceId());
+                plan.cardAmount(), command.currency(), card.getPaymentMethodId(),
+                command.idempotencyKey(), command.referenceId());
 
         PaymentInitiationResult result;
         try {
@@ -136,9 +136,9 @@ public class InitiateBillPaymentService implements InitiateBillPaymentUseCase {
                     eventPublisher.publish(new WalletTransactionFailedEvent(tx.getId()));
                 }
                 eventPublisher
-                    .publish(new PaymentInitiationFailedEvent(tx.getId(), ex.getMessage()));
-                eventPublisher
-                    .publish(new InitiateBillPaymentFailedEvent(command.referenceId(), tx.getId()));
+                        .publish(new PaymentInitiationFailedEvent(tx.getId(), ex.getMessage()));
+                eventPublisher.publish(
+                        new InitiateBillPaymentFailedEvent(command.referenceId(), tx.getId()));
             });
             throw ex;
         }
@@ -146,10 +146,10 @@ public class InitiateBillPaymentService implements InitiateBillPaymentUseCase {
         transactionPort.executeVoid(() -> {
             if (plan.walletAmount().signum() > 0) {
                 eventPublisher.publish(new DebitWalletEvent(tx.getUserId(),
-                    plan.walletInfo().walletId(), tx.getId(), plan.walletAmount()));
+                        plan.walletInfo().walletId(), tx.getId(), plan.walletAmount()));
             }
-            eventPublisher
-                .publish(new PaymentInitiationCreatedEvent(tx.getId(), result.externalReference()));
+            eventPublisher.publish(
+                    new PaymentInitiationCreatedEvent(tx.getId(), result.externalReference()));
         });
         return tx;
     }
@@ -170,8 +170,8 @@ public class InitiateBillPaymentService implements InitiateBillPaymentUseCase {
 
     private String getPaymentCustomerId(UUID userId) {
         PaymentCustomers customer = loadPaymentCustomerPort.findByUserId(userId)
-            .orElseThrow(() -> new PaymentCustomerNotFoundException(
-                "Provider Customer not found for this user"));
+                .orElseThrow(() -> new PaymentCustomerNotFoundException(
+                        "Provider Customer not found for this user"));
         return customer.getCustomerId();
     }
 }

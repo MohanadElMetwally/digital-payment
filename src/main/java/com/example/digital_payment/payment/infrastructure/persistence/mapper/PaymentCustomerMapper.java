@@ -1,7 +1,6 @@
 package com.example.digital_payment.payment.infrastructure.persistence.mapper;
 
 import org.springframework.stereotype.Component;
-
 import com.example.digital_payment.payment.domain.model.entities.PaymentCustomers;
 import com.example.digital_payment.payment.domain.model.snapshots.PaymentCustomerSnapShot;
 import com.example.digital_payment.payment.infrastructure.persistence.entity.PaymentCustomerEntity;
@@ -18,7 +17,7 @@ public class PaymentCustomerMapper {
 
     public PaymentCustomers toDomain(PaymentCustomerEntity entity) {
         PaymentCustomerSnapShot snapshot = new PaymentCustomerSnapShot(entity.getUserId(),
-            entity.getCustomerId(), entity.getCreatedAt());
+                entity.getCustomerId(), entity.getCreatedAt());
         return PaymentCustomers.reconstitute(snapshot);
     }
 }

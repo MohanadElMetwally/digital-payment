@@ -1,7 +1,6 @@
 package com.example.digital_payment.identity.infrastructure.persistence.mapper;
 
 import org.springframework.stereotype.Component;
-
 import com.example.digital_payment.identity.domain.enums.UserUpdateFields;
 import com.example.digital_payment.identity.domain.model.entities.Users;
 import com.example.digital_payment.identity.domain.model.snapshots.UserProfileSnapshot;
@@ -41,14 +40,14 @@ public class UserPersistenceMapper {
         UserProfileSnapshot profileSnapshot = null;
         if (e.getUserProfile() != null) {
             profileSnapshot = new UserProfileSnapshot(e.getId(), e.getUserProfile().getFirstName(),
-                e.getUserProfile().getLastName(), e.getUserProfile().getCountry(),
-                e.getUserProfile().getDateOfBirth(), e.getUserProfile().getCreatedAt(),
-                e.getUserProfile().getUpdatedAt());
+                    e.getUserProfile().getLastName(), e.getUserProfile().getCountry(),
+                    e.getUserProfile().getDateOfBirth(), e.getUserProfile().getCreatedAt(),
+                    e.getUserProfile().getUpdatedAt());
         }
 
         UserSnapshot snapshot = new UserSnapshot(e.getId(), e.getUsername(), e.getEmail(),
-            e.getPhone(), e.getPasswordHash(), e.getRole(), e.getStatus(), e.getCreatedAt(),
-            e.getUpdatedAt(), profileSnapshot);
+                e.getPhone(), e.getPasswordHash(), e.getRole(), e.getStatus(), e.getCreatedAt(),
+                e.getUpdatedAt(), profileSnapshot);
 
         return Users.reconstitute(snapshot);
     }

@@ -1,7 +1,6 @@
 package com.example.digital_payment.settlement.infrastructure.persistence.mapper;
 
 import org.springframework.stereotype.Component;
-
 import com.example.digital_payment.settlement.domain.models.Settlements;
 import com.example.digital_payment.settlement.domain.snapshots.SettlementSnapshot;
 import com.example.digital_payment.settlement.infrastructure.persistence.entity.SettlementEntity;
@@ -29,14 +28,15 @@ public class SettlementPersistenceMapper {
 
     public Settlements toDomain(SettlementEntity entity) {
         SettlementSnapshot snapshot = new SettlementSnapshot(entity.getId(), entity.getBillId(),
-            entity.getUserId(), entity.getCustomerNumber(), entity.getAmount(),
-            entity.getCurrency(), entity.getStatus(), entity.getProviderIdempotencyKey(),
-            entity.getProviderReference(), entity.getAttemptCount(), entity.getLastAttemptedAt(),
-            entity.getLastError(), entity.getProcessedAt(), entity.getCreatedAt());
+                entity.getUserId(), entity.getCustomerNumber(), entity.getAmount(),
+                entity.getCurrency(), entity.getStatus(), entity.getProviderIdempotencyKey(),
+                entity.getProviderReference(), entity.getAttemptCount(),
+                entity.getLastAttemptedAt(), entity.getLastError(), entity.getProcessedAt(),
+                entity.getCreatedAt());
         return Settlements.reconstitute(snapshot);
     }
 
-    public void update(Settlements settlement, SettlementEntity entity){
+    public void update(Settlements settlement, SettlementEntity entity) {
         entity.setStatus(settlement.getStatus());
         entity.setAttemptCount(settlement.getAttemptCount());
         entity.setLastAttemptedAt(settlement.getLastAttemptedAt());

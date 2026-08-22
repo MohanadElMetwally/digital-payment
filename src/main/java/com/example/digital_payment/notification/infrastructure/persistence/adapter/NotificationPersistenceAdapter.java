@@ -3,10 +3,8 @@ package com.example.digital_payment.notification.infrastructure.persistence.adap
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-
 import com.example.digital_payment.notification.application.port.out.LoadNotificationPort;
 import com.example.digital_payment.notification.application.port.out.LoadNotificationsPort;
 import com.example.digital_payment.notification.application.port.out.SaveNotificationPort;
@@ -18,7 +16,7 @@ import com.example.digital_payment.notification.infrastructure.persistence.repos
 
 @Component
 public class NotificationPersistenceAdapter implements SaveNotificationPort, LoadNotificationsPort,
-    LoadNotificationPort, UpdateNotificationPort {
+        LoadNotificationPort, UpdateNotificationPort {
     private final NotificationJpaRepository notificationJpaRepository;
     private final NotificationPersistenceMapper notificationPersistenceMapper;
 
@@ -30,7 +28,7 @@ public class NotificationPersistenceAdapter implements SaveNotificationPort, Loa
     }
 
     public NotificationPersistenceAdapter(NotificationJpaRepository notificationJpaRepository,
-        NotificationPersistenceMapper notificationPersistenceMapper) {
+            NotificationPersistenceMapper notificationPersistenceMapper) {
         this.notificationJpaRepository = notificationJpaRepository;
         this.notificationPersistenceMapper = notificationPersistenceMapper;
     }
@@ -38,10 +36,8 @@ public class NotificationPersistenceAdapter implements SaveNotificationPort, Loa
     @Override
     @Transactional(readOnly = true)
     public List<Notifications> findAll() {
-        return notificationJpaRepository.findAll()
-            .stream()
-            .map(notificationPersistenceMapper::toDomain)
-            .toList();
+        return notificationJpaRepository.findAll().stream()
+                .map(notificationPersistenceMapper::toDomain).toList();
     }
 
     @Override

@@ -2,9 +2,7 @@ package com.example.digital_payment.settlement.infrastructure.scheduler;
 
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
-
 import com.example.digital_payment.settlement.application.port.in.RelaySettlementOutboxUseCase;
-
 import lombok.extern.slf4j.Slf4j;
 
 @Component
@@ -13,7 +11,7 @@ class SettlementOutboxRelayScheduler {
     private final RelaySettlementOutboxUseCase relaySettlementOutboxUseCase;
 
     public SettlementOutboxRelayScheduler(
-        RelaySettlementOutboxUseCase relaySettlementOutboxUseCase) {
+            RelaySettlementOutboxUseCase relaySettlementOutboxUseCase) {
         this.relaySettlementOutboxUseCase = relaySettlementOutboxUseCase;
     }
 

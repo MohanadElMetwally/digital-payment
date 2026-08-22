@@ -1,7 +1,6 @@
 package com.example.digital_payment.billing.domain.exceptions;
 
 import java.util.UUID;
-
 import com.example.digital_payment.shared.exception.ResourceNotFoundException;
 
 public class BillerNotFoundException extends ResourceNotFoundException {

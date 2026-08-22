@@ -1,7 +1,6 @@
 package com.example.digital_payment.payment.application.usecase;
 
 import java.util.UUID;
-
 import com.example.digital_payment.payment.application.dto.MarkPaymentFailedCommand;
 import com.example.digital_payment.payment.application.dto.MarkPaymentFailedResult;
 import com.example.digital_payment.payment.application.enums.MarkPaymentStatus;
@@ -19,7 +18,7 @@ public class MarkPaymentFailedHandler implements MarkPaymentFailedUseCase {
     private final UpdateTransactionPort updateTransactionPort;
 
     public MarkPaymentFailedHandler(LoadTransactionPort loadTransactionPort,
-        TransactionPort transactionPort, UpdateTransactionPort updateTransactionPort) {
+            TransactionPort transactionPort, UpdateTransactionPort updateTransactionPort) {
         this.transactionPort = transactionPort;
         this.loadTransactionPort = loadTransactionPort;
         this.updateTransactionPort = updateTransactionPort;
@@ -40,7 +39,7 @@ public class MarkPaymentFailedHandler implements MarkPaymentFailedUseCase {
 
     private Transactions loadTransactionOrThrow(UUID transactionId) {
         return loadTransactionPort.findById(transactionId)
-            .orElseThrow(() -> new TransactionNotFoundException("Transaction not found"));
+                .orElseThrow(() -> new TransactionNotFoundException("Transaction not found"));
     }
 
 }
