@@ -1,6 +1,6 @@
 COMMAND_ARG := $(word 2,$(MAKECMDGOALS))
 
-ENV := $(if $(COMMAND_ARG),$(COMMAND_ARG),dev)
+ENV := $(if $(COMMAND_ARG),$(COMMAND_ARG),)
 
 ifneq ($(COMMAND_ARG),)
   $(eval $(COMMAND_ARG):;@:)

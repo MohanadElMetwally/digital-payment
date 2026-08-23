@@ -1,6 +1,6 @@
 services:
   backend:
-    image: 921040037119.dkr.ecr.eu-central-1.amazonaws.com/digital_payment
+    image: 921040037119.dkr.ecr.eu-central-1.amazonaws.com/digital_payment:${IMAGE_TAG:-latest}
     restart: always
     env_file:
       - .env.stg
