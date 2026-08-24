@@ -4,9 +4,7 @@ set -euo pipefail
 
 ENV=${1:-}
 
-if [ -z "$ENV" ]; then
-    ENV_FILE=".env"
-else
+if [ -n "$ENV" ]; then
     shift || true
 
     case "$ENV" in
@@ -14,19 +12,22 @@ else
         stg)  ENV_FILE=".env.stg" ;;
         prod) ENV_FILE=".env.prod" ;;
         *)
-            echo "Unknown environment: $ENV"
+            echo "Unknown environment: $ENV" >&2
             exit 1
             ;;
     esac
-fi
 
-if [ ! -f "$ENV_FILE" ]; then
-    echo "Error: $ENV_FILE not found" >&2
-    exit 1
-fi
+    # Ensure the requested environment file actually exists
+    if [ ! -f "$ENV_FILE" ]; then
+        echo "Error: $ENV_FILE not found" >&2
+        exit 1
+    fi
 
-set -o allexport
-source "$ENV_FILE"
-set +o allexport
+    set -o allexport
+    source "$ENV_FILE"
+    set +o allexport
+else
+    echo "No environment specified. Skipping .env files and using raw system variables."
+fi
 
 ./mvnw test "$@"
