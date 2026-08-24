@@ -1,0 +1,121 @@
+name: CI/CD
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  test:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    environment: stg
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+
+      - name: Write .env.stg
+        run: |
+          cat <<EOF > .env.stg
+          DB_HOST=${{ secrets.DB_HOST }}
+          DB_PORT=${{ secrets.DB_PORT }}
+          DB_NAME=${{ secrets.DB_NAME }}
+          DB_USER=${{ secrets.DB_USER }}
+          DB_PASSWORD=${{ secrets.DB_PASSWORD }}
+          DB_URL=${{ secrets.DB_URL }}
+          DB_DRIVER=${{ vars.DB_DRIVER }}
+          DB_DIALECT=${{ vars.DB_DIALECT }}
+          DB_MIN_IDLE=${{ vars.DB_MIN_IDLE }}
+          DB_MAX_POOL_SIZE=${{ vars.DB_MAX_POOL_SIZE }}
+          DB_CONNECTION_TIMEOUT=${{ vars.DB_CONNECTION_TIMEOUT }}
+          DB_KEEPALIVE_TIME=${{ vars.DB_KEEPALIVE_TIME }}
+
+          SPRING_JPA_OPEN_IN_VIEW=${{ vars.SPRING_JPA_OPEN_IN_VIEW }}
+          SPRING_JPA_DDL_AUTO=${{ vars.SPRING_JPA_DDL_AUTO }}
+
+          SPRING_SECURITY_USERNAME=${{ secrets.SPRING_SECURITY_USERNAME }}
+          SPRING_SECURITY_PASSWORD=${{ secrets.SPRING_SECURITY_PASSWORD }}
+
+          JWT_SECRET_KEY=${{ secrets.JWT_SECRET_KEY }}
+          JWT_EXPIRATION_MS=${{ vars.JWT_EXPIRATION_MS }}
+
+          SUPERUSER_USERNAME=${{ secrets.SUPERUSER_USERNAME }}
+          SUPERUSER_EMAIL=${{ secrets.SUPERUSER_EMAIL }}
+          SUPERUSER_PHONE=${{ secrets.SUPERUSER_PHONE }}
+          SUPERUSER_PASSWORD=${{ secrets.SUPERUSER_PASSWORD }}
+          SUPERUSER_FIRSTNAME=${{ secrets.SUPERUSER_FIRSTNAME }}
+          SUPERUSER_LASTNAME=${{ secrets.SUPERUSER_LASTNAME }}
+          SUPERUSER_DATEOFBIRTH=${{ secrets.SUPERUSER_DATEOFBIRTH }}
+
+          SSE_EXPIRATION_MS=${{ vars.SSE_EXPIRATION_MS }}
+          TRANSACTION_TTL_HOURS=${{ vars.TRANSACTION_TTL_HOURS }}
+
+          STRIPE_API_KEY=${{ secrets.STRIPE_API_KEY }}
+          STRIPE_WEBHOOK_SECRET=${{ secrets.STRIPE_WEBHOOK_SECRET }}
+
+          CACHE_PROVIDER=${{ vars.CACHE_PROVIDER }}
+          CACHE_TTL=${{ vars.CACHE_TTL }}
+          WALLET_CACHE_TTL=${{ vars.WALLET_CACHE_TTL }}
+          USER_DETALS_CACHE_TTL=${{ vars.USER_DETALS_CACHE_TTL }}
+
+          REDIS_URL=${{ secrets.REDIS_URL }}
+          RABBITMQ_URL=${{ secrets.RABBITMQ_URL }}
+
+          RABBITMQ_CONCURRENCY=${{ vars.RABBITMQ_CONCURRENCY }}
+          RABBITMQ_MAX_CONCURRENCY=${{ vars.RABBITMQ_MAX_CONCURRENCY }}
+          RABBITMQ_PREFETCH=${{ vars.RABBITMQ_PREFETCH }}
+          RABBITMQ_ACKNOWLEDGE_MODE=${{ vars.RABBITMQ_ACKNOWLEDGE_MODE }}
+          RABBITMQ_DEFAULT_REQUEUE_REJECTED=${{ vars.RABBITMQ_DEFAULT_REQUEUE_REJECTED }}
+          RABBITMQ_RETRY_ENABLED=${{ vars.RABBITMQ_RETRY_ENABLED }}
+          RABBITMQ_MAX_RETRIES=${{ vars.RABBITMQ_MAX_RETRIES }}
+          RABBITMQ_INITIAL_INTERVAL_MS=${{ vars.RABBITMQ_INITIAL_INTERVAL_MS }}
+          RABBITMQ_MAX_INTERVAL_MS=${{ vars.RABBITMQ_MAX_INTERVAL_MS }}
+          RABBITMQ_INTERVAL_MULTIPLIER=${{ vars.RABBITMQ_INTERVAL_MULTIPLIER }}
+          RABBITMQ_PUBLISHER_CONFIRM_TYPE=${{ vars.RABBITMQ_PUBLISHER_CONFIRM_TYPE }}
+          RABBITMQ_PUBLISHER_RETURN=${{ vars.RABBITMQ_PUBLISHER_RETURN }}
+
+          SETTLEMENT_BATCH_SIZE=${{ vars.SETTLEMENT_BATCH_SIZE }}
+          SETTLEMENT_MAX_ATTEMPTS=${{ vars.SETTLEMENT_MAX_ATTEMPTS }}
+          SETTLEMENT_OUTBOX_BATCH_SIZE=${{ vars.SETTLEMENT_OUTBOX_BATCH_SIZE }}
+          SETTLEMENT_PAYMENT_MAX_ATTEMPTS=${{ vars.SETTLEMENT_PAYMENT_MAX_ATTEMPTS }}
+
+          LOGGING_APPLICATION=${{ vars.LOGGING_APPLICATION }}
+          LOGGING_MODULITH=${{ vars.LOGGING_MODULITH }}
+          LOGGING_TRANSACTIONS=${{ vars.LOGGING_TRANSACTIONS }}
+          LOGGING_SQL=${{ vars.LOGGING_SQL }}
+          EOF
+
+      - name: Run tests
+        run: make test stg
+
+  deploy:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::921040037119:role/github-actions-deploy-role
+          aws-region: eu-central-1
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Deploy
+        env:
+          UPDATE_ENV: "n"
+        run: make deploy
