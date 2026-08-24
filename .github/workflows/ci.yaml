@@ -1,9 +1,7 @@
-name: CI/CD
+name: Continuous Integration
 
 on:
   pull_request:
-    branches: [main]
-  push:
     branches: [main]
 
 permissions:
@@ -12,7 +10,6 @@ permissions:
 
 jobs:
   test:
-    if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest
     environment: stg
 
@@ -95,24 +92,3 @@ jobs:
 
       - name: Run tests
         run: make test 
-
-  deploy:
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-    runs-on: ubuntu-latest
-
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v4
-        with:
-          role-to-assume: arn:aws:iam::921040037119:role/github-actions-deploy-role
-          aws-region: eu-central-1
-
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
-
-      - name: Deploy
-        env:
-          UPDATE_ENV: "n"
-        run: make deploy
