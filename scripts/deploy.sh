@@ -13,12 +13,10 @@ IMAGE_NAME="digital_payment"
 TAG=$(date +%Y%m%d%H%M%S)-$(git rev-parse --short HEAD)
 
 ECS_CLUSTER="digital-payment-cluster"
-ECS_SERVICE="digital-payment-task-service"     # the running service
-ECS_TASK_FAMILY="digital-payment-task"          # the task definition family (NOT the same as service name)
+ECS_SERVICE="digital-payment-task-service"
+ECS_TASK_FAMILY="digital-payment-task"
 ECS_CONTAINER_NAME="${ECS_CONTAINER_NAME:-digital-payment}"
 
-# y = overwrite the container's environment vars in the new task def from .env.stg
-# n (default) = leave environment vars as they currently are in the task definition
 UPDATE_ENV="${UPDATE_ENV:-n}"
 
 FULL_IMAGE_TAGGED="$ECR_URL/$IMAGE_NAME:$TAG"
@@ -59,8 +57,6 @@ push_to_ecr() {
     echo "Images pushed successfully!"
 }
 
-# Parses KEY=VALUE lines from .env.stg into a JSON array of {name, value},
-# skipping blank lines and comments, stripping surrounding quotes from values.
 build_env_json_from_file() {
     if [ ! -f "$ENV_FILE" ]; then
         echo "Error: UPDATE_ENV=y but $ENV_FILE not found" >&2
