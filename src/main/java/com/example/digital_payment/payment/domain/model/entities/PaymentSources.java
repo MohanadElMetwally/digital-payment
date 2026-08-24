@@ -3,7 +3,6 @@ package com.example.digital_payment.payment.domain.model.entities;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.UUID;
-
 import com.example.digital_payment.payment.domain.enums.PaymentSourceType;
 import com.example.digital_payment.payment.domain.model.snapshots.PaymentSourceSnapshot;
 import com.example.digital_payment.payment.domain.model.valueobjects.PaymentSourceCreationData;

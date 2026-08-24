@@ -4,12 +4,10 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-
 import com.example.digital_payment.payment.infrastructure.exception.InvalidWebhookSignatureException;
 import com.stripe.exception.SignatureVerificationException;
 import com.stripe.model.Event;
 import com.stripe.net.Webhook;
-
 import lombok.extern.slf4j.Slf4j;
 
 @Component
@@ -23,7 +21,7 @@ public class StripeWebhookGateway {
     private String webhookSecret;
 
     public StripeWebhookGateway(StripeEventTranslator translator,
-        ApplicationEventPublisher publisher) {
+            ApplicationEventPublisher publisher) {
         this.translator = translator;
         this.publisher = publisher;
     }
@@ -34,13 +32,13 @@ public class StripeWebhookGateway {
         StripeEventType type = StripeEventType.fromStripeValue(event.getType());
 
         switch (type) {
-        case PAYMENT_INTENT_SUCCEEDED -> publisher
-            .publishEvent(translator.toPaymentSucceededEvent(event));
-        case PAYMENT_INTENT_PAYMENT_FAILED -> publisher
-            .publishEvent(translator.toPaymentFailedEvent(event));
-        case UNKNOWN -> {
-            return;
-        }
+            case PAYMENT_INTENT_SUCCEEDED -> publisher
+                    .publishEvent(translator.toPaymentSucceededEvent(event));
+            case PAYMENT_INTENT_PAYMENT_FAILED -> publisher
+                    .publishEvent(translator.toPaymentFailedEvent(event));
+            case UNKNOWN -> {
+                return;
+            }
         }
     }
 

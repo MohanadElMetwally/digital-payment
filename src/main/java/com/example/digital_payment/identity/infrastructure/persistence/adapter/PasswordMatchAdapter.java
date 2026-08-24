@@ -2,7 +2,6 @@ package com.example.digital_payment.identity.infrastructure.persistence.adapter;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
-
 import com.example.digital_payment.identity.application.port.out.PasswordMatchPort;
 
 @Component

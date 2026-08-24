@@ -1,7 +1,6 @@
 package com.example.digital_payment.settlement.infrastructure.persistence.mapper;
 
 import org.springframework.stereotype.Component;
-
 import com.example.digital_payment.settlement.domain.models.FailedSettlements;
 import com.example.digital_payment.settlement.domain.snapshots.FailedSettlementSnapshot;
 import com.example.digital_payment.settlement.infrastructure.persistence.entity.FailedSettlementEntity;
@@ -29,11 +28,11 @@ public class FailedSettlementPersistenceMapper {
 
     public FailedSettlements toDomain(FailedSettlementEntity entity) {
         FailedSettlementSnapshot snapshot = new FailedSettlementSnapshot(entity.getId(),
-            entity.getSettlementId(), entity.getBillId(), entity.getUserId(),
-            entity.getCustomerNumber(), entity.getAmount(), entity.getCurrency(),
-            entity.getFailureReason(), entity.getAttemptCount(), entity.getResolutionStatus(),
-            entity.getResolutionNotes(), entity.getResolvedBy(), entity.getResolvedAt(),
-            entity.getCreatedAt());
+                entity.getSettlementId(), entity.getBillId(), entity.getUserId(),
+                entity.getCustomerNumber(), entity.getAmount(), entity.getCurrency(),
+                entity.getFailureReason(), entity.getAttemptCount(), entity.getResolutionStatus(),
+                entity.getResolutionNotes(), entity.getResolvedBy(), entity.getResolvedAt(),
+                entity.getCreatedAt());
         return FailedSettlements.reconstitute(snapshot);
     }
 }

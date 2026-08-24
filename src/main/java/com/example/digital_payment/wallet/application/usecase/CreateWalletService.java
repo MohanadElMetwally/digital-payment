@@ -16,8 +16,8 @@ public class CreateWalletService implements CreateWalletUseCase {
 
     @Override
     public void handle(CreateWalletCommand command) {
-        Wallets wallet = Wallets
-            .createForUser(new WalletCreationData(command.userId(), command.currency()));
+        Wallets wallet =
+                Wallets.createForUser(new WalletCreationData(command.userId(), command.currency()));
         saveWalletPort.save(wallet);
     }
 }

@@ -3,10 +3,8 @@ package com.example.digital_payment.payment.infrastructure.persistence.adapter;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-
 import com.example.digital_payment.payment.application.port.out.LoadTransactionByUserIdAndKeyPort;
 import com.example.digital_payment.payment.application.port.out.LoadTransactionPort;
 import com.example.digital_payment.payment.application.port.out.LoadTransactionsPort;
@@ -19,12 +17,12 @@ import com.example.digital_payment.payment.infrastructure.persistence.repository
 
 @Component
 public class TransactionPersistenceAdapter implements SaveTransactionPort, LoadTransactionsPort,
-    LoadTransactionPort, LoadTransactionByUserIdAndKeyPort, UpdateTransactionPort {
+        LoadTransactionPort, LoadTransactionByUserIdAndKeyPort, UpdateTransactionPort {
     private final TransactionJpaRepository transactionJpaRepository;
     private final TransactionPersistenceMapper mapper;
 
     public TransactionPersistenceAdapter(TransactionJpaRepository transactionJpaRepository,
-        TransactionPersistenceMapper mapper) {
+            TransactionPersistenceMapper mapper) {
         this.transactionJpaRepository = transactionJpaRepository;
         this.mapper = mapper;
     }
@@ -39,10 +37,8 @@ public class TransactionPersistenceAdapter implements SaveTransactionPort, LoadT
     @Override
     @Transactional(readOnly = true)
     public List<Transactions> loadTransactions(UUID userId) {
-        return transactionJpaRepository.findByUserId(userId)
-            .stream()
-            .map(mapper::toDomain)
-            .toList();
+        return transactionJpaRepository.findByUserId(userId).stream().map(mapper::toDomain)
+                .toList();
     }
 
     @Override
@@ -53,7 +49,7 @@ public class TransactionPersistenceAdapter implements SaveTransactionPort, LoadT
     @Override
     public Optional<Transactions> findByUserIdAndKey(UUID userId, UUID idempotencyKey) {
         return transactionJpaRepository.findByUserIdAndIdempotencyKey(userId, idempotencyKey)
-            .map(mapper::toDomain);
+                .map(mapper::toDomain);
     }
 
     @Override

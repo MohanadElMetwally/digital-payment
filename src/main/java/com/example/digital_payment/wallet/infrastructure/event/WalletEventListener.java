@@ -3,7 +3,6 @@ package com.example.digital_payment.wallet.infrastructure.event;
 import org.springframework.context.event.EventListener;
 import org.springframework.modulith.events.ApplicationModuleListener;
 import org.springframework.stereotype.Component;
-
 import com.example.digital_payment.shared.events.CreditWalletEvent;
 import com.example.digital_payment.shared.events.DebitWalletEvent;
 import com.example.digital_payment.shared.events.InitiateWalletCreditTransactionEvent;
@@ -27,9 +26,9 @@ public class WalletEventListener {
     private final MarkWalletTransactionFailedUseCase markWalletTransactionFailedUseCase;
 
     public WalletEventListener(DebitWalletUseCase debitWalletUseCase,
-        CreditWalletUseCase creditWalletUseCase,
-        InitiateWalletTransactionUseCase initiateWalletTransactionUseCase,
-        MarkWalletTransactionFailedUseCase markWalletTransactionFailedUseCase) {
+            CreditWalletUseCase creditWalletUseCase,
+            InitiateWalletTransactionUseCase initiateWalletTransactionUseCase,
+            MarkWalletTransactionFailedUseCase markWalletTransactionFailedUseCase) {
         this.debitWalletUseCase = debitWalletUseCase;
         this.creditWalletUseCase = creditWalletUseCase;
         this.initiateWalletTransactionUseCase = initiateWalletTransactionUseCase;
@@ -38,31 +37,33 @@ public class WalletEventListener {
 
     @EventListener
     void on(InitiateWalletDebitTransactionEvent event) {
-        initiateWalletTransactionUseCase.initiate(new InitiateWalletTransactionCommand(
-            event.walletId(), event.transactionId(), WalletTransactionType.DEBIT, event.amount()));
+        initiateWalletTransactionUseCase
+                .initiate(new InitiateWalletTransactionCommand(event.walletId(),
+                        event.transactionId(), WalletTransactionType.DEBIT, event.amount()));
     }
 
     @EventListener
     void on(InitiateWalletCreditTransactionEvent event) {
-        initiateWalletTransactionUseCase.initiate(new InitiateWalletTransactionCommand(
-            event.walletId(), event.transactionId(), WalletTransactionType.CREDIT, event.amount()));
+        initiateWalletTransactionUseCase
+                .initiate(new InitiateWalletTransactionCommand(event.walletId(),
+                        event.transactionId(), WalletTransactionType.CREDIT, event.amount()));
     }
 
     @ApplicationModuleListener
     void on(DebitWalletEvent event) {
         debitWalletUseCase.debit(new DebitWalletCommand(event.userId(), event.walletId(),
-            event.transactionId(), event.amount()));
+                event.transactionId(), event.amount()));
     }
 
     @ApplicationModuleListener
     void on(CreditWalletEvent event) {
         creditWalletUseCase.credit(new CreditWalletCommand(event.userId(), event.walletId(),
-            event.transactionId(), event.amount()));
+                event.transactionId(), event.amount()));
     }
 
     @ApplicationModuleListener
     void on(WalletTransactionFailedEvent event) {
         markWalletTransactionFailedUseCase
-            .mark(new MarkWalletTransactionFailedCommand(event.transactionId()));
+                .mark(new MarkWalletTransactionFailedCommand(event.transactionId()));
     }
 }

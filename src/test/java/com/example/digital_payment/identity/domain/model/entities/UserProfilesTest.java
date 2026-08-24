@@ -4,13 +4,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.UUID;
-
 import org.junit.jupiter.api.Test;
-
 import com.example.digital_payment.identity.domain.exceptions.InvalidUserDataException;
 import com.example.digital_payment.identity.domain.model.snapshots.UserProfileSnapshot;
 import com.example.digital_payment.identity.domain.model.valueobjects.UserProfileRegistrationData;
@@ -20,7 +17,7 @@ class UserProfilesTest {
     void register_validData_createsUserProfile() {
         UUID userId = UUID.randomUUID();
         UserProfileRegistrationData data = new UserProfileRegistrationData(userId, "John", "Doe",
-            "US", LocalDate.now().minusYears(25));
+                "US", LocalDate.now().minusYears(25));
         UserProfiles profile = UserProfiles.register(data);
         assertEquals(userId, profile.getUserId());
         assertEquals("John", profile.getFirstName());
@@ -35,7 +32,7 @@ class UserProfilesTest {
     void register_under18_throwsException() {
         UUID userId = UUID.randomUUID();
         UserProfileRegistrationData data = new UserProfileRegistrationData(userId, "Jane", "Smith",
-            "UK", LocalDate.now().minusYears(17));
+                "UK", LocalDate.now().minusYears(17));
         assertThrows(InvalidUserDataException.class, () -> UserProfiles.register(data));
     }
 
@@ -43,15 +40,15 @@ class UserProfilesTest {
     void register_over100_throwsException() {
         UUID userId = UUID.randomUUID();
         UserProfileRegistrationData data = new UserProfileRegistrationData(userId, "Old", "Person",
-            "CA", LocalDate.now().minusYears(101));
+                "CA", LocalDate.now().minusYears(101));
         assertThrows(InvalidUserDataException.class, () -> UserProfiles.register(data));
     }
 
     @Test
     void register_nullDateOfBirth_throwsException() {
         UUID userId = UUID.randomUUID();
-        UserProfileRegistrationData data = new UserProfileRegistrationData(userId, "No", "DOB",
-            "FR", null);
+        UserProfileRegistrationData data =
+                new UserProfileRegistrationData(userId, "No", "DOB", "FR", null);
         assertThrows(InvalidUserDataException.class, () -> UserProfiles.register(data));
     }
 
@@ -61,8 +58,8 @@ class UserProfilesTest {
         LocalDate dob = LocalDate.now().minusYears(30);
         LocalDateTime created = LocalDateTime.now().minusDays(10);
         LocalDateTime updated = LocalDateTime.now();
-        UserProfileSnapshot snapshot = new UserProfileSnapshot(userId, " Alice ", " Bob ", "DE",
-            dob, created, updated);
+        UserProfileSnapshot snapshot =
+                new UserProfileSnapshot(userId, " Alice ", " Bob ", "DE", dob, created, updated);
         UserProfiles profile = UserProfiles.reconstitute(snapshot);
         assertEquals(userId, profile.getUserId());
         assertEquals("Alice", profile.getFirstName());

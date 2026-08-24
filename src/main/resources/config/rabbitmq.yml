@@ -1,0 +1,20 @@
+app:
+  rabbitmq:
+    exchanges:
+      - name: settlement.exchange
+        type: direct
+        durable: true
+        auto-delete: false
+      - name: settlement.dlx
+        type: direct
+        durable: true
+        auto-delete: false
+    queues:
+      - name: settlement.queue
+        exchange: settlement.exchange
+        routing-key: settlement.process
+        dlx: settlement.dlx
+        dlq-routing-key: settlement.process.dlq
+      - name: settlement.dlq
+        exchange: settlement.dlx
+        routing-key: settlement.process.dlq

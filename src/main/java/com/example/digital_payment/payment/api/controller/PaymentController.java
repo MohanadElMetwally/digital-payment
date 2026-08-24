@@ -1,7 +1,6 @@
 package com.example.digital_payment.payment.api.controller;
 
 import java.util.UUID;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -9,12 +8,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
 import com.example.digital_payment.payment.api.dto.request.PaymentRequest;
 import com.example.digital_payment.payment.api.dto.request.WalletTopUpRequest;
 import com.example.digital_payment.payment.api.dto.response.PaymentResponse;
 import com.example.digital_payment.payment.api.facade.PaymentFacade;
-
 import jakarta.validation.Valid;
 
 @RestController
@@ -28,17 +25,17 @@ public class PaymentController {
 
     @PostMapping("create-payment")
     public ResponseEntity<PaymentResponse> initiatePayment(
-        @RequestHeader("Idempotency-Key") UUID idempotencyKey,
-        @Valid @RequestBody PaymentRequest paymentRequest) {
+            @RequestHeader("Idempotency-Key") UUID idempotencyKey,
+            @Valid @RequestBody PaymentRequest paymentRequest) {
         return ResponseEntity.status(HttpStatus.ACCEPTED)
-            .body(paymentFacade.initiateBillPayment(paymentRequest, idempotencyKey));
+                .body(paymentFacade.initiateBillPayment(paymentRequest, idempotencyKey));
     }
 
     @PostMapping("top-up")
     public ResponseEntity<PaymentResponse> initiateWalletTopUp(
-        @RequestHeader("Idempotency-Key") UUID idempotencyKey,
-        @Valid @RequestBody WalletTopUpRequest request) {
+            @RequestHeader("Idempotency-Key") UUID idempotencyKey,
+            @Valid @RequestBody WalletTopUpRequest request) {
         return ResponseEntity.status(HttpStatus.ACCEPTED)
-            .body(paymentFacade.initiateWalletTopUp(request, idempotencyKey));
+                .body(paymentFacade.initiateWalletTopUp(request, idempotencyKey));
     }
 }

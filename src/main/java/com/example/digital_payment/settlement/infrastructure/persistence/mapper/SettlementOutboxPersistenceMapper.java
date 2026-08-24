@@ -1,7 +1,6 @@
 package com.example.digital_payment.settlement.infrastructure.persistence.mapper;
 
 import org.springframework.stereotype.Component;
-
 import com.example.digital_payment.settlement.domain.models.SettlementsOutbox;
 import com.example.digital_payment.settlement.domain.snapshots.SettlementOutboxSnapshot;
 import com.example.digital_payment.settlement.infrastructure.persistence.entity.SettlementOutboxEntity;
@@ -22,8 +21,8 @@ public class SettlementOutboxPersistenceMapper {
 
     public SettlementsOutbox toDomain(SettlementOutboxEntity entity) {
         SettlementOutboxSnapshot snapshot = new SettlementOutboxSnapshot(entity.getId(),
-            entity.getSettlementId(), entity.getStatus(), entity.getAttemptCount(),
-            entity.getLastError(), entity.getCreatedAt(), entity.getPublishedAt());
+                entity.getSettlementId(), entity.getStatus(), entity.getAttemptCount(),
+                entity.getLastError(), entity.getCreatedAt(), entity.getPublishedAt());
         return SettlementsOutbox.reconstitute(snapshot);
     }
 

@@ -20,8 +20,7 @@ public class GetFakeBillService implements GetFakeBillUseCase {
 
     @Override
     public FakeBillResult findByCustomerNumber(String customerNumber) {
-        FakeBills fakeBill = loadFakeBillPort.findByCustomerNumber(customerNumber)
-            .orElseThrow(
+        FakeBills fakeBill = loadFakeBillPort.findByCustomerNumber(customerNumber).orElseThrow(
                 () -> new FakeBillNotFoundException("Fake Bill not found: " + customerNumber));
         if (fakeBill.getStatus() == ProviderBillStatus.PAID) {
             throw new FakeBillAlreadyPaidException("Bill has already been paid");

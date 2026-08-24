@@ -2,11 +2,9 @@ package com.example.digital_payment.identity.infrastructure.security;
 
 import java.util.Collection;
 import java.util.Collections;
-
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-
 import com.example.digital_payment.identity.domain.model.entities.Users;
 
 public class UserPrincipal implements UserDetails {

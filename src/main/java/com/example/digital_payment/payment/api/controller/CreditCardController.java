@@ -7,12 +7,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
 import com.example.digital_payment.payment.api.dto.request.RegisterCreditCardRequest;
 import com.example.digital_payment.payment.api.dto.response.CreditCardResponse;
 import com.example.digital_payment.payment.api.dto.response.CreditCardsResponse;
 import com.example.digital_payment.payment.api.facade.CreditCardFacade;
-
 import jakarta.validation.Valid;
 
 @RestController
@@ -31,9 +29,9 @@ public class CreditCardController {
 
     @PostMapping
     public ResponseEntity<CreditCardResponse> saveCard(
-        @Valid @RequestBody RegisterCreditCardRequest request) {
+            @Valid @RequestBody RegisterCreditCardRequest request) {
         return ResponseEntity.status(HttpStatus.CREATED)
-            .body(creditCardFacade.saveCreditCard(request));
+                .body(creditCardFacade.saveCreditCard(request));
     }
 
 }

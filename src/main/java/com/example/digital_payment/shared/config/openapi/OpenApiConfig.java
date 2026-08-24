@@ -3,7 +3,6 @@ package com.example.digital_payment.shared.config.openapi;
 import org.springdoc.core.customizers.OpenApiCustomizer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.security.SecurityRequirement;
@@ -16,17 +15,15 @@ public class OpenApiConfig {
     @Bean
     public OpenAPI openApi() {
         return new OpenAPI()
-            .components(new Components().addSecuritySchemes(BEARER_SCHEME,
-                new SecurityScheme().type(SecurityScheme.Type.HTTP)
-                    .scheme("bearer")
-                    .bearerFormat("JWT")))
-            .addSecurityItem(new SecurityRequirement().addList(BEARER_SCHEME));
+                .components(new Components().addSecuritySchemes(BEARER_SCHEME,
+                        new SecurityScheme().type(SecurityScheme.Type.HTTP).scheme("bearer")
+                                .bearerFormat("JWT")))
+                .addSecurityItem(new SecurityRequirement().addList(BEARER_SCHEME));
     }
 
     @Bean
     public OpenApiCustomizer hideEndpoints() {
-        return openApi -> openApi.getPaths()
-            .entrySet()
-            .removeIf(entry -> entry.getKey().startsWith("/webhooks"));
+        return openApi -> openApi.getPaths().entrySet()
+                .removeIf(entry -> entry.getKey().startsWith("/webhooks"));
     }
 }

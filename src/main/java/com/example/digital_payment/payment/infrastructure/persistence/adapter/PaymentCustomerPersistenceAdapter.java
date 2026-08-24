@@ -2,10 +2,8 @@ package com.example.digital_payment.payment.infrastructure.persistence.adapter;
 
 import java.util.Optional;
 import java.util.UUID;
-
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-
 import com.example.digital_payment.payment.application.port.out.LoadPaymentCustomerPort;
 import com.example.digital_payment.payment.application.port.out.SavePaymentCustomerPort;
 import com.example.digital_payment.payment.domain.model.entities.PaymentCustomers;
@@ -15,12 +13,12 @@ import com.example.digital_payment.payment.infrastructure.persistence.repository
 
 @Component
 public class PaymentCustomerPersistenceAdapter
-    implements SavePaymentCustomerPort, LoadPaymentCustomerPort {
+        implements SavePaymentCustomerPort, LoadPaymentCustomerPort {
     private final PaymentCustomerJpaRepository jpaRepository;
     private final PaymentCustomerMapper mapper;
 
     public PaymentCustomerPersistenceAdapter(PaymentCustomerJpaRepository jpaRepository,
-        PaymentCustomerMapper mapper) {
+            PaymentCustomerMapper mapper) {
         this.jpaRepository = jpaRepository;
         this.mapper = mapper;
     }

@@ -2,7 +2,6 @@ package com.example.digital_payment.payment.application.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
 import com.example.digital_payment.payment.application.port.in.InitiateBillPaymentUseCase;
 import com.example.digital_payment.payment.application.port.in.InitiateWalletTopUpUseCase;
 import com.example.digital_payment.payment.application.port.in.LoadCreditCardUseCase;
@@ -53,64 +52,64 @@ public class PaymentConfig {
 
     @Bean
     public RegisterCreditCardUseCase registerCreditCardUseCase(
-        SaveCreditCardPort saveCreditCardPort, LoadPaymentCustomerPort loadPaymentCustomerPort,
-        RegisterCardGateway gateway) {
+            SaveCreditCardPort saveCreditCardPort, LoadPaymentCustomerPort loadPaymentCustomerPort,
+            RegisterCardGateway gateway) {
         return new RegisterCreditCardService(saveCreditCardPort, loadPaymentCustomerPort, gateway);
     }
 
     @Bean
     public LoadTransactionByUserIdAndKeyUseCase loadTransactionByUserIdAndKeyUseCase(
-        LoadTransactionByUserIdAndKeyPort loadTransactionByUserIdAndKeyPort) {
+            LoadTransactionByUserIdAndKeyPort loadTransactionByUserIdAndKeyPort) {
         return new LoadTransactionByUserIdAndKeyService(loadTransactionByUserIdAndKeyPort);
     }
 
     @Bean
     public InitiateBillPaymentUseCase initiatePaymentUseCase(TransactionPort transactionPort,
-        SaveTransactionPort saveTransactionPort, LoadCreditCardPort loadCreditCardPort,
-        LoadPaymentCustomerPort loadPaymentCustomerPort, PaymentGatewayPort paymentGatewayPort,
-        EventPublisherPort eventPublisher, FindWalletInfoUseCase findWalletInfoUseCase) {
+            SaveTransactionPort saveTransactionPort, LoadCreditCardPort loadCreditCardPort,
+            LoadPaymentCustomerPort loadPaymentCustomerPort, PaymentGatewayPort paymentGatewayPort,
+            EventPublisherPort eventPublisher, FindWalletInfoUseCase findWalletInfoUseCase) {
         return new InitiateBillPaymentService(transactionPort, saveTransactionPort,
-            loadCreditCardPort, loadPaymentCustomerPort, paymentGatewayPort, eventPublisher,
-            findWalletInfoUseCase);
+                loadCreditCardPort, loadPaymentCustomerPort, paymentGatewayPort, eventPublisher,
+                findWalletInfoUseCase);
     }
 
     @Bean
     public InitiateWalletTopUpUseCase initiateWalletTopUpUseCase(TransactionPort transactionPort,
-        SaveTransactionPort saveTransactionPort, LoadCreditCardPort loadCreditCardPort,
-        LoadPaymentCustomerPort loadPaymentCustomerPort, PaymentGatewayPort paymentGatewayPort,
-        EventPublisherPort eventPublisher) {
+            SaveTransactionPort saveTransactionPort, LoadCreditCardPort loadCreditCardPort,
+            LoadPaymentCustomerPort loadPaymentCustomerPort, PaymentGatewayPort paymentGatewayPort,
+            EventPublisherPort eventPublisher) {
         return new InitiateWalletTopUpService(transactionPort, saveTransactionPort,
-            loadCreditCardPort, loadPaymentCustomerPort, paymentGatewayPort, eventPublisher);
+                loadCreditCardPort, loadPaymentCustomerPort, paymentGatewayPort, eventPublisher);
     }
 
     @Bean
     public MarkPaymentFailedUseCase paymentFailedUseCase(TransactionPort transactionPort,
-        LoadTransactionPort loadTransactionPort, UpdateTransactionPort updateTransactionPort) {
+            LoadTransactionPort loadTransactionPort, UpdateTransactionPort updateTransactionPort) {
         return new MarkPaymentFailedHandler(loadTransactionPort, transactionPort,
-            updateTransactionPort);
+                updateTransactionPort);
     }
 
     @Bean
     public MarkPaymentSucceededUseCase markPaymentSucceededUseCase(
-        LoadTransactionPort loadTransactionPort, TransactionPort transactionPort,
-        UpdateTransactionPort updateTransactionPort) {
+            LoadTransactionPort loadTransactionPort, TransactionPort transactionPort,
+            UpdateTransactionPort updateTransactionPort) {
         return new MarkPaymentSucceededHandler(loadTransactionPort, transactionPort,
-            updateTransactionPort);
+                updateTransactionPort);
     }
 
     @Bean
     public PaymentCreatedUseCase paymentCreatedUseCase(TransactionPort transactionPort,
-        LoadTransactionPort loadTransactionPort, UpdateTransactionPort updateTransactionPort) {
+            LoadTransactionPort loadTransactionPort, UpdateTransactionPort updateTransactionPort) {
         return new PaymentCreationHandler(transactionPort, loadTransactionPort,
-            updateTransactionPort);
+                updateTransactionPort);
     }
 
     @Bean
     public PaymentCustomerCreateUseCase paymentCustomerCreateUseCase(
-        PaymentCustomerGatewayPort paymentCustomerGatewayPort,
-        SavePaymentCustomerPort savePaymentCustomerPort) {
+            PaymentCustomerGatewayPort paymentCustomerGatewayPort,
+            SavePaymentCustomerPort savePaymentCustomerPort) {
         return new PaymentCustomerCreateHandler(paymentCustomerGatewayPort,
-            savePaymentCustomerPort);
+                savePaymentCustomerPort);
     }
 
 }

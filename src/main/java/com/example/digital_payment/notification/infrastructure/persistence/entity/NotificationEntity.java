@@ -2,9 +2,7 @@ package com.example.digital_payment.notification.infrastructure.persistence.enti
 
 import java.time.LocalDateTime;
 import java.util.UUID;
-
 import com.example.digital_payment.notification.domain.enums.NotificationType;
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;

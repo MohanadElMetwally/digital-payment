@@ -2,7 +2,6 @@ package com.example.digital_payment.notification.domain.model.entities;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
-
 import com.example.digital_payment.notification.domain.enums.NotificationType;
 import com.example.digital_payment.notification.domain.model.snapshots.NotificationSnapshot;
 import com.example.digital_payment.notification.domain.model.valueobjects.NotificationCreateData;

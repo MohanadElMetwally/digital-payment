@@ -13,7 +13,7 @@ public class PaymentCustomerCreateHandler implements PaymentCustomerCreateUseCas
     private final SavePaymentCustomerPort savePaymentCustomerPort;
 
     public PaymentCustomerCreateHandler(PaymentCustomerGatewayPort paymentCustomerGatewayPort,
-        SavePaymentCustomerPort savePaymentCustomerPort) {
+            SavePaymentCustomerPort savePaymentCustomerPort) {
         this.paymentCustomerGatewayPort = paymentCustomerGatewayPort;
         this.savePaymentCustomerPort = savePaymentCustomerPort;
     }
@@ -26,8 +26,8 @@ public class PaymentCustomerCreateHandler implements PaymentCustomerCreateUseCas
         } catch (ProviderCustomerException ex) {
             throw ex;
         }
-        PaymentCustomerCreationData creationData = new PaymentCustomerCreationData(command.userId(),
-            customerId);
+        PaymentCustomerCreationData creationData =
+                new PaymentCustomerCreationData(command.userId(), customerId);
         PaymentCustomers customer = PaymentCustomers.create(creationData);
         savePaymentCustomerPort.save(customer);
     }

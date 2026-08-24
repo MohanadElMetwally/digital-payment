@@ -2,10 +2,8 @@ package com.example.digital_payment.identity.infrastructure.persistence.entity;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
-
 import com.example.digital_payment.identity.domain.enums.UserRole;
 import com.example.digital_payment.identity.domain.enums.UserStatus;
-
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

@@ -2,9 +2,7 @@ package com.example.digital_payment.settlement.application.usecase;
 
 import java.util.UUID;
 import java.util.function.Consumer;
-
 import org.springframework.beans.factory.annotation.Value;
-
 import com.example.digital_payment.settlement.application.port.in.ProcessSettlementUseCase;
 import com.example.digital_payment.settlement.application.port.out.ClaimSettlementPort;
 import com.example.digital_payment.settlement.application.port.out.LoadSettlementPort;
@@ -25,8 +23,8 @@ public class ProcessSettlementService implements ProcessSettlementUseCase {
     private int MAX_ATTEMPTS;
 
     public ProcessSettlementService(LoadSettlementPort loadSettlementPort,
-        PayProviderGateway payProviderGateway, UpdateSettlementPort updateSettlementPort,
-        TransactionPort transactionPort, ClaimSettlementPort claimSettlementPort) {
+            PayProviderGateway payProviderGateway, UpdateSettlementPort updateSettlementPort,
+            TransactionPort transactionPort, ClaimSettlementPort claimSettlementPort) {
         this.loadSettlementPort = loadSettlementPort;
         this.payProviderGateway = payProviderGateway;
         this.updateSettlementPort = updateSettlementPort;
@@ -41,10 +39,10 @@ public class ProcessSettlementService implements ProcessSettlementUseCase {
             return;
         }
         Settlements settlement = loadSettlementPort.findById(settlementId)
-            .orElseThrow(() -> new SettlementNotFoundException());
+                .orElseThrow(() -> new SettlementNotFoundException());
         try {
             String providerReference = payProviderGateway.pay(settlement.getCustomerNumber(),
-                settlement.getProviderIdempotencyKey());
+                    settlement.getProviderIdempotencyKey());
             updateSettlement(settlementId, s -> s.markSucceeded(providerReference));
         } catch (Exception e) {
             updateSettlement(settlementId, s -> s.markFailed(e.getMessage(), MAX_ATTEMPTS));
@@ -55,7 +53,7 @@ public class ProcessSettlementService implements ProcessSettlementUseCase {
     private void updateSettlement(UUID settlementId, Consumer<Settlements> mutation) {
         transactionPort.executeVoid(() -> {
             Settlements settlement = loadSettlementPort.findById(settlementId)
-                .orElseThrow(() -> new SettlementNotFoundException());
+                    .orElseThrow(() -> new SettlementNotFoundException());
             mutation.accept(settlement);
             updateSettlementPort.update(settlement);
         });

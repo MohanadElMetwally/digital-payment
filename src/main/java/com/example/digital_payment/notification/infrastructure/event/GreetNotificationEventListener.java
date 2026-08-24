@@ -2,7 +2,6 @@ package com.example.digital_payment.notification.infrastructure.event;
 
 import org.springframework.modulith.events.ApplicationModuleListener;
 import org.springframework.stereotype.Component;
-
 import com.example.digital_payment.notification.application.dto.CreateNotificationCommand;
 import com.example.digital_payment.notification.application.port.in.GreetNotificationUserUseCase;
 import com.example.digital_payment.notification.domain.constants.NotificationMessages;
@@ -20,7 +19,7 @@ public class GreetNotificationEventListener {
     @ApplicationModuleListener
     public void on(UserRegisteredEvent event) {
         greetNotificationUserCase.handle(
-            new CreateNotificationCommand(event.userId(), NotificationMessages.WELCOME_TITLE,
-                NotificationMessages.WELCOME_MESSAGE, NotificationType.SYSTEM));
+                new CreateNotificationCommand(event.userId(), NotificationMessages.WELCOME_TITLE,
+                        NotificationMessages.WELCOME_MESSAGE, NotificationType.SYSTEM));
     }
 }

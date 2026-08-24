@@ -2,9 +2,8 @@ package com.example.digital_payment.payment.infrastructure.stripe;
 
 public enum StripeEventType {
 
-    PAYMENT_INTENT_SUCCEEDED("payment_intent.succeeded"),
-    PAYMENT_INTENT_PAYMENT_FAILED("payment_intent.payment_failed"),
-    UNKNOWN("unknown");
+    PAYMENT_INTENT_SUCCEEDED("payment_intent.succeeded"), PAYMENT_INTENT_PAYMENT_FAILED(
+            "payment_intent.payment_failed"), UNKNOWN("unknown");
 
     private final String stripeValue;
 

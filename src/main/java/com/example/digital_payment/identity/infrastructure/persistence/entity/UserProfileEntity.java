@@ -3,7 +3,6 @@ package com.example.digital_payment.identity.infrastructure.persistence.entity;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.UUID;
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;

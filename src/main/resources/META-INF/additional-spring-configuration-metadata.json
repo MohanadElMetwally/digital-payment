@@ -1,0 +1,127 @@
+{"properties": [
+  {
+    "name": "jwt.secret.key",
+    "type": "java.lang.String",
+    "description": "A description for 'jwt.secret.key'"
+  },
+  {
+    "name": "app.superuser.phone",
+    "type": "java.lang.String",
+    "description": "A description for 'app.superuser.phone'"
+  },
+  {
+    "name": "app.superuser.username",
+    "type": "java.lang.String",
+    "description": "A description for 'app.superuser.username'"
+  },
+  {
+    "name": "app.superuser.email",
+    "type": "java.lang.String",
+    "description": "A description for 'app.superuser.email'"
+  },
+  {
+    "name": "app.superuser.password",
+    "type": "java.lang.String",
+    "description": "A description for 'app.superuser.password'"
+  },
+  {
+    "name": "app.superuser.first-name",
+    "type": "java.lang.String",
+    "description": "A description for 'app.superuser.first-name'"
+  },
+  {
+    "name": "app.superuser.last-name",
+    "type": "java.lang.String",
+    "description": "A description for 'app.superuser.last-name'"
+  },
+  {
+    "name": "app.superuser.date-of-birth",
+    "type": "java.lang.String",
+    "description": "A description for 'app.superuser.date-of-birth'"
+  },
+  {
+    "name": "jwt.expiration.ms",
+    "type": "java.lang.String",
+    "description": "A description for 'jwt.expiration.ms'"
+  },
+  {
+    "name": "base.provider.url",
+    "type": "java.lang.String",
+    "description": "A description for 'base.provider.url'"
+  },
+  {
+    "name": "sse.expiration.ms",
+    "type": "java.lang.String",
+    "description": "A description for 'sse.expiration.ms'"
+  },
+  {
+    "name": "idempotency.ttl.hours",
+    "type": "java.lang.String",
+    "description": "A description for 'idempotency.ttl.hours'"
+  },
+  {
+    "name": "stripe.api.key",
+    "type": "java.lang.String",
+    "description": "A description for 'stripe.api.key'"
+  },
+  {
+    "name": "stripe.webhook.secret",
+    "type": "java.lang.String",
+    "description": "A description for 'stripe.webhook.secret'"
+  },
+  {
+    "name": "transaction.ttl.hours",
+    "type": "java.lang.String",
+    "description": "A description for 'transaction.ttl.hours'"
+  },
+  {
+    "name": "transaction.ttl.hours",
+    "type": "java.lang.String",
+    "description": "A description for 'transaction.ttl.hours'"
+  },
+  {
+    "name": "app.rabbitmq.exchanges",
+    "type": "java.util.List<com.example.digital_payment.shared.config.rabbit.ExchangeConfig>",
+    "description": "A description for 'app.rabbitmq.exchanges'"
+  },
+  {
+    "name": "app.rabbitmq.queues",
+    "type": "java.util.List<com.example.digital_payment.shared.config.rabbit.QueueConfig>",
+    "description": "A description for 'app.rabbitmq.queues'"
+  },
+  {
+    "name": "app.settlements.batch-size",
+    "type": "java.lang.String",
+    "description": "A description for 'app.settlements.batch-size'"
+  },
+  {
+    "name": "app.settlements.enqueue-max-attempts",
+    "type": "java.lang.String",
+    "description": "A description for 'app.settlements.enqueue-max-attempts'"
+  },
+  {
+    "name": "app.settlements.outbox-batch-size",
+    "type": "java.lang.String",
+    "description": "A description for 'app.settlements.outbox-batch-size'"
+  },
+  {
+    "name": "app.settlements.payment-max-attempts",
+    "type": "java.lang.String",
+    "description": "A description for 'app.settlements.payment-max-attempts'"
+  },
+  {
+    "name": "cache.expiration.ms",
+    "type": "java.lang.String",
+    "description": "A description for 'cache.expiration.ms'"
+  },
+  {
+    "name": "wallet.expiration.ms",
+    "type": "java.lang.String",
+    "description": "A description for 'wallet.expiration.ms'"
+  },
+  {
+    "name": "user-details.expiration.ms",
+    "type": "java.lang.String",
+    "description": "A description for 'user-details.expiration.ms'"
+  }
+]}

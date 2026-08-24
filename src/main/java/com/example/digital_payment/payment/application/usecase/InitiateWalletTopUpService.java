@@ -2,7 +2,6 @@ package com.example.digital_payment.payment.application.usecase;
 
 import java.util.Optional;
 import java.util.UUID;
-
 import com.example.digital_payment.payment.application.dto.CreatePaymentCommand;
 import com.example.digital_payment.payment.application.dto.InitiatePaymentCommand;
 import com.example.digital_payment.payment.application.dto.PaymentInitiationCreatedEvent;
@@ -35,9 +34,9 @@ public class InitiateWalletTopUpService implements InitiateWalletTopUpUseCase {
     private final LoadPaymentCustomerPort loadPaymentCustomerPort;
 
     public InitiateWalletTopUpService(TransactionPort transactionPort,
-        SaveTransactionPort saveTransactionPort, LoadCreditCardPort loadCreditCardPort,
-        LoadPaymentCustomerPort loadPaymentCustomerPort, PaymentGatewayPort paymentGatewayPort,
-        EventPublisherPort eventPublisher) {
+            SaveTransactionPort saveTransactionPort, LoadCreditCardPort loadCreditCardPort,
+            LoadPaymentCustomerPort loadPaymentCustomerPort, PaymentGatewayPort paymentGatewayPort,
+            EventPublisherPort eventPublisher) {
         this.transactionPort = transactionPort;
         this.saveTransactionPort = saveTransactionPort;
         this.loadCreditCardPort = loadCreditCardPort;
@@ -53,14 +52,15 @@ public class InitiateWalletTopUpService implements InitiateWalletTopUpUseCase {
     }
 
     private Transactions createTransaction(InitiatePaymentCommand command) {
-        TransactionCreationData data = new TransactionCreationData(command.userId(),
-            command.idempotencyKey(), command.type(), command.amount(), command.currency(), null);
+        TransactionCreationData data =
+                new TransactionCreationData(command.userId(), command.idempotencyKey(),
+                        command.type(), command.amount(), command.currency(), null);
         Transactions tx = Transactions.create(data);
 
         transactionPort.executeVoid(() -> {
             saveTransactionPort.save(tx);
             eventPublisher.publish(new InitiateWalletCreditTransactionEvent(command.referenceId(),
-                tx.getId(), command.amount()));
+                    tx.getId(), command.amount()));
         });
         return tx;
     }
@@ -70,8 +70,8 @@ public class InitiateWalletTopUpService implements InitiateWalletTopUpUseCase {
         String customerId = getPaymentCustomerId(command.userId());
 
         CreatePaymentCommand paymentCommand = new CreatePaymentCommand(tx.getId(), customerId,
-            command.amount(), command.currency(), card.getPaymentMethodId(),
-            command.idempotencyKey(), command.referenceId());
+                command.amount(), command.currency(), card.getPaymentMethodId(),
+                command.idempotencyKey(), command.referenceId());
 
         PaymentInitiationResult result;
         try {
@@ -80,14 +80,14 @@ public class InitiateWalletTopUpService implements InitiateWalletTopUpUseCase {
             transactionPort.executeVoid(() -> {
                 eventPublisher.publish(new WalletTransactionFailedEvent(tx.getId()));
                 eventPublisher
-                    .publish(new PaymentInitiationFailedEvent(tx.getId(), ex.getMessage()));
+                        .publish(new PaymentInitiationFailedEvent(tx.getId(), ex.getMessage()));
             });
             throw ex;
         }
 
         transactionPort.executeVoid(() -> {
-            eventPublisher
-                .publish(new PaymentInitiationCreatedEvent(tx.getId(), result.externalReference()));
+            eventPublisher.publish(
+                    new PaymentInitiationCreatedEvent(tx.getId(), result.externalReference()));
         });
         return tx;
     }
@@ -108,8 +108,8 @@ public class InitiateWalletTopUpService implements InitiateWalletTopUpUseCase {
 
     private String getPaymentCustomerId(UUID userId) {
         PaymentCustomers customer = loadPaymentCustomerPort.findByUserId(userId)
-            .orElseThrow(() -> new PaymentCustomerNotFoundException(
-                "Provider Customer not found for this user"));
+                .orElseThrow(() -> new PaymentCustomerNotFoundException(
+                        "Provider Customer not found for this user"));
         return customer.getCustomerId();
     }
 }

@@ -1,7 +1,6 @@
 package com.example.digital_payment.payment.infrastructure.stripe;
 
 import org.springframework.stereotype.Component;
-
 import com.example.digital_payment.payment.application.dto.PaymentCustomerCreateCommand;
 import com.example.digital_payment.payment.application.exception.ProviderCustomerException;
 import com.example.digital_payment.payment.application.port.out.PaymentCustomerGatewayPort;
@@ -15,11 +14,9 @@ public class StripeCustomerAdapter implements PaymentCustomerGatewayPort {
     @Override
     public String createCustomer(PaymentCustomerCreateCommand command) {
 
-        CustomerCreateParams params = CustomerCreateParams.builder()
-            .setEmail(command.email())
-            .setName(command.fullName())
-            .putMetadata("userId", command.userId().toString())
-            .build();
+        CustomerCreateParams params =
+                CustomerCreateParams.builder().setEmail(command.email()).setName(command.fullName())
+                        .putMetadata("userId", command.userId().toString()).build();
 
         try {
             Customer customer = Customer.create(params);

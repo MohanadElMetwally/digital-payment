@@ -3,10 +3,8 @@ package com.example.digital_payment.wallet.infrastructure.persistence.entity;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.UUID;
-
 import com.example.digital_payment.wallet.domain.enums.WalletTransactionStatus;
 import com.example.digital_payment.wallet.domain.enums.WalletTransactionType;
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;

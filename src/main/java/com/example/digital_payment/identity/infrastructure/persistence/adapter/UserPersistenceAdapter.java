@@ -2,13 +2,11 @@ package com.example.digital_payment.identity.infrastructure.persistence.adapter;
 
 import java.util.Optional;
 import java.util.UUID;
-
 import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-
 import com.example.digital_payment.identity.application.port.out.LoadUserPort;
 import com.example.digital_payment.identity.application.port.out.SaveUserPort;
 import com.example.digital_payment.identity.application.port.out.UpdatePasswordPort;
@@ -24,13 +22,13 @@ import com.example.digital_payment.identity.infrastructure.persistence.repositor
 
 @Component
 public class UserPersistenceAdapter
-    implements LoadUserPort, SaveUserPort, UpdateUserPort, UpdatePasswordPort {
+        implements LoadUserPort, SaveUserPort, UpdateUserPort, UpdatePasswordPort {
     private final UserJpaRepository userJpaRepository;
     private final UserPersistenceMapper persistenceMapper;
     private final PasswordEncoder encoder;
 
     public UserPersistenceAdapter(UserJpaRepository userJpaRepository,
-        UserPersistenceMapper persistenceMapper, PasswordEncoder encoder) {
+            UserPersistenceMapper persistenceMapper, PasswordEncoder encoder) {
         this.userJpaRepository = userJpaRepository;
         this.persistenceMapper = persistenceMapper;
         this.encoder = encoder;
@@ -57,9 +55,9 @@ public class UserPersistenceAdapter
 
     @Override
     public Optional<Users> findByEmailOrUsernameOrPhone(String email, String username,
-        String Phone) {
+            String Phone) {
         return userJpaRepository.findByEmailOrUsernameOrPhone(email, username, Phone)
-            .map(persistenceMapper::toDomain);
+                .map(persistenceMapper::toDomain);
     }
 
     @Override

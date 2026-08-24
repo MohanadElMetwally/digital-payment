@@ -1,10 +1,8 @@
 package com.example.digital_payment.fake_provider.infrastructure.persistence.adapter;
 
 import java.util.Optional;
-
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-
 import com.example.digital_payment.fake_provider.application.port.out.LoadFakeBillPort;
 import com.example.digital_payment.fake_provider.application.port.out.UpdateFakeBillPort;
 import com.example.digital_payment.fake_provider.domain.model.entities.FakeBills;
@@ -18,7 +16,7 @@ public class FakeBillPersistenceAdapter implements LoadFakeBillPort, UpdateFakeB
     private final FakeBillJpaRepository fakeBillJpaRepository;
 
     public FakeBillPersistenceAdapter(FakeBillPersistenceMapper fakeBillPersistenceMapper,
-        FakeBillJpaRepository fakeBillJpaRepository) {
+            FakeBillJpaRepository fakeBillJpaRepository) {
         this.fakeBillPersistenceMapper = fakeBillPersistenceMapper;
         this.fakeBillJpaRepository = fakeBillJpaRepository;
     }
@@ -27,7 +25,7 @@ public class FakeBillPersistenceAdapter implements LoadFakeBillPort, UpdateFakeB
     @Transactional
     public Optional<FakeBills> findByCustomerNumber(String customerNumber) {
         return fakeBillJpaRepository.findByCustomerNumber(customerNumber)
-            .map(fakeBillPersistenceMapper::toDomain);
+                .map(fakeBillPersistenceMapper::toDomain);
     }
 
     @Override

@@ -2,9 +2,7 @@ package com.example.digital_payment.settlement.infrastructure.persistence.entity
 
 import java.time.LocalDateTime;
 import java.util.UUID;
-
 import com.example.digital_payment.settlement.domain.enums.OutboxStatus;
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;

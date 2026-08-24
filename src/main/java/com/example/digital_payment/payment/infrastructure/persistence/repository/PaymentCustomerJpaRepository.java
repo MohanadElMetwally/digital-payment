@@ -2,9 +2,7 @@ package com.example.digital_payment.payment.infrastructure.persistence.repositor
 
 import java.util.Optional;
 import java.util.UUID;
-
 import org.springframework.data.jpa.repository.JpaRepository;
-
 import com.example.digital_payment.payment.infrastructure.persistence.entity.PaymentCustomerEntity;
 
 public interface PaymentCustomerJpaRepository extends JpaRepository<PaymentCustomerEntity, UUID> {

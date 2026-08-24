@@ -4,7 +4,6 @@ import java.math.BigDecimal;
 import java.security.SecureRandom;
 import java.time.LocalDateTime;
 import java.util.UUID;
-
 import com.example.digital_payment.payment.domain.enums.TransactionStatus;
 import com.example.digital_payment.payment.domain.enums.TransactionType;
 import com.example.digital_payment.payment.domain.model.snapshots.TransactionSnapshot;

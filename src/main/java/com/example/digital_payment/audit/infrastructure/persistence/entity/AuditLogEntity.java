@@ -2,10 +2,8 @@ package com.example.digital_payment.audit.infrastructure.persistence.entity;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
-
 import com.example.digital_payment.audit.domain.enums.AuditAction;
 import com.example.digital_payment.audit.domain.enums.EntityType;
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;

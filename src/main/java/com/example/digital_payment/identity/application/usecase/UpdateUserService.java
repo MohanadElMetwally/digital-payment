@@ -1,7 +1,6 @@
 package com.example.digital_payment.identity.application.usecase;
 
 import java.util.UUID;
-
 import com.example.digital_payment.identity.application.dto.UpdateUserCommand;
 import com.example.digital_payment.identity.application.dto.UserResult;
 import com.example.digital_payment.identity.application.mapper.UserMapper;
@@ -19,7 +18,7 @@ public class UpdateUserService implements UpdateUserUseCase {
     private final TransactionPort transactionPort;
 
     public UpdateUserService(LoadUserPort loadUserPort, UpdateUserPort updateUserPort,
-        TransactionPort transactionPort, UserMapper userMapper) {
+            TransactionPort transactionPort, UserMapper userMapper) {
         this.updateUserPort = updateUserPort;
         this.userMapper = userMapper;
         this.loadUserPort = loadUserPort;

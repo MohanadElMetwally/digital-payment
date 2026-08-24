@@ -1,7 +1,6 @@
 package com.example.digital_payment.wallet.application.usecase;
 
 import java.math.BigDecimal;
-
 import com.example.digital_payment.shared.application.port.out.TransactionPort;
 import com.example.digital_payment.wallet.application.dto.InitiateWalletTransactionCommand;
 import com.example.digital_payment.wallet.application.port.in.InitiateWalletTransactionUseCase;
@@ -19,7 +18,7 @@ public class InitiateWalletTransactionService implements InitiateWalletTransacti
     private final SaveWalletTransactionPort saveWalletTransactionPort;
 
     public InitiateWalletTransactionService(TransactionPort transactionPort,
-        LoadWalletPort loadWalletPort, SaveWalletTransactionPort saveWalletTransactionPort) {
+            LoadWalletPort loadWalletPort, SaveWalletTransactionPort saveWalletTransactionPort) {
         this.transactionPort = transactionPort;
         this.loadWalletPort = loadWalletPort;
         this.saveWalletTransactionPort = saveWalletTransactionPort;
@@ -29,17 +28,17 @@ public class InitiateWalletTransactionService implements InitiateWalletTransacti
     public void initiate(InitiateWalletTransactionCommand command) {
         transactionPort.executeVoid(() -> {
             Wallets wallet = loadWalletPort.getById(command.walletId())
-                .orElseThrow(() -> new WalletNotFoundException(command.walletId()));
+                    .orElseThrow(() -> new WalletNotFoundException(command.walletId()));
             BigDecimal balanceAfter;
             if (command.type() == WalletTransactionType.CREDIT) {
                 balanceAfter = wallet.getBalance().add(command.amount());
             } else {
                 balanceAfter = wallet.getBalance().compareTo(command.amount()) < 0 ? BigDecimal.ZERO
-                    : wallet.getBalance().subtract(command.amount());
+                        : wallet.getBalance().subtract(command.amount());
             }
-            WalletTransactionCreationData creationData = new WalletTransactionCreationData(
-                command.walletId(), command.transactionId(), command.type(), command.amount(),
-                balanceAfter);
+            WalletTransactionCreationData creationData =
+                    new WalletTransactionCreationData(command.walletId(), command.transactionId(),
+                            command.type(), command.amount(), balanceAfter);
             WalletTransactions wtx = WalletTransactions.create(creationData);
             saveWalletTransactionPort.save(wtx);
         });

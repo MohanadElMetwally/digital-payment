@@ -3,8 +3,6 @@ package com.example.digital_payment.billing.domain.model.entities;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-
-
 import com.example.digital_payment.billing.domain.enums.BillStatus;
 import com.example.digital_payment.billing.domain.enums.ServiceProvider;
 import com.example.digital_payment.billing.domain.model.snapshots.ProviderBillSnapshot;
@@ -57,9 +55,9 @@ public class ProviderBills {
     @Override
     public String toString() {
         return "ProviderBills [id=" + id + ", customerNumber=" + customerNumber + ", customerName="
-            + customerName + ", amount=" + amount + ", currency=" + currency + ", status=" + status
-            + ", billingPeriodStart=" + billingPeriodStart + ", billingPeriodEnd="
-            + billingPeriodEnd + ", dueDate=" + dueDate + ", createAt=" + createAt + "]";
+                + customerName + ", amount=" + amount + ", currency=" + currency + ", status="
+                + status + ", billingPeriodStart=" + billingPeriodStart + ", billingPeriodEnd="
+                + billingPeriodEnd + ", dueDate=" + dueDate + ", createAt=" + createAt + "]";
     }
 
     public BigDecimal getAmount() {

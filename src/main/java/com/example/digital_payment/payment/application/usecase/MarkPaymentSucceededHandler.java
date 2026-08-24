@@ -1,7 +1,6 @@
 package com.example.digital_payment.payment.application.usecase;
 
 import java.util.UUID;
-
 import com.example.digital_payment.payment.application.dto.MarkPaymentSucceededCommand;
 import com.example.digital_payment.payment.application.dto.MarkPaymentSucceededResult;
 import com.example.digital_payment.payment.application.enums.MarkPaymentStatus;
@@ -19,7 +18,7 @@ public class MarkPaymentSucceededHandler implements MarkPaymentSucceededUseCase 
     private final UpdateTransactionPort updateTransactionPort;
 
     public MarkPaymentSucceededHandler(LoadTransactionPort loadTransactionPort,
-        TransactionPort transactionPort, UpdateTransactionPort updateTransactionPort) {
+            TransactionPort transactionPort, UpdateTransactionPort updateTransactionPort) {
         this.transactionPort = transactionPort;
         this.loadTransactionPort = loadTransactionPort;
         this.updateTransactionPort = updateTransactionPort;
@@ -31,7 +30,7 @@ public class MarkPaymentSucceededHandler implements MarkPaymentSucceededUseCase 
             Transactions tx = loadTransactionOrThrow(command.transactionId());
             if (tx.getStatus() != TransactionStatus.PENDING) {
                 return new MarkPaymentSucceededResult(MarkPaymentStatus.PAYMENT_ALREADY_FINALIZED,
-                    tx);
+                        tx);
             }
             tx.markSucceeded();
             updateTransactionPort.update(tx);
@@ -41,6 +40,6 @@ public class MarkPaymentSucceededHandler implements MarkPaymentSucceededUseCase 
 
     private Transactions loadTransactionOrThrow(UUID transactionId) {
         return loadTransactionPort.findById(transactionId)
-            .orElseThrow(() -> new TransactionNotFoundException("Transaction not found"));
+                .orElseThrow(() -> new TransactionNotFoundException("Transaction not found"));
     }
 }

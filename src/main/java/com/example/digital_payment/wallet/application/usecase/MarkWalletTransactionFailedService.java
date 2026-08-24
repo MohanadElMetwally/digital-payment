@@ -14,8 +14,8 @@ public class MarkWalletTransactionFailedService implements MarkWalletTransaction
     private final UpdateWalletTransactionPort updateWalletTransactionPort;
 
     public MarkWalletTransactionFailedService(TransactionPort transactionPort,
-        LoadWalletTransactionByTransactionId loadWalletTransactionPort,
-        UpdateWalletTransactionPort updateWalletTransactionPort) {
+            LoadWalletTransactionByTransactionId loadWalletTransactionPort,
+            UpdateWalletTransactionPort updateWalletTransactionPort) {
         this.transactionPort = transactionPort;
         this.loadWalletTransactionPort = loadWalletTransactionPort;
         this.updateWalletTransactionPort = updateWalletTransactionPort;
@@ -24,9 +24,9 @@ public class MarkWalletTransactionFailedService implements MarkWalletTransaction
     @Override
     public void mark(MarkWalletTransactionFailedCommand command) {
         transactionPort.executeVoid(() -> {
-            WalletTransactions wtx = loadWalletTransactionPort
-                .findByTransactionId(command.transactionId())
-                .orElseThrow(() -> new WalletTransactionNotFoundException());
+            WalletTransactions wtx =
+                    loadWalletTransactionPort.findByTransactionId(command.transactionId())
+                            .orElseThrow(() -> new WalletTransactionNotFoundException());
             wtx.markFailed();
             updateWalletTransactionPort.update(wtx);
         });

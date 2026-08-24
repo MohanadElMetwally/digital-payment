@@ -1,7 +1,6 @@
 package com.example.digital_payment.audit.api.facade;
 
 import org.springframework.stereotype.Component;
-
 import com.example.digital_payment.audit.api.dto.AuditLogsResponse;
 import com.example.digital_payment.audit.api.mapper.AuditLogApiMapper;
 import com.example.digital_payment.audit.application.dto.AuditLogsResult;
@@ -13,7 +12,7 @@ public class AuditLogFacade {
     private final AuditLogApiMapper auditLogApiMapper;
 
     public AuditLogFacade(LoadAuditLogsUseCase loadAuditLogsUseCase,
-        AuditLogApiMapper auditLogApiMapper) {
+            AuditLogApiMapper auditLogApiMapper) {
         this.loadAuditLogsUseCase = loadAuditLogsUseCase;
         this.auditLogApiMapper = auditLogApiMapper;
     }

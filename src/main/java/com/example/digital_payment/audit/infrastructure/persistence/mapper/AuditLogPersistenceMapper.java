@@ -1,7 +1,6 @@
 package com.example.digital_payment.audit.infrastructure.persistence.mapper;
 
 import org.springframework.stereotype.Component;
-
 import com.example.digital_payment.audit.domain.model.entities.AuditLogs;
 import com.example.digital_payment.audit.domain.model.snapshots.AuditLogsSnapshot;
 import com.example.digital_payment.audit.infrastructure.persistence.entity.AuditLogEntity;
@@ -23,8 +22,8 @@ public class AuditLogPersistenceMapper {
 
     public AuditLogs toDomain(AuditLogEntity entity) {
         AuditLogsSnapshot snapshot = new AuditLogsSnapshot(entity.getId(), entity.getUserId(),
-            entity.getAction(), entity.getEntityType(), entity.getEntityId(), entity.getOldValue(),
-            entity.getNewValue(), entity.getCreatedAt());
+                entity.getAction(), entity.getEntityType(), entity.getEntityId(),
+                entity.getOldValue(), entity.getNewValue(), entity.getCreatedAt());
         return AuditLogs.reconstitute(snapshot);
     }
 }

@@ -4,5 +4,5 @@ import java.math.BigDecimal;
 import java.util.UUID;
 
 public record SettlementCreationData(UUID billId, UUID userId, String customerNumber,
-    BigDecimal amount, String currency) {
+        BigDecimal amount, String currency) {
 }

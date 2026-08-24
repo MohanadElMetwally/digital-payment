@@ -4,7 +4,6 @@ import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
-
 import com.example.digital_payment.identity.domain.enums.UserRole;
 import com.example.digital_payment.identity.domain.enums.UserStatus;
 import com.example.digital_payment.identity.domain.enums.UserUpdateFields;
@@ -28,8 +27,7 @@ public class Users {
 
     private final Set<UserUpdateFields> changedFields = new HashSet<>();
 
-    public Users() {
-    }
+    public Users() {}
 
     public static Users register(UserRegistrationData registrationData) {
         validateUsername(registrationData.username());
@@ -48,8 +46,8 @@ public class Users {
         user.updatedAt = null;
 
         UserProfileRegistrationData profileData = new UserProfileRegistrationData(user.id,
-            registrationData.firstName(), registrationData.lastName(), registrationData.country(),
-            registrationData.dateOfBirth());
+                registrationData.firstName(), registrationData.lastName(),
+                registrationData.country(), registrationData.dateOfBirth());
         user.profile = UserProfiles.register(profileData);
 
         return user;

@@ -4,6 +4,6 @@ import java.math.BigDecimal;
 import java.util.UUID;
 
 public record CreditWalletCommand(UUID userId, UUID walletId, UUID transactionId,
-    BigDecimal amount) {
+        BigDecimal amount) {
 
 }

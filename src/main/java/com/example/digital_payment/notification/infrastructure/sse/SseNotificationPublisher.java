@@ -2,10 +2,8 @@ package com.example.digital_payment.notification.infrastructure.sse;
 
 import java.util.UUID;
 import java.util.concurrent.ExecutorService;
-
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
-
 import com.example.digital_payment.notification.application.port.out.NotificationPublisherPort;
 import com.example.digital_payment.shared.dto.NotificationMessage;
 
@@ -16,7 +14,7 @@ public class SseNotificationPublisher implements NotificationPublisherPort {
     private final ExecutorService notificationExecutor;
 
     public SseNotificationPublisher(SseConnectionRegistry registry,
-        ExecutorService notificationExecutor) {
+            ExecutorService notificationExecutor) {
         this.registry = registry;
         this.notificationExecutor = notificationExecutor;
     }

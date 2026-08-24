@@ -1,9 +1,7 @@
 package com.example.digital_payment.payment.infrastructure.stripe;
 
 import java.math.BigDecimal;
-
 import org.springframework.stereotype.Component;
-
 import com.example.digital_payment.payment.application.dto.CreatePaymentCommand;
 import com.example.digital_payment.payment.application.dto.PaymentInitiationResult;
 import com.example.digital_payment.payment.application.exception.PaymentProviderException;
@@ -12,7 +10,6 @@ import com.stripe.exception.StripeException;
 import com.stripe.model.PaymentIntent;
 import com.stripe.net.RequestOptions;
 import com.stripe.param.PaymentIntentCreateParams;
-
 import lombok.extern.slf4j.Slf4j;
 
 @Component
@@ -24,26 +21,22 @@ public class StripePaymentAdapter implements PaymentGatewayPort {
         try {
             long stripeAmount = convertToStripeAmount(command.amount(), command.currency());
             log.debug("creating payment: amount={}, transaction ID={}", command.amount(),
-                command.transactionId());
+                    command.transactionId());
             PaymentIntentCreateParams params = PaymentIntentCreateParams.builder()
-                .setAmount(stripeAmount)
-                .setCurrency(command.currency().toLowerCase())
-                .setCustomer(command.customerId())
-                .setPaymentMethod(command.paymentMethodToken())
-                .setConfirm(true)
-                .putMetadata("transactionId", command.transactionId().toString())
-                .putMetadata("referenceId", command.referenceId().toString())
-                .setAutomaticPaymentMethods(
-                    PaymentIntentCreateParams.AutomaticPaymentMethods.builder()
-                        .setEnabled(true)
-                        .setAllowRedirects(
-                            PaymentIntentCreateParams.AutomaticPaymentMethods.AllowRedirects.NEVER)
-                        .build())
-                .build();
+                    .setAmount(stripeAmount).setCurrency(command.currency().toLowerCase())
+                    .setCustomer(command.customerId())
+                    .setPaymentMethod(command.paymentMethodToken()).setConfirm(true)
+                    .putMetadata("transactionId", command.transactionId().toString())
+                    .putMetadata("referenceId", command.referenceId().toString())
+                    .setAutomaticPaymentMethods(PaymentIntentCreateParams.AutomaticPaymentMethods
+                            .builder().setEnabled(true)
+                            .setAllowRedirects(
+                                    PaymentIntentCreateParams.AutomaticPaymentMethods.AllowRedirects.NEVER)
+                            .build())
+                    .build();
 
             RequestOptions options = RequestOptions.builder()
-                .setIdempotencyKey(command.transactionId().toString())
-                .build();
+                    .setIdempotencyKey(command.transactionId().toString()).build();
 
             PaymentIntent paymentIntent = PaymentIntent.create(params, options);
 

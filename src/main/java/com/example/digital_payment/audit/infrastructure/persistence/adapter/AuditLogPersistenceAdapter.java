@@ -1,10 +1,8 @@
 package com.example.digital_payment.audit.infrastructure.persistence.adapter;
 
 import java.util.List;
-
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-
 import com.example.digital_payment.audit.application.port.out.LoadAuditLogsPort;
 import com.example.digital_payment.audit.application.port.out.SaveAuditLogPort;
 import com.example.digital_payment.audit.domain.model.entities.AuditLogs;
@@ -18,7 +16,7 @@ public class AuditLogPersistenceAdapter implements SaveAuditLogPort, LoadAuditLo
     private final AuditLogPersistenceMapper auditLogPersistenceMapper;
 
     public AuditLogPersistenceAdapter(AuditLogJpaRepository auditLogJpaRepository,
-        AuditLogPersistenceMapper auditLogPersistenceMapper) {
+            AuditLogPersistenceMapper auditLogPersistenceMapper) {
         this.auditLogJpaRepository = auditLogJpaRepository;
         this.auditLogPersistenceMapper = auditLogPersistenceMapper;
     }
@@ -33,9 +31,7 @@ public class AuditLogPersistenceAdapter implements SaveAuditLogPort, LoadAuditLo
     @Override
     @Transactional(readOnly = true)
     public List<AuditLogs> findAll() {
-        return auditLogJpaRepository.findAll()
-            .stream()
-            .map(auditLogPersistenceMapper::toDomain)
-            .toList();
+        return auditLogJpaRepository.findAll().stream().map(auditLogPersistenceMapper::toDomain)
+                .toList();
     }
 }

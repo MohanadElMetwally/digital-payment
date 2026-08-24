@@ -13,7 +13,7 @@ public class MarkFakeBillPaidService implements MarkFakeBillPaidUseCase {
     private final UpdateFakeBillPort updateFakeBillPort;
 
     public MarkFakeBillPaidService(TransactionPort transactionPort,
-        LoadFakeBillPort loadFakeBillPort, UpdateFakeBillPort updateFakeBillPort) {
+            LoadFakeBillPort loadFakeBillPort, UpdateFakeBillPort updateFakeBillPort) {
         this.transactionPort = transactionPort;
         this.loadFakeBillPort = loadFakeBillPort;
         this.updateFakeBillPort = updateFakeBillPort;
@@ -23,7 +23,7 @@ public class MarkFakeBillPaidService implements MarkFakeBillPaidUseCase {
     public void mark(String customerNumber) {
         transactionPort.executeVoid(() -> {
             FakeBills fakeBill = loadFakeBillPort.findByCustomerNumber(customerNumber)
-                .orElseThrow(() -> new FakeBillNotFoundException("bill not found"));
+                    .orElseThrow(() -> new FakeBillNotFoundException("bill not found"));
             fakeBill.markPaid();
             updateFakeBillPort.update(fakeBill);
         });

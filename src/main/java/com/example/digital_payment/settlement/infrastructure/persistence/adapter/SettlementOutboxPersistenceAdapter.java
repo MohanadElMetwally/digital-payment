@@ -3,10 +3,8 @@ package com.example.digital_payment.settlement.infrastructure.persistence.adapte
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-
 import com.example.digital_payment.settlement.application.port.out.LoadSettlementsOutboxPort;
 import com.example.digital_payment.settlement.application.port.out.LockSettlementOutboxPort;
 import com.example.digital_payment.settlement.application.port.out.SaveSettlementsOutboxPort;
@@ -18,12 +16,12 @@ import com.example.digital_payment.settlement.infrastructure.persistence.reposit
 
 @Component
 public class SettlementOutboxPersistenceAdapter implements SaveSettlementsOutboxPort,
-    LoadSettlementsOutboxPort, UpdateSettlementsOutboxPort, LockSettlementOutboxPort {
+        LoadSettlementsOutboxPort, UpdateSettlementsOutboxPort, LockSettlementOutboxPort {
     private final SettlementOutboxJpaRepository jpaRepository;
     private final SettlementOutboxPersistenceMapper mapper;
 
     public SettlementOutboxPersistenceAdapter(SettlementOutboxJpaRepository jpaRepository,
-        SettlementOutboxPersistenceMapper mapper) {
+            SettlementOutboxPersistenceMapper mapper) {
         this.jpaRepository = jpaRepository;
         this.mapper = mapper;
     }

@@ -1,11 +1,9 @@
 package com.example.digital_payment.billing.application.config;
 
 import java.util.Map;
-
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.client.RestTemplate;
-
 import com.example.digital_payment.billing.application.mapper.BillMapper;
 import com.example.digital_payment.billing.application.mapper.BillerMapper;
 import com.example.digital_payment.billing.application.port.in.BillFetchUseCase;
@@ -40,13 +38,13 @@ import com.example.digital_payment.shared.application.port.out.TransactionPort;
 public class BillingConfig {
     @Bean
     public GetBillerUseCase getBillerUseCase(LoadBillerPort loadBillerPort,
-        BillerMapper billerMapper) {
+            BillerMapper billerMapper) {
         return new GetBillerService(loadBillerPort, billerMapper);
     }
 
     @Bean
     public GetAllBillersUseCase getAllBillersUseCase(LoadAllBillersPort loadAllBillersPort,
-        BillerMapper billerMapper) {
+            BillerMapper billerMapper) {
         return new GetAllBillersService(loadAllBillersPort, billerMapper);
     }
 
@@ -72,11 +70,11 @@ public class BillingConfig {
 
     @Bean
     public BillFetchUseCase billFetchUseCase(LoadBillerPort loadBillerPort,
-        LoadBillByExternalRefPort loadBillByExternalRefPort, SaveBillPort saveBillPort,
-        SyncBillPort syncBillPort, TransactionPort transactionPort,
-        Map<String, ProviderGatewayPort> providers, BillMapper billMapper) {
+            LoadBillByExternalRefPort loadBillByExternalRefPort, SaveBillPort saveBillPort,
+            SyncBillPort syncBillPort, TransactionPort transactionPort,
+            Map<String, ProviderGatewayPort> providers, BillMapper billMapper) {
         return new BillFetchService(loadBillerPort, loadBillByExternalRefPort, saveBillPort,
-            syncBillPort, transactionPort, providers, billMapper);
+                syncBillPort, transactionPort, providers, billMapper);
     }
 
     @Bean
@@ -86,27 +84,27 @@ public class BillingConfig {
 
     @Bean
     public InitiateBillPaymentUseCase initiateBillPaymentUseCase(TransactionPort transactionPort,
-        LoadBillPort loadBillPort, UpdateBillPort updateBillPort,
-        SaveBillPaymentPort saveBillPaymentPort) {
+            LoadBillPort loadBillPort, UpdateBillPort updateBillPort,
+            SaveBillPaymentPort saveBillPaymentPort) {
         return new InitiateBillPaymentService(transactionPort, loadBillPort, updateBillPort,
-            saveBillPaymentPort);
+                saveBillPaymentPort);
     }
 
     @Bean
     public MarkBillPaymentSucceededUseCase markBillPaymentSucceededUseCase(
-        TransactionPort transactionPort, LoadBillPort loadBillPort, UpdateBillPort updateBillPort,
-        LoadBillPaymentByTransactionIdPort loadBillPaymentPort,
-        UpdateBillPaymentPort updateBillPaymentPort) {
+            TransactionPort transactionPort, LoadBillPort loadBillPort,
+            UpdateBillPort updateBillPort, LoadBillPaymentByTransactionIdPort loadBillPaymentPort,
+            UpdateBillPaymentPort updateBillPaymentPort) {
         return new MarkBillPaymentSucceededService(transactionPort, loadBillPort, updateBillPort,
-            loadBillPaymentPort, updateBillPaymentPort);
+                loadBillPaymentPort, updateBillPaymentPort);
     }
 
     @Bean
     public MarkBillPaymentFailedUseCase markBillPaymentFailedUseCase(
-        TransactionPort transactionPort, LoadBillPort loadBillPort, UpdateBillPort updateBillPort,
-        LoadBillPaymentByTransactionIdPort loadBillPaymentPort,
-        UpdateBillPaymentPort updateBillPaymentPort) {
+            TransactionPort transactionPort, LoadBillPort loadBillPort,
+            UpdateBillPort updateBillPort, LoadBillPaymentByTransactionIdPort loadBillPaymentPort,
+            UpdateBillPaymentPort updateBillPaymentPort) {
         return new MarkBillPaymentFailedService(transactionPort, loadBillPort, updateBillPort,
-            loadBillPaymentPort, updateBillPaymentPort);
+                loadBillPaymentPort, updateBillPaymentPort);
     }
 }

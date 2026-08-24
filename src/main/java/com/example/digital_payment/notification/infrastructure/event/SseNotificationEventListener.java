@@ -3,7 +3,6 @@ package com.example.digital_payment.notification.infrastructure.event;
 import org.springframework.context.event.EventListener;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
-
 import com.example.digital_payment.notification.application.port.in.SendSseNotificationUseCase;
 import com.example.digital_payment.shared.events.SseNotificationEvent;
 

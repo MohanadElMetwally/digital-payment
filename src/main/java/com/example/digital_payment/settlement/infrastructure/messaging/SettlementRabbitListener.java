@@ -1,10 +1,8 @@
 package com.example.digital_payment.settlement.infrastructure.messaging;
 
 import java.util.UUID;
-
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Component;
-
 import com.example.digital_payment.settlement.application.port.in.ProcessSettlementUseCase;
 import com.example.digital_payment.settlement.application.port.in.SaveFailedSettlementUseCase;
 
@@ -14,7 +12,7 @@ public class SettlementRabbitListener {
     private final SaveFailedSettlementUseCase saveFailedSettlementUseCase;
 
     public SettlementRabbitListener(ProcessSettlementUseCase processSettlementUseCase,
-        SaveFailedSettlementUseCase saveFailedSettlementUseCase) {
+            SaveFailedSettlementUseCase saveFailedSettlementUseCase) {
         this.processSettlementUseCase = processSettlementUseCase;
         this.saveFailedSettlementUseCase = saveFailedSettlementUseCase;
     }

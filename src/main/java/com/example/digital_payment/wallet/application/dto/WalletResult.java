@@ -5,6 +5,6 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 public record WalletResult(UUID id, UUID userId, BigDecimal balance, String currency,
-    LocalDateTime createdAt) {
+        LocalDateTime createdAt) {
 
 }

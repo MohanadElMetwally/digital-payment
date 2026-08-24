@@ -2,7 +2,6 @@ package com.example.digital_payment.billing.domain.model.entities;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
-
 import com.example.digital_payment.billing.domain.enums.BillCategory;
 import com.example.digital_payment.billing.domain.enums.ServiceProvider;
 import com.example.digital_payment.billing.domain.model.snapshots.BillerSnapshot;
@@ -15,8 +14,7 @@ public class Billers {
     private ServiceProvider serviceProvider;
     private LocalDateTime createdAt;
 
-    public Billers() {
-    }
+    public Billers() {}
 
     public static Billers create(BillerCreateData createData) {
         validateServiceProvider(createData.serviceProvider());

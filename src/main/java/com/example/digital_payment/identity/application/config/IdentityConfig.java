@@ -4,7 +4,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-
 import com.example.digital_payment.identity.application.mapper.UserMapper;
 import com.example.digital_payment.identity.application.port.in.CheckUserExistsUseCase;
 import com.example.digital_payment.identity.application.port.in.CheckUsersExistUseCase;
@@ -38,11 +37,11 @@ import com.example.digital_payment.shared.application.port.out.TransactionPort;
 public class IdentityConfig {
     @Bean
     public RegisterUserUseCase registerUserUseCase(SaveUserPort saveUserPort,
-        ResolveCountryPort resolveCountryPort, ResolveCurrencyPort resolveCurrencyPort,
-        EventPublisherPort eventPublisherPort, TransactionPort transactionPort,
-        PhoneValidatorPort phoneValidatorPort, UserMapper userMapper) {
+            ResolveCountryPort resolveCountryPort, ResolveCurrencyPort resolveCurrencyPort,
+            EventPublisherPort eventPublisherPort, TransactionPort transactionPort,
+            PhoneValidatorPort phoneValidatorPort, UserMapper userMapper) {
         return new RegisterUserService(saveUserPort, resolveCountryPort, resolveCurrencyPort,
-            eventPublisherPort, transactionPort, phoneValidatorPort, userMapper);
+                eventPublisherPort, transactionPort, phoneValidatorPort, userMapper);
     }
 
     @Bean
@@ -72,22 +71,22 @@ public class IdentityConfig {
 
     @Bean
     public GetCurrentUserService getCurrentUserService(CurrentUserPort currentUserPort,
-        UserMapper userMapper) {
+            UserMapper userMapper) {
         return new GetCurrentUserService(currentUserPort, userMapper);
     }
 
     @Bean
     public UpdateUserUseCase updateUserUseCase(LoadUserPort loadUserPort,
-        UpdateUserPort updateUserPort, TransactionPort transactionPort, UserMapper userMapper) {
+            UpdateUserPort updateUserPort, TransactionPort transactionPort, UserMapper userMapper) {
         return new UpdateUserService(loadUserPort, updateUserPort, transactionPort, userMapper);
     }
 
     @Bean
     public UpdatePasswordUseCase updatePasswordUseCase(LoadUserPort loadUserPort,
-        SaveUserPort saveUserPort, PasswordMatchPort passwordMatchPort,
-        UpdatePasswordPort updateUserPort, TransactionPort transactionPort) {
+            SaveUserPort saveUserPort, PasswordMatchPort passwordMatchPort,
+            UpdatePasswordPort updateUserPort, TransactionPort transactionPort) {
         return new UpdatePasswordService(loadUserPort, saveUserPort, passwordMatchPort,
-            updateUserPort, transactionPort);
+                updateUserPort, transactionPort);
     }
 
     @Bean

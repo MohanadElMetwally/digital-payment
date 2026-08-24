@@ -1,7 +1,6 @@
 package com.example.digital_payment.wallet.application.usecase;
 
 import java.util.UUID;
-
 import com.example.digital_payment.shared.application.port.in.FindWalletInfoUseCase;
 import com.example.digital_payment.shared.dto.WalletInfo;
 import com.example.digital_payment.shared.exception.ForbiddenException;
@@ -19,7 +18,7 @@ public class FindWalletInfoService implements FindWalletInfoUseCase {
     @Override
     public WalletInfo fetchWalletInfo(UUID walletId, UUID userId) {
         Wallets wallet = loadWalletPort.getById(walletId)
-            .orElseThrow(() -> new ResourceNotFoundException("Wallet not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Wallet not found"));
 
         if (!wallet.belongsTo(userId)) {
             throw new ForbiddenException("Access to wallet denied");

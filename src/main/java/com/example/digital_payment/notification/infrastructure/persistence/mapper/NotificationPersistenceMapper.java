@@ -1,7 +1,6 @@
 package com.example.digital_payment.notification.infrastructure.persistence.mapper;
 
 import org.springframework.stereotype.Component;
-
 import com.example.digital_payment.notification.domain.model.entities.Notifications;
 import com.example.digital_payment.notification.domain.model.snapshots.NotificationSnapshot;
 import com.example.digital_payment.notification.infrastructure.persistence.entity.NotificationEntity;
@@ -23,8 +22,8 @@ public class NotificationPersistenceMapper {
 
     public Notifications toDomain(NotificationEntity entity) {
         NotificationSnapshot snapshot = new NotificationSnapshot(entity.getId(), entity.getUserId(),
-            entity.getTitle(), entity.getMessage(), entity.getType(), entity.getIsRead(),
-            entity.getReadAt(), entity.getCreatedAt());
+                entity.getTitle(), entity.getMessage(), entity.getType(), entity.getIsRead(),
+                entity.getReadAt(), entity.getCreatedAt());
         return Notifications.reconstitute(snapshot);
     }
 

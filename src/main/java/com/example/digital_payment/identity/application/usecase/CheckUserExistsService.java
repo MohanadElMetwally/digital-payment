@@ -17,17 +17,17 @@ public class CheckUserExistsService implements CheckUserExistsUseCase {
     @Override
     public void checkNotExists(RegisterUserCommand command) {
         loadUserPort
-            .findByEmailOrUsernameOrPhone(command.email(), command.username(), command.phone())
-            .ifPresent(exists -> {
-                if (exists.getEmail().equals(command.email())) {
-                    throw new EmailAlreadyExistsException(command.email());
-                }
-                if (exists.getUsername().equals(command.username())) {
-                    throw new UsernameAlreadyExistsException(command.username());
-                }
-                if (exists.getPhone().equals(command.phone())) {
-                    throw new PhoneAlreadyExistsException(command.phone());
-                }
-            });
+                .findByEmailOrUsernameOrPhone(command.email(), command.username(), command.phone())
+                .ifPresent(exists -> {
+                    if (exists.getEmail().equals(command.email())) {
+                        throw new EmailAlreadyExistsException(command.email());
+                    }
+                    if (exists.getUsername().equals(command.username())) {
+                        throw new UsernameAlreadyExistsException(command.username());
+                    }
+                    if (exists.getPhone().equals(command.phone())) {
+                        throw new PhoneAlreadyExistsException(command.phone());
+                    }
+                });
     }
 }

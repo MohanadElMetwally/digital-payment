@@ -7,7 +7,6 @@ import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
-
 import com.example.digital_payment.billing.application.port.out.ProviderGatewayPort;
 import com.example.digital_payment.billing.domain.exceptions.BillAlreadyPaidException;
 import com.example.digital_payment.billing.domain.exceptions.ProviderBillNotFound;
@@ -25,7 +24,7 @@ public class GasProviderGatewayAdapter implements ProviderGatewayPort {
     private String baseUrl;
 
     public GasProviderGatewayAdapter(RestTemplate restTemplate,
-        ProviderBillMapper providerBillMapper) {
+            ProviderBillMapper providerBillMapper) {
         this.restTemplate = restTemplate;
         this.providerBillMapper = providerBillMapper;
     }
@@ -34,11 +33,11 @@ public class GasProviderGatewayAdapter implements ProviderGatewayPort {
     public ProviderBills fetchBill(String externalCustomerNumber) {
         try {
             ProviderBillResponse response = restTemplate.getForObject(baseUrl + "/{customerNumber}",
-                ProviderBillResponse.class, externalCustomerNumber);
+                    ProviderBillResponse.class, externalCustomerNumber);
 
             if (response == null) {
                 throw new ProviderBillNotFound(
-                    "Provider returned an empty response for: " + externalCustomerNumber);
+                        "Provider returned an empty response for: " + externalCustomerNumber);
             }
 
             return providerBillMapper.toDomain(response);
@@ -46,12 +45,12 @@ public class GasProviderGatewayAdapter implements ProviderGatewayPort {
         } catch (HttpClientErrorException e) {
             if (e.getStatusCode() == HttpStatus.NOT_FOUND) {
                 throw new ProviderBillNotFound(
-                    "Provider bill not found for customer: " + externalCustomerNumber);
+                        "Provider bill not found for customer: " + externalCustomerNumber);
             } else if (e.getStatusCode() == HttpStatus.CONFLICT) {
                 throw new BillAlreadyPaidException("Bill has already been paid");
             }
             throw new ProviderUnavailableException(
-                "Unexpected client error from provider: " + e.getStatusCode());
+                    "Unexpected client error from provider: " + e.getStatusCode());
 
         } catch (HttpServerErrorException e) {
             throw new ProviderUnavailableException("Provider server error: " + e.getStatusCode());

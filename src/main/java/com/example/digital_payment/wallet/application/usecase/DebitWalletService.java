@@ -22,9 +22,9 @@ public class DebitWalletService implements DebitWalletUseCase {
     private final UpdateWalletTransactionPort updateWalletTransactionPort;
 
     public DebitWalletService(TransactionPort transactionPort, LoadWalletPort loadWalletPort,
-        UpdateWalletPort updateWalletPort,
-        LoadWalletTransactionByTransactionId loadWalletTransactionPort,
-        UpdateWalletTransactionPort updateWalletTransactionPort) {
+            UpdateWalletPort updateWalletPort,
+            LoadWalletTransactionByTransactionId loadWalletTransactionPort,
+            UpdateWalletTransactionPort updateWalletTransactionPort) {
         this.transactionPort = transactionPort;
         this.loadWalletPort = loadWalletPort;
         this.updateWalletPort = updateWalletPort;
@@ -36,13 +36,13 @@ public class DebitWalletService implements DebitWalletUseCase {
     public void debit(DebitWalletCommand command) {
         transactionPort.executeVoid(() -> {
             Wallets wallet = loadWalletPort.getById(command.walletId())
-                .orElseThrow(() -> new WalletNotFoundException(command.walletId()));
+                    .orElseThrow(() -> new WalletNotFoundException(command.walletId()));
             if (!wallet.belongsTo(command.userId())) {
                 throw new WalletAccessDenied();
             }
-            WalletTransactions wtx = loadWalletTransactionPort
-                .findByTransactionId(command.transactionId())
-                .orElseThrow(() -> new WalletTransactionNotFoundException());
+            WalletTransactions wtx =
+                    loadWalletTransactionPort.findByTransactionId(command.transactionId())
+                            .orElseThrow(() -> new WalletTransactionNotFoundException());
 
             if (wtx.getStatus() != WalletTransactionStatus.PENDING)
                 return;

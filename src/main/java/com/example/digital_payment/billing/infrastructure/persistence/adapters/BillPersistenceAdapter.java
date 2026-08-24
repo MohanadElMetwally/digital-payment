@@ -2,10 +2,8 @@ package com.example.digital_payment.billing.infrastructure.persistence.adapters;
 
 import java.util.Optional;
 import java.util.UUID;
-
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-
 import com.example.digital_payment.billing.application.port.out.LoadBillByExternalRefPort;
 import com.example.digital_payment.billing.application.port.out.LoadBillPort;
 import com.example.digital_payment.billing.application.port.out.SaveBillPort;
@@ -17,13 +15,13 @@ import com.example.digital_payment.billing.infrastructure.persistence.mappers.Bi
 import com.example.digital_payment.billing.infrastructure.persistence.repository.BillJpaRepository;
 
 @Component
-public class BillPersistenceAdapter
-    implements SaveBillPort, LoadBillPort, LoadBillByExternalRefPort, SyncBillPort, UpdateBillPort {
+public class BillPersistenceAdapter implements SaveBillPort, LoadBillPort,
+        LoadBillByExternalRefPort, SyncBillPort, UpdateBillPort {
     private final BillJpaRepository billJpaRepository;
     private final BillPersistenceMapper billPersistenceMapper;
 
     public BillPersistenceAdapter(BillJpaRepository billJpaRepository,
-        BillPersistenceMapper billPersistenceMapper) {
+            BillPersistenceMapper billPersistenceMapper) {
         this.billJpaRepository = billJpaRepository;
         this.billPersistenceMapper = billPersistenceMapper;
     }
@@ -46,14 +44,14 @@ public class BillPersistenceAdapter
     @Transactional
     public Optional<Bills> findByExternalBillId(String externalBillId) {
         return billJpaRepository.findByExternalBillId(externalBillId)
-            .map(billPersistenceMapper::toDomain);
+                .map(billPersistenceMapper::toDomain);
     }
 
     @Override
     @Transactional
     public Optional<Bills> findByExternalBillIdAndBillerId(String externalBillId, UUID billerId) {
         return billJpaRepository.findByExternalBillIdAndBillerId(externalBillId, billerId)
-            .map(billPersistenceMapper::toDomain);
+                .map(billPersistenceMapper::toDomain);
     }
 
     @Override

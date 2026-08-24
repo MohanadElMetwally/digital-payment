@@ -1,9 +1,7 @@
 package com.example.digital_payment.wallet.application.usecase;
 
 import java.util.UUID;
-
 import org.springframework.stereotype.Component;
-
 import com.example.digital_payment.wallet.application.dto.WalletResult;
 import com.example.digital_payment.wallet.application.mapper.WalletMapper;
 import com.example.digital_payment.wallet.application.port.in.GetWalletUseCase;
@@ -24,7 +22,7 @@ public class GetWalletService implements GetWalletUseCase {
     @Override
     public WalletResult getByUserId(UUID userId) {
         Wallets wallet = loadWalletPort.getByUserId(userId)
-            .orElseThrow(() -> new WalletNotFoundException(userId));
+                .orElseThrow(() -> new WalletNotFoundException(userId));
         return walletMapper.toResult(wallet);
     }
 }

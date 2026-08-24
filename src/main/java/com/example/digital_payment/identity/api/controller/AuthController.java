@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
 import com.example.digital_payment.identity.api.dto.response.TokenResponse;
 import com.example.digital_payment.identity.application.port.in.LoginUseCase;
 
@@ -22,8 +21,8 @@ public class AuthController {
 
     @PostMapping(value = "/login", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
     public ResponseEntity<TokenResponse> login(@RequestParam String username,
-        @RequestParam String password) {
+            @RequestParam String password) {
         return ResponseEntity.status(HttpStatus.OK)
-            .body(TokenResponse.from(loginUseCase.verify(username, password)));
+                .body(TokenResponse.from(loginUseCase.verify(username, password)));
     }
 }

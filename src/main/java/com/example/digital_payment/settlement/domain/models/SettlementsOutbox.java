@@ -2,7 +2,6 @@ package com.example.digital_payment.settlement.domain.models;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
-
 import com.example.digital_payment.settlement.domain.enums.OutboxStatus;
 import com.example.digital_payment.settlement.domain.snapshots.SettlementOutboxSnapshot;
 import com.example.digital_payment.settlement.domain.valueobjects.SettlementOutboxCreationData;
